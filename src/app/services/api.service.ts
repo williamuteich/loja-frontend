@@ -1,0 +1,27 @@
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+@Injectable({ providedIn: 'root' })
+export class ApiService {
+  private readonly http = inject(HttpClient);
+
+  // Ajuste esta URL para o endpoint base do seu backend
+  private readonly baseUrl = 'http://localhost:3000';
+
+  get<T>(path: string, options?: object): Observable<T> {
+    return this.http.get<T>(`${this.baseUrl}/${path}`, options);
+  }
+
+  post<T>(path: string, body: unknown, options?: object): Observable<T> {
+    return this.http.post<T>(`${this.baseUrl}/${path}`, body, options);
+  }
+
+  put<T>(path: string, body: unknown, options?: object): Observable<T> {
+    return this.http.put<T>(`${this.baseUrl}/${path}`, body, options);
+  }
+
+  delete<T>(path: string, options?: object): Observable<T> {
+    return this.http.delete<T>(`${this.baseUrl}/${path}`, options);
+  }
+}
