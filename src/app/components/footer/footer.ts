@@ -1,7 +1,5 @@
-import { Component, inject, computed } from '@angular/core';
+import { Component, inject, computed, signal } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-footer',
@@ -14,17 +12,15 @@ import { filter, map } from 'rxjs/operators';
 export class Footer {
   private router = inject(Router);
 
-  currentUrl = toSignal(
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd),
-      map(() => this.router.url)
-    )
-  );
+  currentUrl = signal(this.router.url);
 
-  isDashboard = computed(() => {
-    const url = this.currentUrl();
-    return url ? url.includes('/dashboard') : false;
-  });
+  isDashboard = computed(() => this.currentUrl().includes('/dashboard'));
 
-  constructor() { }
+  constructor() {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.currentUrl.set(this.router.url);
+      }
+    });
+  }
 }
