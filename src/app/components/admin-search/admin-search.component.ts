@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule, Search } from 'lucide-angular';
 
@@ -9,5 +9,11 @@ import { LucideAngularModule, Search } from 'lucide-angular';
 })
 export class AdminSearchComponent {
     @Input() placeholder: string = 'Buscar...';
+    @Output() search = new EventEmitter<string>();
     readonly Search = Search;
+
+    onSearch(event: Event) {
+        const value = (event.target as HTMLInputElement).value;
+        this.search.emit(value);
+    }
 }

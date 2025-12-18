@@ -1,8 +1,45 @@
-<header class="bg-gray-800 text-white p-4">
-  <div class="container mx-auto flex justify-between items-center">
-    <h1 class="text-xl">Minha Loja</h1>
-    <button (click)="login()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-      Login
-    </button>
-  </div>
+<header class="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-sm border-b border-slate-200">
+    <div class="container mx-auto px-6">
+        <div class="flex items-center justify-between h-16">
+            <a routerLink="/" class="font-display text-2xl font-semibold">
+                <span class="text-rose-500">Bella</span>
+            </a>
+
+            <nav class="hidden md:flex items-center gap-8">
+                <a routerLink="/" routerLinkActive="text-rose-500" [routerLinkActiveOptions]="{exact: true}"
+                    class="text-slate-600 hover:text-rose-500 transition-colors text-sm font-medium">Início</a>
+                <a routerLink="/produtos" routerLinkActive="text-rose-500"
+                    class="text-slate-600 hover:text-rose-500 transition-colors text-sm font-medium">Produtos</a>
+                <a routerLink="/categorias" routerLinkActive="text-rose-500"
+                    class="text-slate-600 hover:text-rose-500 transition-colors text-sm font-medium">Categorias</a>
+                <a routerLink="/contato" routerLinkActive="text-rose-500"
+                    class="text-slate-600 hover:text-rose-500 transition-colors text-sm font-medium">Contato</a>
+            </nav>
+
+            <div class="flex items-center gap-2">
+                <button
+                    class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-300 hover:bg-slate-100 h-10 w-10 text-slate-500 hover:text-slate-900">
+                    <lucide-icon [img]="Search" class="w-5 h-5"></lucide-icon>
+                </button>
+
+                <button
+                    class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-300 hover:bg-slate-100 h-10 w-10 relative text-slate-500 hover:text-slate-900">
+                    <lucide-icon [img]="ShoppingBag" class="w-5 h-5"></lucide-icon>
+                    <span
+                        class="absolute top-1 right-1 w-4 h-4 bg-primary text-white text-[10px] font-bold rounded-full flex items-center justify-center">0</span>
+                </button>
+
+                <button (click)="login()"
+                    class="justify-center whitespace-nowrap text-sm font-medium transition-all duration-300 hover:bg-slate-100 h-9 rounded-md px-4 hidden sm:flex items-center gap-2 text-slate-600 hover:text-slate-900">
+                    <lucide-icon [img]="User" class="w-4 h-4"></lucide-icon>
+                    Entrar
+                </button>
+
+                <button
+                    class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-300 hover:bg-slate-100 h-10 w-10 md:hidden text-slate-500">
+                    <lucide-icon [img]="Menu" class="w-5 h-5"></lucide-icon>
+                </button>
+            </div>
+        </div>
+    </div>
 </header>

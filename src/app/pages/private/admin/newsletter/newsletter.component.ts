@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LucideAngularModule, Search, Download, Users, TrendingUp, Mail, Trash2 } from 'lucide-angular';
+import { LucideAngularModule, Download, Users, TrendingUp, Mail, Trash2 } from 'lucide-angular';
 import { AdminSearchComponent } from '../../../../components/admin-search/admin-search.component';
 
 @Component({
@@ -9,7 +9,6 @@ import { AdminSearchComponent } from '../../../../components/admin-search/admin-
   templateUrl: './newsletter.component.html'
 })
 export class NewsletterComponent {
-  readonly Search = Search;
   readonly Download = Download;
   readonly Users = Users;
   readonly TrendingUp = TrendingUp;

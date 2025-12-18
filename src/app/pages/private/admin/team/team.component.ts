@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LucideAngularModule, Search, Plus, UserCog, SquarePen, Trash2 } from 'lucide-angular';
+import { LucideAngularModule, Plus, UserCog, SquarePen, Trash2 } from 'lucide-angular';
 import { AdminSearchComponent } from '../../../../components/admin-search/admin-search.component';
 
 @Component({
@@ -9,7 +9,6 @@ import { AdminSearchComponent } from '../../../../components/admin-search/admin-
   templateUrl: './team.component.html'
 })
 export class TeamComponent {
-  readonly Search = Search;
   readonly Plus = Plus;
   readonly UserCog = UserCog;
   readonly SquarePen = SquarePen;

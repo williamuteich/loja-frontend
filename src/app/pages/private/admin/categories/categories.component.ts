@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LucideAngularModule, Search, Plus, FolderTree, SquarePen, Trash2 } from 'lucide-angular';
+import { LucideAngularModule, Plus, FolderTree, SquarePen, Trash2 } from 'lucide-angular';
 import { AdminSearchComponent } from '../../../../components/admin-search/admin-search.component';
 
 @Component({
@@ -9,7 +9,6 @@ import { AdminSearchComponent } from '../../../../components/admin-search/admin-
   templateUrl: './categories.component.html'
 })
 export class CategoriesComponent {
-  readonly Search = Search;
   readonly Plus = Plus;
   readonly FolderTree = FolderTree;
   readonly SquarePen = SquarePen;
