@@ -17,9 +17,6 @@
                         <th class="px-6 py-4 font-medium">Categoria</th>
                         <th class="px-6 py-4 font-medium">Marca</th>
                         <th class="px-6 py-4 font-medium">Preço</th>
-                        <th class="px-6 py-4 font-medium">Estoque</th>
-                        <th class="px-6 py-4 font-medium">Views</th>
-                        <th class="px-6 py-4 font-medium">Cores</th>
                         <th class="px-6 py-4 font-medium">Status</th>
                         <th class="px-6 py-4 font-medium text-right">Ações</th>
                     </tr>
@@ -29,39 +26,19 @@
                     <tr class="border-t border-slate-100 hover:bg-slate-50 transition-colors">
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-3">
-                                <img [src]="product.image" [alt]="product.name"
+                                <img [src]="backendUrl + '/' + (product.images[0]?.url || 'https://via.placeholder.com/150')" [alt]="product.title"
                                     class="w-12 h-12 rounded-lg object-cover bg-slate-100">
                                 <div>
-                                    <span class="font-medium text-slate-900 block">{{ product.name }}</span>
+                                    <span class="font-medium text-slate-900 block">{{ product.title }}</span>
                                     <span class="text-slate-500 text-xs">ID: {{ product.id }}</span>
                                 </div>
                             </div>
                         </td>
-                        <td class="px-6 py-4 text-slate-600">{{ product.category }}</td>
-                        <td class="px-6 py-4 text-slate-600">{{ product.brand }}</td>
+                        <td class="px-6 py-4 text-slate-600">{{ product.categories[0]?.category?.name || 'N/A' }}</td>
+                        <td class="px-6 py-4 text-slate-600">{{ product.brand.name || 'N/A' }}</td>
                         <td class="px-6 py-4">
                             <div>
                                 <span class="font-medium text-slate-900">{{ product.price | currency:'BRL' }}</span>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 text-slate-600">{{ product.stock }}</td>
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-1 text-slate-600">
-                                <lucide-icon [img]="Eye" class="w-4 h-4"></lucide-icon>
-                                <span>{{ product.views }}</span>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-1">
-                                @if (product.colors.length > 0) {
-                                @for (color of product.colors; track color.name) {
-                                <div class="w-5 h-5 rounded-full border border-slate-200" [title]="color.name"
-                                    [style.background-color]="color.hex">
-                                </div>
-                                }
-                                } @else {
-                                <span class="text-slate-400">-</span>
-                                }
                             </div>
                         </td>
                         <td class="px-6 py-4">

@@ -1,21 +1,22 @@
-import { Component, inject } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { LucideAngularModule, Search, ShoppingBag, User, Menu } from 'lucide-angular';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterModule, LucideAngularModule],
+  imports: [RouterLink, RouterLinkActive, LucideAngularModule],
   templateUrl: './header.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Header {
   private router = inject(Router);
 
-  readonly Search = Search;
-  readonly ShoppingBag = ShoppingBag;
-  readonly User = User;
-  readonly Menu = Menu;
+  protected readonly Search = Search;
+  protected readonly ShoppingBag = ShoppingBag;
+  protected readonly User = User;
+  protected readonly Menu = Menu;
 
-  login() {
+  protected login() {
     this.router.navigate(['/login']);
   }
 }

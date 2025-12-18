@@ -1,12 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
   private readonly http = inject(HttpClient);
 
-  private readonly baseUrl = 'http://localhost:3000';
+  private readonly baseUrl = environment.BACKEND_URL;
 
   get<T>(path: string, options?: object): Observable<T> {
     return this.http.get<T>(`${this.baseUrl}/${path}`, options);
@@ -22,5 +23,11 @@ export class ApiService {
 
   delete<T>(path: string, options?: object): Observable<T> {
     return this.http.delete<T>(`${this.baseUrl}/${path}`, options);
+  }
+
+  getProduct(): Observable<any> {
+    return this.get('product').pipe(
+      tap(response => console.log('Product response:', response))
+    );
   }
 }
