@@ -4,10 +4,9 @@ import { Header } from '../../../components/header/header';
 import { Footer } from '../../../components/footer/footer';
 
 @Component({
-    selector: 'app-main-layout',
-    standalone: true,
-    imports: [RouterOutlet, Header, Footer],
-    template: `
+  selector: 'app-main-layout',
+  imports: [RouterOutlet, Header, Footer],
+  template: `
     <div class="flex flex-col min-h-screen">
       <app-header />
       <main class="grow">
