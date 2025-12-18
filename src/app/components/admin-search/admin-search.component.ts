@@ -1,15 +1,16 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule, Search } from 'lucide-angular';
 
 @Component({
     selector: 'app-admin-search',
     imports: [CommonModule, LucideAngularModule],
-    templateUrl: './admin-search.component.html'
+    templateUrl: './admin-search.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AdminSearchComponent {
-    @Input() placeholder: string = 'Buscar...';
-    @Output() search = new EventEmitter<string>();
+    placeholder = input<string>('Buscar...');
+    search = output<string>();
     readonly Search = Search;
 
     onSearch(event: Event) {

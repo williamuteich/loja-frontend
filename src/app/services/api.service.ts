@@ -24,10 +24,4 @@ export class ApiService {
   delete<T>(path: string, options?: object): Observable<T> {
     return this.http.delete<T>(`${this.baseUrl}/${path}`, options);
   }
-
-  getProduct(): Observable<any> {
-    return this.get('product').pipe(
-      tap(response => console.log('Product response:', response))
-    );
-  }
 }

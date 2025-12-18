@@ -1,31 +1,32 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule, Plus, SquarePen, Trash2, Filter, Eye } from 'lucide-angular';
 import { AdminSearchComponent } from '../../../../components/admin-search/admin-search.component';
-import { ApiService } from '../../../../services/api.service';
-import { Product } from '../../../../models';
+import { ProductService } from '../../../../services/product.service';
 import { environment } from '../../../../../environments/environment';
+
+import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-products',
-  imports: [CommonModule, LucideAngularModule, AdminSearchComponent],
-  templateUrl: './products.component.html'
+  standalone: true,
+  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, NgOptimizedImage],
+  templateUrl: './products.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProductsComponent {
-  private readonly api = inject(ApiService);
+export class ProductsComponent implements OnInit {
+  private readonly productService = inject(ProductService);
+
   readonly backendUrl = environment.BACKEND_URL;
+  readonly products = this.productService.products;
 
-  readonly Plus = Plus;
-  readonly SquarePen = SquarePen;
-  readonly Trash2 = Trash2;
-  readonly Filter = Filter;
-  readonly Eye = Eye;
+  protected readonly Plus = Plus;
+  protected readonly SquarePen = SquarePen;
+  protected readonly Trash2 = Trash2;
+  protected readonly Filter = Filter;
+  protected readonly Eye = Eye;
 
-  products: Product[] = [];
-
-  constructor() {
-    this.api.get<Product[]>('product').subscribe(data => {
-      this.products = data;
-    });
+  ngOnInit() {
+    this.productService.loadProducts();
   }
 }
