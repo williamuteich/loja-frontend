@@ -6,13 +6,12 @@ import { LucideAngularModule, Search, Bell, User, Menu } from 'lucide-angular';
 
 @Component({
   selector: 'app-admin-layout',
-  standalone: true,
   imports: [CommonModule, RouterOutlet, SidebarComponent, LucideAngularModule],
   template: `
     <div class="flex h-screen relative overflow-hidden mx-auto">
       <app-sidebar [isOpen]="isSidebarOpen()" (close)="isSidebarOpen.set(false)"></app-sidebar>
 
-      <main class="flex-1 flex flex-col min-w-0 overflow-y-auto h-full transition-all duration-300">
+      <main class="flex-1 flex flex-col min-w-0 overflow-y-auto h-full transition-all duration-300 bg-white">
          <header class="bg-white border-b border-slate-200 px-12 md:px-24 py-4 sticky top-0 z-40">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-4">

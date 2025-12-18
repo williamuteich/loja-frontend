@@ -1,28 +1,34 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Import CommonModule for ngFor and ngIf
+import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { LucideAngularModule, LayoutDashboard, Tags, FolderTree, Settings, Store, LogOut, X } from 'lucide-angular';
+import { LucideAngularModule, LayoutDashboard, Users, UsersRound, Package, FolderTree, Tags, Share2, Settings, Mail, Image, Store, LogOut, X } from 'lucide-angular';
 
 const links = [
   { path: '/dashboard', label: 'Dashboard', exact: true, icon: LayoutDashboard },
-  { path: '/dashboard/brands', label: 'Marcas', icon: Tags },
+  { path: '/dashboard/clients', label: 'Clientes', icon: Users },
+  { path: '/dashboard/team', label: 'Equipe', icon: UsersRound },
+  { path: '/dashboard/products', label: 'Produtos', icon: Package },
   { path: '/dashboard/categories', label: 'Categorias', icon: FolderTree },
+  { path: '/dashboard/brands', label: 'Marcas', icon: Tags },
+  { path: '/dashboard/socials', label: 'Redes Sociais', icon: Share2 },
   { path: '/dashboard/settings', label: 'Configurações', icon: Settings },
+  { path: '/dashboard/newsletter', label: 'Newsletter', icon: Mail },
+  { path: '/dashboard/banners', label: 'Banner', icon: Image },
 ];
 
 @Component({
   selector: 'app-sidebar',
-  standalone: true,
   imports: [CommonModule, RouterLink, RouterLinkActive, LucideAngularModule],
   template: `
+
     <div 
         *ngIf="isOpen" 
-        class="fixed inset-0 bg-black/50 z-40 transition-opacity" 
+        class="fixed inset-0 bg-black/50 z-50 transition-opacity" 
         (click)="close.emit()">
     </div>
 
     <aside 
-      class="fixed inset-y-0 left-0 z-50 w-64 bg-slate-900 shadow-2xl transition-transform duration-300 transform"
+      class="fixed inset-y-0 left-0 z-60 w-64 bg-slate-900 shadow-2xl transition-transform duration-300 transform"
       [class.-translate-x-full]="!isOpen"
       [class.translate-x-0]="isOpen">
       
