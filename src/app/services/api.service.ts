@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
 export class ApiService {
   private readonly http = inject(HttpClient);
 
-  // Ajuste esta URL para o endpoint base do seu backend
   private readonly baseUrl = 'http://localhost:3000';
 
   get<T>(path: string, options?: object): Observable<T> {

@@ -1,0 +1,285 @@
+<div class="p-12 md:p-24">
+    <div class="w-full space-y-6">
+
+        <!-- Controle do Site -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="p-6 border-b border-slate-200 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-rose-100 flex items-center justify-center">
+                    <lucide-icon [img]="Power" class="w-5 h-5 text-rose-600"></lucide-icon>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold text-slate-900">Controle do Site</h2>
+                    <p class="text-sm text-slate-500">Status e manutenção</p>
+                </div>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
+                    <div>
+                        <label class="text-sm font-medium leading-none">Site Ativo</label>
+                        <p class="text-sm text-slate-500">Desative para ocultar a loja publicamente</p>
+                    </div>
+                    <button type="button" role="switch" [attr.aria-checked]="settings.isActive"
+                        [attr.data-state]="settings.isActive ? 'checked' : 'unchecked'"
+                        class="peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors data-[state=checked]:bg-primary data-[state=unchecked]:bg-slate-200">
+                        <span [attr.data-state]="settings.isActive ? 'checked' : 'unchecked'"
+                            class="pointer-events-none block h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0"></span>
+                    </button>
+                </div>
+                <div class="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
+                    <div>
+                        <label class="text-sm font-medium leading-none">Modo Manutenção</label>
+                        <p class="text-sm text-slate-500">Exibe uma tela de manutenção para os visitantes</p>
+                    </div>
+                    <button type="button" role="switch" [attr.aria-checked]="settings.maintenanceMode"
+                        [attr.data-state]="settings.maintenanceMode ? 'checked' : 'unchecked'"
+                        class="peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors data-[state=checked]:bg-primary data-[state=unchecked]:bg-slate-200">
+                        <span [attr.data-state]="settings.maintenanceMode ? 'checked' : 'unchecked'"
+                            class="pointer-events-none block h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0"></span>
+                    </button>
+                </div>
+                <div class="space-y-2" *ngIf="settings.maintenanceMode">
+                    <label class="text-sm font-medium leading-none">Mensagem de Manutenção</label>
+                    <textarea
+                        class="flex min-h-[80px] w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
+                        rows="3" [value]="settings.maintenanceMessage"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dados da Loja -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="p-6 border-b border-slate-200 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <lucide-icon [img]="Store" class="w-5 h-5 text-primary"></lucide-icon>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold text-slate-900">Informações da Loja</h2>
+                    <p class="text-sm text-slate-500">Dados básicos e endereço</p>
+                </div>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium leading-none">Nome da Loja</label>
+                        <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
+                            [value]="settings.storeName">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium leading-none">CNPJ</label>
+                        <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
+                            [value]="settings.cnpj">
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-sm font-medium leading-none">Descrição</label>
+                    <textarea
+                        class="flex min-h-[80px] w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
+                        rows="3" [value]="settings.description"></textarea>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium leading-none">Telefone</label>
+                        <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
+                            [value]="settings.phone">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium leading-none">WhatsApp</label>
+                        <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
+                            [value]="settings.whatsapp">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium leading-none">Endereço</label>
+                        <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
+                            [value]="settings.address">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium leading-none">CEP</label>
+                        <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
+                            [value]="settings.zipCode">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium leading-none">Cidade</label>
+                        <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
+                            [value]="settings.city">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium leading-none">Estado</label>
+                        <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
+                            [value]="settings.state">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Identidade Visual -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="p-6 border-b border-slate-200 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-indigo-100 flex items-center justify-center">
+                    <lucide-icon [img]="Image" class="w-5 h-5 text-indigo-600"></lucide-icon>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold text-slate-900">Identidade Visual</h2>
+                    <p class="text-sm text-slate-500">Logos e imagens sociais</p>
+                </div>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="space-y-2">
+                    <label class="text-sm font-medium leading-none">Logo URL</label>
+                    <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
+                        [value]="settings.logoUrl">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-sm font-medium leading-none">Favicon URL</label>
+                    <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
+                        [value]="settings.faviconUrl">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-sm font-medium leading-none">Open Graph Image URL</label>
+                    <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
+                        [value]="settings.ogImageUrl">
+                </div>
+            </div>
+        </div>
+
+        <!-- Configurações de Email -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="p-6 border-b border-slate-200 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
+                    <lucide-icon [img]="Mail" class="w-5 h-5 text-blue-600"></lucide-icon>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold text-slate-900">Configurações de Email</h2>
+                    <p class="text-sm text-slate-500">Emails de notificação</p>
+                </div>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="space-y-2">
+                    <label class="text-sm font-medium leading-none">Email de Contato</label>
+                    <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
+                        [value]="settings.contactEmail">
+                </div>
+                <div class="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
+                    <div>
+                        <label class="text-sm font-medium leading-none">Notificar novos pedidos</label>
+                        <p class="text-sm text-slate-500">Receber email quando houver novo pedido</p>
+                    </div>
+                    <button type="button" role="switch" [attr.aria-checked]="settings.notifyNewOrders"
+                        [attr.data-state]="settings.notifyNewOrders ? 'checked' : 'unchecked'"
+                        class="peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors data-[state=checked]:bg-primary data-[state=unchecked]:bg-slate-200">
+                        <span [attr.data-state]="settings.notifyNewOrders ? 'checked' : 'unchecked'"
+                            class="pointer-events-none block h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0"></span>
+                    </button>
+                </div>
+                <div class="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
+                    <div>
+                        <label class="text-sm font-medium leading-none">Newsletter automática</label>
+                        <p class="text-sm text-slate-500">Enviar promoções automaticamente</p>
+                    </div>
+                    <button type="button" role="switch" [attr.aria-checked]="settings.automaticNewsletter"
+                        [attr.data-state]="settings.automaticNewsletter ? 'checked' : 'unchecked'"
+                        class="peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors data-[state=checked]:bg-primary data-[state=unchecked]:bg-slate-200">
+                        <span [attr.data-state]="settings.automaticNewsletter ? 'checked' : 'unchecked'"
+                            class="pointer-events-none block h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEO -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="p-6 border-b border-slate-200 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center">
+                    <lucide-icon [img]="Search" class="w-5 h-5 text-amber-600"></lucide-icon>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold text-slate-900">SEO</h2>
+                    <p class="text-sm text-slate-500">Otimização para motores de busca</p>
+                </div>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="space-y-2">
+                    <label class="text-sm font-medium leading-none">Título SEO</label>
+                    <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
+                        [value]="settings.seoTitle">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-sm font-medium leading-none">Descrição SEO</label>
+                    <textarea
+                        class="flex min-h-[80px] w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
+                        rows="3" [value]="settings.seoDescription"></textarea>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-sm font-medium leading-none">Palavras-chave</label>
+                    <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
+                        [value]="settings.seoKeywords">
+                </div>
+            </div>
+        </div>
+
+        <!-- Localização & Horários -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="p-6 border-b border-slate-200 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center">
+                    <lucide-icon [img]="MapPin" class="w-5 h-5 text-emerald-600"></lucide-icon>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold text-slate-900">Localização & Horários</h2>
+                    <p class="text-sm text-slate-500">Maps e expediente</p>
+                </div>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="space-y-2">
+                    <label class="text-sm font-medium leading-none">Google Maps Embed URL</label>
+                    <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
+                        [value]="settings.googleMapsEmbedUrl">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-sm font-medium leading-none">Horário de Funcionamento</label>
+                    <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
+                        [value]="settings.businessHours">
+                </div>
+            </div>
+        </div>
+
+        <!-- Internacionalização -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="p-6 border-b border-slate-200 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center">
+                    <lucide-icon [img]="Globe" class="w-5 h-5 text-purple-600"></lucide-icon>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold text-slate-900">Internacionalização</h2>
+                    <p class="text-sm text-slate-500">Moeda e idioma padrão</p>
+                </div>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium leading-none">Moeda</label>
+                        <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
+                            [value]="settings.currency" disabled>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium leading-none">Idioma</label>
+                        <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
+                            [value]="settings.locale" disabled>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="flex justify-end pt-6">
+            <button
+                class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-white shadow-soft hover:shadow-hover h-10 px-5 py-2 bg-slate-900 hover:bg-slate-800 cursor-pointer">
+                <lucide-icon [img]="Save" class="w-4 h-4"></lucide-icon>
+                Salvar Todas as Configurações
+            </button>
+        </div>
+
+    </div>
+</div>
