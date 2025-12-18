@@ -22,3 +22,16 @@ export interface Product {
     updatedAt: string;
   };
 }
+
+export interface Banner {
+  id: string;
+  title: string;
+  subtitle: string | null;
+  linkUrl: string | null;
+  imageDesktop: string | null;
+  imageMobile: string | null;
+  resolutionDesktop: string | null;
+  resolutionMobile: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
