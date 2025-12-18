@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { LucideAngularModule, Plus, GripVertical, Eye, EyeOff, SquarePen, Trash2 } from 'lucide-angular';
 import { AdminSearchComponent } from '../../../../components/admin-search/admin-search.component';
 import { BannerService } from '../../../../services/banner.service';
-import { Banner } from '../../../../models';
 import { NgOptimizedImage } from '@angular/common';
 import { environment } from '../../../../../environments/environment';
 

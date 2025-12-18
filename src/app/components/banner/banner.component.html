@@ -1,0 +1,49 @@
+<div class="banner-wrapper">
+    @if (banners().length > 0) {
+    <div class="banner-aspect">
+        <!-- Camada MOBILE (visível só em telas pequenas) -->
+        <div class="banner-container block md:hidden">
+            @for (banner of banners(); track banner.id; let i = $index) {
+            <div class="slide" [class.active]="currentIndex() === i">
+                @if (banner.imageMobile) {
+                <img [ngSrc]="backendUrl + '/' + banner.imageMobile"
+                    [width]="getResolution(banner.resolutionMobile, true).width"
+                    [height]="getResolution(banner.resolutionMobile, true).height" [alt]="banner.title"
+                    [priority]="i === 0" class="banner-img" ngSkipSizeCheck>
+                } @else if (banner.imageDesktop) {
+                <!-- Fallback: usa desktop se não tiver mobile -->
+                <img [ngSrc]="backendUrl + '/' + banner.imageDesktop"
+                    [width]="getResolution(banner.resolutionDesktop).width"
+                    [height]="getResolution(banner.resolutionDesktop).height" [alt]="banner.title" [priority]="i === 0"
+                    class="banner-img" ngSkipSizeCheck>
+                }
+            </div>
+            }
+        </div>
+
+        <!-- Camada DESKTOP (visível só em telas ≥768px) -->
+        <div class="banner-container hidden md:block">
+            @for (banner of banners(); track banner.id; let i = $index) {
+            <div class="slide" [class.active]="currentIndex() === i">
+                @if (banner.imageDesktop) {
+                <img [ngSrc]="backendUrl + '/' + banner.imageDesktop"
+                    [width]="getResolution(banner.resolutionDesktop).width"
+                    [height]="getResolution(banner.resolutionDesktop).height" [alt]="banner.title" [priority]="i === 0"
+                    class="banner-img" ngSkipSizeCheck>
+                } @else if (banner.imageMobile) {
+                <!-- Fallback: usa mobile se não tiver desktop -->
+                <img [ngSrc]="backendUrl + '/' + banner.imageMobile"
+                    [width]="getResolution(banner.resolutionMobile, true).width"
+                    [height]="getResolution(banner.resolutionMobile, true).height" [alt]="banner.title"
+                    [priority]="i === 0" class="banner-img" ngSkipSizeCheck>
+                }
+            </div>
+            }
+        </div>
+    </div>
+    } @else {
+    <div class="banner-aspect bg-slate-100 flex items-center justify-center">
+        <mat-icon class="opacity-10" style="width: 48px; height: 48px; font-size: 48px;">image</mat-icon>
+    </div>
+    }
+</div>
