@@ -35,3 +35,15 @@ export interface Banner {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface Category {
+  id: string;
+  name: string;
+  description: string;
+  imageUrl: string;
+  createdAt: string;
+  updatedAt: string;
+  _count: {
+    products: number;
+  }
+}

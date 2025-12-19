@@ -4,6 +4,21 @@
         <div class="banner-container block min-[1200px]:hidden">
             @for (banner of banners(); track banner.id; let i = $index) {
             <div class="slide" [class.active]="currentIndex() === i">
+                @if (banner.linkUrl) {
+                <a [href]="banner.linkUrl" target="_blank" rel="noopener" class="banner-link">
+                    @if (banner.imageMobile) {
+                    <img [ngSrc]="backendUrl + '/' + banner.imageMobile"
+                        [width]="getResolution(banner.resolutionMobile, true).width"
+                        [height]="getResolution(banner.resolutionMobile, true).height" [alt]="banner.title"
+                        [priority]="i === 0" class="banner-img" ngSkipSizeCheck>
+                    } @else if (banner.imageDesktop) {
+                    <img [ngSrc]="backendUrl + '/' + banner.imageDesktop"
+                        [width]="getResolution(banner.resolutionDesktop).width"
+                        [height]="getResolution(banner.resolutionDesktop).height" [alt]="banner.title"
+                        [priority]="i === 0" class="banner-img" ngSkipSizeCheck>
+                    }
+                </a>
+                } @else {
                 @if (banner.imageMobile) {
                 <img [ngSrc]="backendUrl + '/' + banner.imageMobile"
                     [width]="getResolution(banner.resolutionMobile, true).width"
@@ -15,6 +30,7 @@
                     [height]="getResolution(banner.resolutionDesktop).height" [alt]="banner.title" [priority]="i === 0"
                     class="banner-img" ngSkipSizeCheck>
                 }
+                }
             </div>
             }
         </div>
@@ -22,6 +38,22 @@
         <div class="banner-container hidden min-[1200px]:block">
             @for (banner of banners(); track banner.id; let i = $index) {
             <div class="slide" [class.active]="currentIndex() === i">
+                @if (banner.linkUrl) {
+                <a [href]="banner.linkUrl" target="_blank" rel="noopener" class="banner-link">
+                    @if (banner.imageDesktop) {
+                    <img [ngSrc]="backendUrl + '/' + banner.imageDesktop"
+                        [width]="getResolution(banner.resolutionDesktop).width"
+                        [height]="getResolution(banner.resolutionDesktop).height" [alt]="banner.title"
+                        [priority]="i === 0" class="banner-img" ngSkipSizeCheck>
+                    } @else if (banner.imageMobile) {
+
+                    <img [ngSrc]="backendUrl + '/' + banner.imageMobile"
+                        [width]="getResolution(banner.resolutionMobile, true).width"
+                        [height]="getResolution(banner.resolutionMobile, true).height" [alt]="banner.title"
+                        [priority]="i === 0" class="banner-img" ngSkipSizeCheck>
+                    }
+                </a>
+                } @else {
                 @if (banner.imageDesktop) {
                 <img [ngSrc]="backendUrl + '/' + banner.imageDesktop"
                     [width]="getResolution(banner.resolutionDesktop).width"
@@ -33,6 +65,7 @@
                     [width]="getResolution(banner.resolutionMobile, true).width"
                     [height]="getResolution(banner.resolutionMobile, true).height" [alt]="banner.title"
                     [priority]="i === 0" class="banner-img" ngSkipSizeCheck>
+                }
                 }
             </div>
             }
