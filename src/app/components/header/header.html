@@ -1,43 +1,100 @@
-<header class="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-sm border-b border-slate-200">
-    <div class="container mx-auto px-6">
-        <div class="flex items-center justify-between h-16">
-            <a routerLink="/" class="font-display text-2xl font-semibold">
-                <span class="text-rose-500">Bella</span>
-            </a>
-
-            <nav class="hidden md:flex items-center gap-8">
-                <a routerLink="/" routerLinkActive="text-rose-500" [routerLinkActiveOptions]="{exact: true}"
-                    class="text-slate-600 hover:text-rose-500 transition-colors text-sm font-medium">Início</a>
-                <a routerLink="/produtos" routerLinkActive="text-rose-500"
-                    class="text-slate-600 hover:text-rose-500 transition-colors text-sm font-medium">Produtos</a>
-                <a routerLink="/categorias" routerLinkActive="text-rose-500"
-                    class="text-slate-600 hover:text-rose-500 transition-colors text-sm font-medium">Categorias</a>
-                <a routerLink="/contato" routerLinkActive="text-rose-500"
-                    class="text-slate-600 hover:text-rose-500 transition-colors text-sm font-medium">Contato</a>
-            </nav>
-
-            <div class="flex items-center gap-2">
+<header class="fixed top-0 left-0 z-50 w-full transition-all duration-400 bg-white">
+    <div class="top-bar-wrapper" [class.scrolled]="isScrolled()">
+        <div class="bg-pink-700 text-white py-2">
+            <div class="container mx-auto px-4">
+                <div class="flex items-center justify-between text-xs font-light tracking-wide">
+                    <div class="hidden sm:flex items-center gap-4">
+                        <span
+                            class="flex items-center gap-1.5 opacity-90 transition-opacity hover:opacity-100 cursor-default">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-phone w-3 h-3">
+                                <path
+                                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                                </path>
+                            </svg>(11) 99999-9999
+                        </span>
+                        <span
+                            class="flex items-center gap-1.5 opacity-90 transition-opacity hover:opacity-100 cursor-default">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-mail w-3 h-3">
+                                <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                            </svg>contato@bella.com.br
+                        </span>
+                    </div>
+                    <div class="flex items-center gap-2 mx-auto sm:mx-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-sparkles w-3 h-3">
+                            <path
+                                d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z">
+                            </path>
+                            <path d="M20 3v4"></path>
+                            <path d="M22 5h-4"></path>
+                            <path d="M4 17v2"></path>
+                            <path d="M5 18H3"></path>
+                        </svg>
+                        <span class="font-medium">Realçando a beleza que existe em você</span>
+                    </div>
+                    <div class="hidden md:flex items-center gap-3">
+                        <a href="#" class="opacity-80 hover:opacity-100 transition-opacity">
+                            <lucide-icon [img]="Instagram" class="w-3.5 h-3.5"></lucide-icon>
+                        </a>
+                        <a href="#" class="opacity-80 hover:opacity-100 transition-opacity">
+                            <lucide-icon [img]="Facebook" class="w-3.5 h-3.5"></lucide-icon>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="header-main bg-background/95 backdrop-blur-sm border-b border-border shadow-sm">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-20 gap-6">
+                <a routerLink="/" class="flex items-center gap-3 shrink-0 group">
+                    <div
+                        class="w-12 h-12 rounded-full bg-pink-700 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300">
+                        <svg viewBox="0 0 24 24" class="w-7 h-7 text-white" fill="currentColor">
+                            <path
+                                d="M12 2C13.5 2 14.5 3 14.5 4.5C14.5 5.5 14 6.5 13 7.5C14.5 8 16 9.5 16 11.5C16 14 14 16 11.5 16C9 16 7 14 7 11.5C7 9.5 8.5 8 10 7.5C9 6.5 8.5 5.5 8.5 4.5C8.5 3 9.5 2 11 2H12ZM12 21C8 21 5 19 5 16.5C5 15 6 14 7.5 14C9.5 14 10.5 16 12 16C13.5 16 14.5 14 16.5 14C18 14 19 15 19 16.5C19 19 16 21 12 21Z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-display text-2xl font-bold text-pink-700 leading-tight">Bella</span>
+                        <span class="text-[10px] text-muted-foreground uppercase tracking-[0.2em] -mt-1">Beauty &amp;
+                            Care</span>
+                    </div>
+                </a>
+                <div class="hidden md:flex flex-1 max-w-2xl">
+                    <div class="relative w-full">
+                        <lucide-icon [img]="Search"
+                            class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground"></lucide-icon>
+                        <input type="search"
+                            class="flex px-3 py-2 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm w-full h-12 pl-16 pr-4 rounded-full bg-muted/30 border border-pink-300 focus:border-pink-500 focus:bg-background text-sm transition-all"
+                            placeholder="O que você está procurando hoje?">
+                        <button
+                            class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-pink-700 text-white hover:bg-pink-800 shadow-soft hover:shadow-hover absolute right-1.5 top-1/2 -translate-y-1/2 rounded-full px-6 h-9">
+                            Buscar
+                        </button>
+                    </div>
+                </div>
+                <nav class="hidden lg:flex items-center gap-1 shrink-0">
+                    <a routerLink="/" routerLinkActive="text-pink-700 bg-pink-50"
+                        [routerLinkActiveOptions]="{exact: true}"
+                        class="px-4 py-2 text-muted-foreground hover:text-pink-700 hover:bg-pink-50 rounded-full transition-all text-sm font-medium">Início</a>
+                    <a routerLink="/produtos" routerLinkActive="text-pink-700 bg-pink-50"
+                        class="px-4 py-2 text-muted-foreground hover:text-pink-700 hover:bg-pink-50 rounded-full transition-all text-sm font-medium">Produtos</a>
+                    <a routerLink="/categorias" routerLinkActive="text-pink-700 bg-pink-50"
+                        class="px-4 py-2 text-muted-foreground hover:text-pink-700 hover:bg-pink-50 rounded-full transition-all text-sm font-medium">Categorias</a>
+                    <a routerLink="/contato" routerLinkActive="text-pink-700 bg-pink-50"
+                        class="px-4 py-2 text-muted-foreground hover:text-pink-700 hover:bg-pink-50 rounded-full transition-all text-sm font-medium">Contato</a>
+                </nav>
                 <button
-                    class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-300 hover:bg-slate-100 h-10 w-10 text-slate-500 hover:text-slate-900">
-                    <lucide-icon [img]="Search" class="w-5 h-5"></lucide-icon>
-                </button>
-
-                <button
-                    class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-300 hover:bg-slate-100 h-10 w-10 relative text-slate-500 hover:text-slate-900">
-                    <lucide-icon [img]="ShoppingBag" class="w-5 h-5"></lucide-icon>
-                    <span
-                        class="absolute top-1 right-1 w-4 h-4 bg-primary text-white text-[10px] font-bold rounded-full flex items-center justify-center">0</span>
-                </button>
-
-                <button (click)="login()"
-                    class="justify-center whitespace-nowrap text-sm font-medium transition-all duration-300 hover:bg-slate-100 h-9 rounded-md px-4 hidden sm:flex items-center gap-2 text-slate-600 hover:text-slate-900">
-                    <lucide-icon [img]="User" class="w-4 h-4"></lucide-icon>
-                    Entrar
-                </button>
-
-                <button
-                    class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-300 hover:bg-slate-100 h-10 w-10 md:hidden text-slate-500">
-                    <lucide-icon [img]="Menu" class="w-5 h-5"></lucide-icon>
+                    class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 h-10 w-10 lg:hidden text-muted-foreground hover:text-pink-700 hover:bg-pink-50 rounded-full">
+                    <lucide-icon [img]="Menu" class="w-6 h-6"></lucide-icon>
                 </button>
             </div>
         </div>
