@@ -50,6 +50,7 @@
             </div>
         </div>
     </div>
+
     <div class="header-main bg-background/95 backdrop-blur-sm border-b border-border shadow-sm">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between h-20 gap-6">
@@ -65,6 +66,7 @@
                             Quarai</span>
                     </div>
                 </a>
+
                 <div class="hidden md:flex flex-1 max-w-2xl">
                     <div class="relative w-full">
                         <lucide-icon [img]="Search"
@@ -78,6 +80,7 @@
                         </button>
                     </div>
                 </div>
+
                 <nav class="hidden lg:flex items-center gap-1 shrink-0">
                     <a routerLink="/" routerLinkActive="text-pink-700 bg-pink-50"
                         [routerLinkActiveOptions]="{exact: true}"
@@ -89,10 +92,71 @@
                     <a routerLink="/contato" routerLinkActive="text-pink-700 bg-pink-50"
                         class="px-4 py-2 text-muted-foreground hover:text-pink-700 hover:bg-pink-50 rounded-full transition-all text-sm font-medium">Contato</a>
                 </nav>
-                <button
+
+                <button (click)="toggleMenu()"
                     class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 h-10 w-10 lg:hidden text-muted-foreground hover:text-pink-700 hover:bg-pink-50 rounded-full">
                     <lucide-icon [img]="Menu" class="w-6 h-6"></lucide-icon>
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="mobile-menu-overlay" [class.open]="isMenuOpen()" (click)="closeMenu()"></div>
+
+    <div class="mobile-menu-panel" [class.open]="isMenuOpen()">
+        <div class="flex flex-col h-full bg-white shadow-2xl">
+            <div class="flex items-center justify-between p-6 border-b border-pink-100">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 flex items-center justify-center">
+                        <img ngSrc="logoBazar.png" width="48" height="48" alt="Logo"
+                            class="rounded-full object-contain">
+                    </div>
+                    <span class="font-display font-bold text-pink-700 uppercase tracking-wider text-sm">Bazar
+                        Elegance</span>
+                </div>
+                <button (click)="closeMenu()" class="p-2 text-pink-700 hover:bg-pink-50 rounded-full transition-colors">
+                    <lucide-icon [img]="XIcon" class="w-6 h-6"></lucide-icon>
+                </button>
+            </div>
+
+            <nav class="flex-1 px-4 py-8 flex flex-col gap-2">
+                <a routerLink="/" routerLinkActive="text-pink-700 bg-pink-50" (click)="closeMenu()"
+                    [routerLinkActiveOptions]="{exact: true}"
+                    class="flex items-center gap-4 px-6 py-4 text-muted-foreground hover:text-pink-700 hover:bg-pink-50 rounded-2xl transition-all font-medium">
+                    <lucide-icon [img]="Home" class="w-5 h-5"></lucide-icon>
+                    Início
+                </a>
+                <a routerLink="/produtos" routerLinkActive="text-pink-700 bg-pink-50" (click)="closeMenu()"
+                    class="flex items-center gap-4 px-6 py-4 text-muted-foreground hover:text-pink-700 hover:bg-pink-50 rounded-2xl transition-all font-medium">
+                    <lucide-icon [img]="Package" class="w-5 h-5"></lucide-icon>
+                    Produtos
+                </a>
+                <a routerLink="/categorias" routerLinkActive="text-pink-700 bg-pink-50" (click)="closeMenu()"
+                    class="flex items-center gap-4 px-6 py-4 text-muted-foreground hover:text-pink-700 hover:bg-pink-50 rounded-2xl transition-all font-medium">
+                    <lucide-icon [img]="Layers" class="w-5 h-5"></lucide-icon>
+                    Categorias
+                </a>
+                <a routerLink="/contato" routerLinkActive="text-pink-700 bg-pink-50" (click)="closeMenu()"
+                    class="flex items-center gap-4 px-6 py-4 text-muted-foreground hover:text-pink-700 hover:bg-pink-50 rounded-2xl transition-all font-medium">
+                    <lucide-icon [img]="Phone" class="w-5 h-5"></lucide-icon>
+                    Contato
+                </a>
+            </nav>
+
+            <div class="p-8 border-t border-pink-100 mt-auto bg-pink-50/50">
+                <p class="text-[10px] text-pink-700/50 uppercase tracking-widest font-bold mb-4 text-center">Siga-nos
+                    nas redes
+                </p>
+                <div class="flex items-center justify-center gap-6">
+                    <a href="#"
+                        class="w-12 h-12 bg-white flex items-center justify-center rounded-2xl text-pink-700 shadow-sm hover:scale-110 active:scale-95 transition-all">
+                        <lucide-icon [img]="Instagram" class="w-6 h-6"></lucide-icon>
+                    </a>
+                    <a href="#"
+                        class="w-12 h-12 bg-white flex items-center justify-center rounded-2xl text-pink-700 shadow-sm hover:scale-110 active:scale-95 transition-all">
+                        <lucide-icon [img]="Facebook" class="w-6 h-6"></lucide-icon>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
