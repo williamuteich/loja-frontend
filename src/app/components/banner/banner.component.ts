@@ -4,11 +4,12 @@ import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { environment } from '../../../environments/environment';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { TrustInfoComponent } from '../trust-info/trust-info.component';
 
 @Component({
     selector: 'app-banner',
     standalone: true,
-    imports: [CommonModule, NgOptimizedImage, MatButtonModule, MatIconModule],
+    imports: [CommonModule, NgOptimizedImage, MatButtonModule, MatIconModule, TrustInfoComponent],
     templateUrl: './banner.component.html',
     styleUrl: './banner.component.css'
 })

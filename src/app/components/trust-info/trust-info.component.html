@@ -1,0 +1,99 @@
+<section class="border-y border-pink-100/50 bg-pink-50/30">
+    <div class="container mx-auto px-4 py-4 md:py-8 text-pink-900">
+        <div class="hidden md:grid grid-cols-4 gap-8">
+            @for (item of items; track item.title; let i = $index) {
+            <div class="flex flex-col items-center text-center animate-fade-in group"
+                [style.animation-delay]="(i * 0.1) + 's'">
+                <div
+                    class="w-14 h-14 rounded-2xl flex items-center justify-center mb-3 transition-all duration-300 group-hover:scale-110 group-hover:shadow-md bg-white shadow-sm text-pink-600">
+                    <ng-container [ngTemplateOutlet]="iconTemp"
+                        [ngTemplateOutletContext]="{ icon: item.icon, size: 'w-6 h-6' }"></ng-container>
+                </div>
+                <h3 class="font-bold text-[11px] uppercase tracking-wider mb-1">{{ item.title }}</h3>
+                <p class="text-[10px] text-pink-700/70 max-w-[160px] leading-tight">{{ item.description }}</p>
+            </div>
+            }
+        </div>
+
+        <div class="md:hidden relative overflow-hidden">
+            <div class="flex transition-transform duration-500 ease-out"
+                [style.transform]="'translateX(-' + (currentIndex() * 100) + '%)'">
+                <div class="w-full shrink-0 flex">
+                    @for (item of items.slice(0, 2); track item.title) {
+                    <div class="w-1/2 flex flex-col items-center text-center px-1">
+                        <div
+                            class="w-10 h-10 rounded-xl flex items-center justify-center mb-2 bg-white shadow-sm text-pink-600">
+                            <ng-container [ngTemplateOutlet]="iconTemp"
+                                [ngTemplateOutletContext]="{ icon: item.icon, size: 'w-4 h-4' }"></ng-container>
+                        </div>
+                        <h3 class="font-bold text-[10px] uppercase tracking-wider mb-1 px-1">{{ item.title }}</h3>
+                        <p class="text-[9px] text-pink-700/70 leading-tight px-1">{{ item.description }}</p>
+                    </div>
+                    }
+                </div>
+                <div class="w-full shrink-0 flex">
+                    @for (item of items.slice(2, 4); track item.title) {
+                    <div class="w-1/2 flex flex-col items-center text-center px-1">
+                        <div
+                            class="w-10 h-10 rounded-xl flex items-center justify-center mb-2 bg-white shadow-sm text-pink-600">
+                            <ng-container [ngTemplateOutlet]="iconTemp"
+                                [ngTemplateOutletContext]="{ icon: item.icon, size: 'w-4 h-4' }"></ng-container>
+                        </div>
+                        <h3 class="font-bold text-[10px] uppercase tracking-wider mb-1 px-1">{{ item.title }}</h3>
+                        <p class="text-[9px] text-pink-700/70 leading-tight px-1">{{ item.description }}</p>
+                    </div>
+                    }
+                </div>
+            </div>
+
+            <div class="flex justify-center gap-2 mt-4">
+                @for (dot of [0, 1]; track dot) {
+                <button (click)="setIndex(dot)" class="w-1.5 h-1.5 rounded-full transition-all duration-300"
+                    [class.bg-pink-600]="currentIndex() === dot" [class.bg-pink-200]="currentIndex() !== dot"
+                    [class.w-4]="currentIndex() === dot">
+                </button>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<ng-template #iconTemp let-icon="icon" let-size="size">
+    @switch (icon) {
+    @case ('truck') {
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" [class]="'lucide lucide-truck ' + size">
+        <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path>
+        <path d="M15 18H9"></path>
+        <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path>
+        <circle cx="17" cy="18" r="2"></circle>
+        <circle cx="7" cy="18" r="2"></circle>
+    </svg>
+    }
+    @case ('shield') {
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" [class]="'lucide lucide-shield ' + size">
+        <path
+            d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z">
+        </path>
+    </svg>
+    }
+    @case ('refresh') {
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" [class]="'lucide lucide-refresh-ccw ' + size">
+        <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+        <path d="M3 3v5h5"></path>
+        <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"></path>
+        <path d="M16 16h5v5"></path>
+    </svg>
+    }
+    @case ('headphones') {
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" [class]="'lucide lucide-headphones ' + size">
+        <path
+            d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3">
+        </path>
+    </svg>
+    }
+    }
+</ng-template>

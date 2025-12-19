@@ -21,7 +21,7 @@
 
         <div class="banner-container hidden min-[1200px]:block">
             @for (banner of banners(); track banner.id; let i = $index) {
-            <div class="slide h-[562.5px]" [class.active]="currentIndex() === i">
+            <div class="slide" [class.active]="currentIndex() === i">
                 @if (banner.imageDesktop) {
                 <img [ngSrc]="backendUrl + '/' + banner.imageDesktop"
                     [width]="getResolution(banner.resolutionDesktop).width"
@@ -38,5 +38,6 @@
             }
         </div>
     </div>
+    <app-trust-info />
 </div>
 }

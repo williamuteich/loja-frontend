@@ -12,13 +12,13 @@
 
 .banner-aspect {
     position: relative;
-    padding-bottom: 62.14%;
     width: 100%;
+    aspect-ratio: 16 / 9;
 }
 
 @media (min-width: 1200px) {
     .banner-aspect {
-        padding-bottom: 56.25%;
+        aspect-ratio: 1200 / 350;
     }
 }
 
@@ -47,5 +47,4 @@
 
 .slide.active {
     opacity: 1;
-    position: relative;
 }
