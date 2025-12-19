@@ -10,61 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
     standalone: true,
     imports: [CommonModule, NgOptimizedImage, MatButtonModule, MatIconModule],
     templateUrl: './banner.component.html',
-    styles: [`
-        :host {
-            display: block;
-            width: 100%;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .banner-wrapper {
-            position: relative;
-            width: 100%;
-        }
-
-        /* Mobile: ~700x435 → 62.14% */
-        .banner-aspect {
-            position: relative;
-            padding-bottom: 62.14%;
-            width: 100%;
-        }
-
-        /* Desktop: mais largo, ~56.25% (16:9 comum em banners) */
-        @media (min-width: 768px) {
-            .banner-aspect {
-                padding-bottom: 56.25%;
-            }
-        }
-
-        .banner-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        .banner-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-            display: block;
-        }
-
-        .slide {
-            position: absolute;
-            inset: 0;
-            opacity: 0;
-            transition: opacity 0.7s ease-in-out;
-        }
-
-        .slide.active {
-            opacity: 1;
-            position: relative;
-        }
-    `]
+    styleUrl: './banner.component.css'
 })
 export class BannerComponent implements OnInit, OnDestroy {
     private readonly bannerService = inject(BannerService);
