@@ -61,3 +61,22 @@ export interface Brand {
     products: number;
   }
 }
+
+export interface Client {
+  id: string;
+  name: string;
+  lastName: string;
+  email: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface TeamMember {
+  id: string;
+  name: string;
+  lastName: string;
+  email: string;
+  role: 'ADMIN' | 'COLLABORATOR' | 'CLIENT';
+  createdAt: string;
+  updatedAt: string;
+}

@@ -1,0 +1,21 @@
+<form [formGroup]="form" class="banner-form-container">
+  <div class="form-field">
+    <label for="title">Título</label>
+    <input id="title" type="text" formControlName="title" />
+  </div>
+
+  <div class="form-field">
+    <label for="subtitle">Subtítulo</label>
+    <input id="subtitle" type="text" formControlName="subtitle" />
+  </div>
+
+  <div class="form-field">
+    <label for="linkUrl">URL do Link</label>
+    <input id="linkUrl" type="text" formControlName="linkUrl" />
+  </div>
+
+  <div class="form-check">
+    <input id="isActive" type="checkbox" formControlName="isActive" />
+    <label for="isActive">Ativo</label>
+  </div>
+</form>

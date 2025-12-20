@@ -23,4 +23,12 @@ export class BrandService {
             }
         })
     }
+
+    update(id: string, data: Partial<Brand>) {
+        this.api.patch<Brand>(`brand/${id}`, data).subscribe((updatedBrand: Brand) => {
+            this._brands.update(brands =>
+                brands.map(b => b.id === id ? updatedBrand : b)
+            );
+        });
+    }
 }

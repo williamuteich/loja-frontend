@@ -1,0 +1,29 @@
+<div class="modal-overlay" (click)="close.emit()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <header class="modal-header">
+      <h2 class="modal-title">{{ title }}</h2>
+      <button class="modal-close-btn" (click)="close.emit()" aria-label="Fechar modal">
+        &times;
+      </button>
+    </header>
+
+    <main class="modal-body">
+      <ng-content></ng-content>
+    </main>
+
+    <footer class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="close.emit()">
+        {{ cancelText }}
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="save.emit()"
+        [disabled]="isLoading"
+      >
+        <span *ngIf="!isLoading">{{ saveText }}</span>
+        <span *ngIf="isLoading">Salvando...</span>
+      </button>
+    </footer>
+  </div>
+</div>

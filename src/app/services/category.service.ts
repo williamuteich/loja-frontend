@@ -23,4 +23,12 @@ export class CategoryService {
             }
         })
     }
+
+    update(id: string, data: Partial<Category>) {
+        this.api.patch<Category>(`category/${id}`, data).subscribe((updatedCategory: Category) => {
+            this._categories.update(categories =>
+                categories.map(c => c.id === id ? updatedCategory : c)
+            );
+        });
+    }
 }

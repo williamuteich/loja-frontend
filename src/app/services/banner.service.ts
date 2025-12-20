@@ -1,6 +1,7 @@
 import { Injectable, signal, inject } from "@angular/core";
 import { ApiService } from "./api.service";
 import { Banner } from "../models";
+import { Observable, tap } from "rxjs";
 
 @Injectable({ providedIn: 'root' })
 export class BannerService {
@@ -19,5 +20,15 @@ export class BannerService {
                 this._banners.set(banners);
                 this.loaded = true;
             });
+    }
+
+    update(id: string, data: Partial<Banner>): Observable<Banner> {
+        return this.api.patch<Banner>(`banner/${id}`, data).pipe(
+            tap((updatedBanner) => {
+                this._banners.update(banners =>
+                    banners.map(b => b.id === id ? updatedBanner : b)
+                );
+            })
+        );
     }
 }

@@ -34,7 +34,7 @@
                     }
 
                     <div class="flex items-center gap-1">
-                        <button
+                        <button (click)="openEditModal(banner)"
                             class="p-2 text-slate-500 hover:text-primary hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
                             <lucide-icon [img]="SquarePen" class="w-4 h-4"></lucide-icon>
                         </button>
@@ -49,3 +49,12 @@
         }
     </div>
 </div>
+
+@if (isModalVisible()) {
+@if(selectedBanner(); as banner) {
+<app-generic-modal title="Editar Banner" (close)="closeModal()" (save)="handleSave(bannerForm)"
+    [isLoading]="isLoading() || !bannerForm.isValid()">
+    <app-banner-form #bannerForm [itemToEdit]="banner"></app-banner-form>
+</app-generic-modal>
+}
+}

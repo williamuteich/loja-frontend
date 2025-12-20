@@ -10,18 +10,22 @@ export class ApiService {
   private readonly baseUrl = environment.BACKEND_URL;
 
   get<T>(path: string, options?: object): Observable<T> {
-    return this.http.get<T>(`${this.baseUrl}/${path}`, options);
+    return this.http.get<T>(`${this.baseUrl}/${path}`, { ...options, withCredentials: true });
   }
 
   post<T>(path: string, body: unknown, options?: object): Observable<T> {
-    return this.http.post<T>(`${this.baseUrl}/${path}`, body, options);
+    return this.http.post<T>(`${this.baseUrl}/${path}`, body, { ...options, withCredentials: true });
   }
 
   put<T>(path: string, body: unknown, options?: object): Observable<T> {
-    return this.http.put<T>(`${this.baseUrl}/${path}`, body, options);
+    return this.http.put<T>(`${this.baseUrl}/${path}`, body, { ...options, withCredentials: true });
+  }
+
+  patch<T>(path: string, body: unknown, options?: object): Observable<T> {
+    return this.http.patch<T>(`${this.baseUrl}/${path}`, body, { ...options, withCredentials: true });
   }
 
   delete<T>(path: string, options?: object): Observable<T> {
-    return this.http.delete<T>(`${this.baseUrl}/${path}`, options);
+    return this.http.delete<T>(`${this.baseUrl}/${path}`, { ...options, withCredentials: true });
   }
 }
