@@ -1,0 +1,316 @@
+<div class="mt-8 px-6 md:px-12 max-w-7xl mx-auto pb-20">
+    <div
+        class="bg-white rounded-3xl shadow-sm border border-slate-200 p-8 mb-8 transition-all hover:shadow-md relative overflow-hidden group">
+        <div
+            class="absolute top-0 right-0 w-64 h-64 bg-slate-50 rounded-full -mr-20 -mt-20 blur-3xl group-hover:bg-primary/5 transition-colors">
+        </div>
+
+        <div class="flex flex-col md:flex-row gap-8 items-center relative z-10">
+            <div class="relative">
+                <div
+                    class="w-32 h-32 md:w-40 md:h-40 rounded-2xl bg-slate-50 p-1 border border-slate-100 shadow-soft overflow-hidden group/img">
+                    <img [src]="product()?.images?.[0] ? backendUrl + '/' + product()?.images?.[0]?.url + '?v=' + imageVersion() : 'https://via.placeholder.com/150'"
+                        class="w-full h-full object-cover rounded-xl transition-transform duration-500 group-hover/img:scale-105"
+                        alt="Previsualização">
+                </div>
+                <div class="absolute -top-2 -right-2 w-8 h-8 flex items-center justify-center rounded-full border-4 border-white shadow-md transition-colors"
+                    [class.bg-emerald-500]="product()?.isActive" [class.bg-rose-500]="!product()?.isActive">
+                    <div class="w-2 h-2 rounded-full bg-white animate-pulse"></div>
+                </div>
+            </div>
+
+            <div class="flex-1 text-center md:text-left">
+                <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 mb-3">
+                    <span
+                        class="px-2.5 py-1 bg-slate-100 text-slate-500 text-[10px] uppercase font-bold tracking-widest rounded-lg border border-slate-200">
+                        PRODUTO #{{ product()?.id?.slice(0,8) }}
+                    </span>
+                    <span
+                        class="px-2.5 py-1 bg-primary/10 text-primary text-[10px] uppercase font-bold tracking-widest rounded-lg border border-primary/20">
+                        {{ product()?.brand?.name || 'Sem Marca' }}
+                    </span>
+                </div>
+
+                <h1 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tight leading-none mb-2">
+                    {{ product()?.title || 'Editando Produto' }}
+                </h1>
+
+                <p class="text-slate-400 text-sm font-medium max-w-lg">
+                    Ajuste as informações, gerencie o estoque das variantes e organize as mídias para exibição na loja.
+                </p>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <button (click)="cancel()"
+                    class="flex items-center justify-center gap-2 px-6 py-3 bg-slate-50 hover:bg-slate-100 text-slate-600 rounded-2xl transition-all border border-slate-200 font-bold text-sm">
+                    <lucide-icon [img]="X" class="w-4 h-4"></lucide-icon>
+                    Sair
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="save()">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 space-y-8">
+                <section class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 space-y-6">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+                            <lucide-icon [img]="Plus" class="w-4 h-4"></lucide-icon>
+                        </div>
+                        <h2 class="text-lg font-bold text-slate-900">Informações do Produto</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Título do Produto</label>
+                            <input type="text" formControlName="title"
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Descrição Detalhada</label>
+                            <textarea formControlName="description" rows="4"
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"></textarea>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-2">Preço de Venda</label>
+                                <div class="relative">
+                                    <span
+                                        class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-medium">R$</span>
+                                    <input type="number" formControlName="price" step="0.01"
+                                        class="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-2">Preço com
+                                    Desconto</label>
+                                <div class="relative">
+                                    <span
+                                        class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-medium">R$</span>
+                                    <input type="number" formControlName="discountPrice" step="0.01"
+                                        class="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 space-y-6">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center">
+                                <lucide-icon [img]="Plus" class="w-4 h-4"></lucide-icon>
+                            </div>
+                            <h2 class="text-lg font-bold text-slate-900">Cores e Variantes</h2>
+                        </div>
+                        <button type="button" (click)="addVariant()"
+                            class="flex items-center gap-2 text-primary hover:text-primary-dark font-bold text-sm bg-primary/5 px-4 py-2 rounded-xl transition-all">
+                            <lucide-icon [img]="Plus" class="w-4 h-4"></lucide-icon>
+                            Adicionar
+                        </button>
+                    </div>
+
+                    <div formArrayName="variants" class="space-y-4">
+                        @for (variant of variants.controls; track $index; let i = $index) {
+                        <div [formGroupName]="i"
+                            class="flex flex-wrap items-center gap-6 bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:border-slate-300 transition-all relative group">
+                            <div class="flex flex-col gap-2">
+                                <label
+                                    class="text-[10px] uppercase font-bold text-slate-400 tracking-widest">Tom</label>
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="relative w-12 h-12 rounded-2xl overflow-hidden border-2 border-white shadow-soft group-hover:scale-105 transition-transform">
+                                        <input type="color" formControlName="color"
+                                            class="absolute -inset-2 w-[150%] h-[150%] cursor-pointer border-none bg-transparent">
+                                    </div>
+                                    <span
+                                        class="text-xs font-mono font-bold text-slate-500 bg-white px-2 py-1 rounded-md border border-slate-100 italic">
+                                        {{ variant.get('color')?.value }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="flex-1 min-w-[200px]">
+                                <label
+                                    class="block text-[10px] uppercase font-bold text-slate-400 tracking-widest mb-2">Nome
+                                    da Cor</label>
+                                <input type="text" formControlName="name" placeholder="Ex: Branco Gelo"
+                                    class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20">
+                            </div>
+
+                            <div class="w-32">
+                                <label
+                                    class="block text-[10px] uppercase font-bold text-slate-400 tracking-widest mb-2">Estoque</label>
+                                <input type="number" formControlName="quantity" placeholder="0" min="0"
+                                    class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20">
+                            </div>
+
+                            <div class="pt-6">
+                                <button type="button" (click)="removeVariant(i)"
+                                    class="p-2.5 text-rose-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all">
+                                    <lucide-icon [img]="Trash2" class="w-5 h-5"></lucide-icon>
+                                </button>
+                            </div>
+                        </div>
+                        } @empty {
+                        <div
+                            class="text-center py-12 bg-slate-50 rounded-3xl border-2 border-dashed border-slate-200 text-slate-400">
+                            <p class="font-medium">Nenhuma variante. Clique em adicionar para começar.</p>
+                        </div>
+                        }
+                    </div>
+                </section>
+
+                <div class="flex items-center justify-end gap-4 pt-4">
+                    <button type="button" (click)="cancel()"
+                        class="px-8 py-3.5 text-slate-600 hover:bg-slate-100 rounded-2xl transition-all font-bold">
+                        Descartar
+                    </button>
+                    <button type="submit" [disabled]="form.invalid || isLoading()"
+                        class="px-10 py-3.5 bg-slate-900 text-white rounded-2xl hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/10 disabled:opacity-50 flex items-center gap-3 font-bold">
+                        <lucide-icon [img]="Save" class="w-5 h-5"></lucide-icon>
+                        {{ isLoading() ? 'Sincronizando...' : 'Salvar Alterações' }}
+                    </button>
+                </div>
+            </div>
+
+            <div class="space-y-8">
+                <section class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 space-y-6">
+                    <h3 class="text-lg font-bold text-slate-900">Classificação</h3>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-3">Marca</label>
+                        <select formControlName="brandId"
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 appearance-none">
+                            <option [value]="null">Selecione uma marca</option>
+                            @for (brand of brands(); track brand.id) {
+                            <option [value]="brand.id">{{ brand.name }}</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-3">Categorias</label>
+                        <div
+                            class="bg-slate-50 rounded-2xl border border-slate-200 p-4 max-h-[300px] overflow-y-auto custom-scrollbar">
+                            <div class="space-y-3">
+                                @for (category of categories(); track category.id) {
+                                <div class="flex items-center gap-3 group cursor-pointer"
+                                    (click)="onCategoryChange(category.id, $any({target: {checked: !isCategorySelected(category.id)}}))">
+                                    <div class="w-5 h-5 rounded-lg border-2 flex items-center justify-center transition-all bg-white"
+                                        [class.bg-slate-900]="isCategorySelected(category.id)"
+                                        [class.border-slate-900]="isCategorySelected(category.id)"
+                                        [class.border-slate-200]="!isCategorySelected(category.id)">
+                                        @if (isCategorySelected(category.id)) {
+                                        <lucide-icon [img]="Check" class="w-3.5 h-3.5 text-white"></lucide-icon>
+                                        }
+                                    </div>
+                                    <span class="text-sm font-bold transition-colors"
+                                        [class.text-slate-900]="isCategorySelected(category.id)"
+                                        [class.text-slate-400]="!isCategorySelected(category.id)">
+                                        {{ category.name }}
+                                    </span>
+                                </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 space-y-6">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-bold text-slate-900">Mídias</h3>
+                        <span class="text-xs font-bold text-slate-400">{{ keptImageUrls().length + selectedFiles.length
+                            }} total</span>
+                    </div>
+
+                    @if (keptImageUrls().length > 0) {
+                    <div class="grid grid-cols-2 gap-3">
+                        @for (url of keptImageUrls(); track $index) {
+                        <div
+                            class="relative aspect-square rounded-2xl overflow-hidden group border border-slate-100 shadow-sm leading-none bg-slate-50">
+                            <img [src]="backendUrl + '/' + url + '?v=' + imageVersion()"
+                                class="w-full h-full object-cover" alt="Imagem do produto">
+                            <div
+                                class="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+                                <button type="button" (click)="removeExistingImage(url)"
+                                    class="p-2.5 bg-rose-500 text-white rounded-xl shadow-lg hover:scale-110 active:scale-95 transition-all">
+                                    <lucide-icon [img]="Trash2" class="w-4 h-4"></lucide-icon>
+                                </button>
+                            </div>
+                        </div>
+                        }
+                    </div>
+                    }
+
+                    <div class="relative group">
+                        <input type="file" multiple (change)="onFileSelected($event)"
+                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" accept="image/*">
+                        <div
+                            class="py-10 border-2 border-dashed border-slate-200 rounded-3xl flex flex-col items-center justify-center bg-slate-50 transition-all group-hover:border-slate-900 group-hover:bg-slate-100 leading-tight">
+                            <div
+                                class="w-12 h-12 rounded-2xl bg-white shadow-soft flex items-center justify-center text-slate-400 mb-3 group-hover:text-slate-900 transition-colors">
+                                <lucide-icon [img]="Plus" class="w-6 h-6"></lucide-icon>
+                            </div>
+                            <p class="text-sm font-bold text-slate-700">Adicionar Mídias</p>
+                            <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold mt-1">Multiplos
+                                arquivos</p>
+                        </div>
+                    </div>
+
+                    @if (selectedFiles.length > 0) {
+                    <div class="space-y-2">
+                        @for (file of selectedFiles; track $index) {
+                        <div class="flex items-center gap-3 p-3 bg-primary/5 rounded-2xl border border-primary/10">
+                            <div
+                                class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                                <lucide-icon [img]="Plus" class="w-4 h-4"></lucide-icon>
+                            </div>
+                            <div class="flex-1 overflow-hidden">
+                                <p class="text-xs font-bold text-slate-700 truncate">{{ file.name }}</p>
+                                <p class="text-[10px] font-bold text-primary uppercase">{{ (file.size / 1024).toFixed(0)
+                                    }} KB</p>
+                            </div>
+                        </div>
+                        }
+                    </div>
+                    }
+                </section>
+
+                <section class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 space-y-6">
+                    <h3 class="text-lg font-bold text-slate-900">Visibilidade</h3>
+
+                    <div class="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700">Online na Loja</span>
+                            <span
+                                class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Disponibilidade</span>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" formControlName="isActive" class="sr-only peer">
+                            <div
+                                class="w-14 h-7 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-6 after:transition-all peer-checked:bg-emerald-500 shadow-inner">
+                            </div>
+                        </label>
+                    </div>
+
+                    <div>
+                        <label
+                            class="block text-[10px] uppercase font-bold text-slate-400 tracking-widest mb-3">Especificações
+                            Técnicas</label>
+                        <textarea formControlName="specs" rows="3"
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm"
+                            placeholder="Ex: Voltagem: 110V, Potência: 1500W"></textarea>
+                        <p class="mt-2 text-[10px] text-slate-400 font-medium leading-relaxed italic">Dica: Use o
+                            formato Chave: Valor, separado por vírgulas.</p>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </form>
+</div>

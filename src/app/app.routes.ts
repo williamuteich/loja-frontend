@@ -13,6 +13,7 @@ import { SocialsComponent } from './pages/private/admin/socials/socials.componen
 import { NewsletterComponent } from './pages/private/admin/newsletter/newsletter.component';
 import { BannersComponent } from './pages/private/admin/banners/banners.component';
 import { MainLayoutComponent } from './pages/public/layout/main-layout.component';
+import { ProductEditComponent } from './pages/private/admin/product-edit/product-edit.component';
 
 export const routes: Routes = [
   {
@@ -34,6 +35,7 @@ export const routes: Routes = [
       { path: 'clients', component: ClientsComponent },
       { path: 'team', component: TeamComponent },
       { path: 'products', component: ProductsComponent },
+      { path: 'products/edit/:id', component: ProductEditComponent },
       { path: 'socials', component: SocialsComponent },
       { path: 'newsletter', component: NewsletterComponent },
       { path: 'banners', component: BannersComponent }

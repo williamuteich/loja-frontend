@@ -4,8 +4,8 @@ import { LucideAngularModule, Plus, SquarePen, Trash2, Filter, Eye } from 'lucid
 import { AdminSearchComponent } from '../../../../components/admin-search/admin-search.component';
 import { ProductService } from '../../../../services/product.service';
 import { environment } from '../../../../../environments/environment';
-
 import { NgOptimizedImage } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-products',
@@ -16,6 +16,7 @@ import { NgOptimizedImage } from '@angular/common';
 })
 export class ProductsComponent implements OnInit {
   private readonly productService = inject(ProductService);
+  private readonly router = inject(Router);
 
   readonly backendUrl = environment.BACKEND_URL;
   readonly products = this.productService.products;
@@ -28,5 +29,9 @@ export class ProductsComponent implements OnInit {
 
   ngOnInit() {
     this.productService.loadProducts();
+  }
+
+  openEditPage(productId: string) {
+    this.router.navigate(['/dashboard/products/edit', productId]);
   }
 }

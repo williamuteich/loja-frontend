@@ -1,13 +1,13 @@
-<div class="modal-overlay" (click)="close.emit()">
-  <div class="modal-container" (click)="$event.stopPropagation()">
-    <header class="modal-header">
-      <h2 class="modal-title">{{ title }}</h2>
-      <button class="modal-close-btn" (click)="close.emit()" aria-label="Fechar modal">
+<div class="fixed inset-0 bg-slate-900/50 flex items-center justify-center p-4 z-50" (click)="close.emit()">
+  <div class="bg-white rounded-xl shadow-xl w-full max-w-2xl" (click)="$event.stopPropagation()">
+    <header class="px-6 py-4 border-b border-slate-200 flex justify-between items-center">
+      <h2 class="text-xl font-semibold text-slate-900">{{ title }}</h2>
+      <button class="text-slate-500 hover:text-slate-700" (click)="close.emit()" aria-label="Fechar modal">
         &times;
       </button>
     </header>
 
-    <main class="modal-body">
+    <main class="px-6 py-4 max-h-[600px] overflow-y-auto">
       <ng-content></ng-content>
     </main>
 
@@ -15,12 +15,7 @@
       <button type="button" class="btn btn-secondary" (click)="close.emit()">
         {{ cancelText }}
       </button>
-      <button
-        type="button"
-        class="btn btn-primary"
-        (click)="save.emit()"
-        [disabled]="isLoading"
-      >
+      <button type="button" class="btn btn-primary" (click)="save.emit()" [disabled]="isLoading">
         <span *ngIf="!isLoading">{{ saveText }}</span>
         <span *ngIf="isLoading">Salvando...</span>
       </button>
