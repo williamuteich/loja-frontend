@@ -32,7 +32,7 @@
                         <span class="text-sm">{{ category._count.products }} produtos</span>
                     </div>
                     <div class="flex items-center gap-1">
-                        <button
+                        <button (click)="openEditModal(category)"
                             class="p-2 text-slate-500 hover:text-primary hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
                             <lucide-icon [img]="SquarePen" class="w-4 h-4"></lucide-icon>
                         </button>
@@ -47,3 +47,12 @@
         }
     </div>
 </div>
+
+@if (isModalVisible()) {
+@if(selectedCategory(); as category) {
+<app-generic-modal title="Editar Categoria" (close)="closeModal()" (save)="handleSave(categoryForm)"
+    [isLoading]="isLoading() || !categoryForm.isValid()">
+    <app-category-form #categoryForm [itemToEdit]="category"></app-category-form>
+</app-generic-modal>
+}
+}

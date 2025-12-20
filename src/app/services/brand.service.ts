@@ -1,6 +1,7 @@
 import { inject, Injectable, signal } from "@angular/core";
 import { ApiService } from "./api.service";
 import { Brand } from "../models";
+import { Observable, tap } from "rxjs";
 
 @Injectable({
     providedIn: 'root'
@@ -24,11 +25,13 @@ export class BrandService {
         })
     }
 
-    update(id: string, data: Partial<Brand>) {
-        this.api.patch<Brand>(`brand/${id}`, data).subscribe((updatedBrand: Brand) => {
-            this._brands.update(brands =>
-                brands.map(b => b.id === id ? updatedBrand : b)
-            );
-        });
+    update(id: string, data: Partial<Brand>): Observable<Brand> {
+        return this.api.patch<Brand>(`brand/${id}`, data).pipe(
+            tap((updatedBrand) => {
+                this._brands.update(brands =>
+                    brands.map(b => b.id === id ? { ...updatedBrand, _count: b._count } : b)
+                );
+            })
+        );
     }
 }

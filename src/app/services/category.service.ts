@@ -1,6 +1,7 @@
 import { inject, Injectable, signal } from "@angular/core";
 import { ApiService } from "./api.service";
 import { Category } from "../models";
+import { Observable, tap } from "rxjs";
 
 @Injectable({
     providedIn: 'root'
@@ -24,11 +25,13 @@ export class CategoryService {
         })
     }
 
-    update(id: string, data: Partial<Category>) {
-        this.api.patch<Category>(`category/${id}`, data).subscribe((updatedCategory: Category) => {
-            this._categories.update(categories =>
-                categories.map(c => c.id === id ? updatedCategory : c)
-            );
-        });
+    update(id: string, data: Partial<Category>): Observable<Category> {
+        return this.api.patch<Category>(`category/${id}`, data).pipe(
+            tap((updatedCategory) => {
+                this._categories.update(categories =>
+                    categories.map(c => c.id === id ? { ...updatedCategory, _count: c._count } : c)
+                );
+            })
+        );
     }
 }

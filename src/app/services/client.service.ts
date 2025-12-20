@@ -1,7 +1,7 @@
-import { inject, Injectable, signal } from "@angular/core";
-import { ApiService } from "./api.service";
-import { Client } from "../models";
-import { Observable, tap } from "rxjs";
+import { Injectable, signal, inject } from '@angular/core';
+import { ApiService } from './api.service';
+import { Client } from '../models';
+import { Observable, tap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ClientService {
@@ -12,14 +12,15 @@ export class ClientService {
 
     private loaded = false;
 
-    loadClients(): void {
+    public loadClients() {
         if (this.loaded) return;
 
-        this.api.get<Client[]>('client')
-            .subscribe(clients => {
+        this.api.get<Client[]>('client').subscribe({
+            next: (clients) => {
                 this._clients.set(clients);
                 this.loaded = true;
-            });
+            }
+        });
     }
 
     update(id: string, data: Partial<Client>): Observable<Client> {

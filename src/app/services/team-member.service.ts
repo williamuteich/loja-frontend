@@ -1,7 +1,7 @@
-import { inject, Injectable, signal } from "@angular/core";
-import { ApiService } from "./api.service";
-import { TeamMember } from "../models";
-import { Observable, tap } from "rxjs";
+import { Injectable, signal, inject } from '@angular/core';
+import { ApiService } from './api.service';
+import { TeamMember } from '../models';
+import { Observable, tap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class TeamMemberService {
@@ -12,14 +12,15 @@ export class TeamMemberService {
 
     private loaded = false;
 
-    loadTeamMembers(): void {
+    public loadTeamMembers() {
         if (this.loaded) return;
 
-        this.api.get<TeamMember[]>('team-members')
-            .subscribe(teamMembers => {
+        this.api.get<TeamMember[]>('team-members').subscribe({
+            next: (teamMembers) => {
                 this._teamMembers.set(teamMembers);
                 this.loaded = true;
-            });
+            }
+        });
     }
 
     update(id: string, data: Partial<TeamMember>): Observable<TeamMember> {
