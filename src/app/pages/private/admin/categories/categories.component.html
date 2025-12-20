@@ -9,15 +9,15 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        @for (category of categories; track category.id) {
+        @for (category of categories(); track category.id) {
         <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden group">
             <div class="relative h-32">
-                <img [src]="category.image" [alt]="category.name" class="w-full h-full object-cover">
-                <div class="absolute inset-0 bg-linear-to-t from-black/60 to-transparent"></div>
+                <img [src]="backendUrl + '/' + category.imageUrl" [alt]="category.name"
+                    class="w-full h-full object-cover">
                 <div class="absolute bottom-4 left-4">
                     <h3 class="text-white font-semibold text-lg">{{ category.name }}</h3>
                 </div>
-                @if (category.status === 'active') {
+                @if (category.isActive) {
                 <span
                     class="absolute top-3 right-3 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">Ativo</span>
                 } @else {
@@ -29,7 +29,7 @@
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2 text-slate-500">
                         <lucide-icon [img]="FolderTree" class="w-4 h-4"></lucide-icon>
-                        <span class="text-sm">{{ category.count }} produtos</span>
+                        <span class="text-sm">{{ category._count.products }} produtos</span>
                     </div>
                     <div class="flex items-center gap-1">
                         <button

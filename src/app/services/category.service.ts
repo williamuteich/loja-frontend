@@ -13,12 +13,12 @@ export class CategoryService {
 
     private loaded = false;
 
-    public getCategories() {
+    public loadCategories() {
         if (this.loaded) return;
 
-        this.api.get<Category[]>('/categories').subscribe({
-            next: (categories) => {
-                this._categories.set(categories);
+        this.api.get<Category[]>('category').subscribe({
+            next: (category) => {
+                this._categories.set(category);
                 this.loaded = true;
             }
         })

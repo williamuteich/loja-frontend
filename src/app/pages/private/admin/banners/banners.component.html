@@ -25,15 +25,24 @@
                     }
                 </div>
 
-                <div class="flex items-center gap-1">
-                    <button
-                        class="p-2 text-slate-500 hover:text-primary hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
-                        <lucide-icon [img]="SquarePen" class="w-4 h-4"></lucide-icon>
-                    </button>
-                    <button
-                        class="p-2 text-slate-500 hover:text-rose-500 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
-                        <lucide-icon [img]="Trash2" class="w-4 h-4"></lucide-icon>
-                    </button>
+                <div class="flex items-center gap-3">
+                    @if (banner.isActive) {
+                    <span
+                        class="px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">Ativo</span>
+                    } @else {
+                    <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-rose-100 text-rose-700">Inativo</span>
+                    }
+
+                    <div class="flex items-center gap-1">
+                        <button
+                            class="p-2 text-slate-500 hover:text-primary hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
+                            <lucide-icon [img]="SquarePen" class="w-4 h-4"></lucide-icon>
+                        </button>
+                        <button
+                            class="p-2 text-slate-500 hover:text-rose-500 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
+                            <lucide-icon [img]="Trash2" class="w-4 h-4"></lucide-icon>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

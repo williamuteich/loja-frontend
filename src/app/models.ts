@@ -5,6 +5,7 @@ export interface Product {
   price: number;
   discountPrice: number;
   specs: { [key: string]: any };
+  isActive: boolean;
   createdAt: string;
   brandId: string;
   variants: any[];
@@ -32,6 +33,7 @@ export interface Banner {
   imageMobile: string | null;
   resolutionDesktop: string | null;
   resolutionMobile: string | null;
+  isActive: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -41,6 +43,18 @@ export interface Category {
   name: string;
   description: string;
   imageUrl: string;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+  _count: {
+    products: number;
+  }
+}
+
+export interface Brand {
+  id: string;
+  name: string;
+  isActive: boolean;
   createdAt: string;
   updatedAt: string;
   _count: {
