@@ -1,7 +1,7 @@
 import { Component, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule, Plus, SquarePen, Trash2, Filter, Eye } from 'lucide-angular';
-import { AdminSearchComponent } from '../../../../components/admin-search/admin-search.component';
+import { AdminSearchComponent } from '../../../../components/dashboard/admin-search/admin-search.component';
 import { ProductService } from '../../../../services/product.service';
 import { environment } from '../../../../../environments/environment';
 import { NgOptimizedImage } from '@angular/common';

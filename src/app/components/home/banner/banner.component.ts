@@ -1,10 +1,11 @@
 import { Component, inject, OnInit, signal, OnDestroy } from '@angular/core';
-import { BannerService } from '../../services/banner.service';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { environment } from '../../../environments/environment';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { TrustInfoComponent } from '../trust-info/trust-info.component';
+import { BannerService } from '../../../services/banner.service';
+import { environment } from '../../../../environments/environment';
+
 
 @Component({
     selector: 'app-banner',

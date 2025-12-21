@@ -1,9 +1,9 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule, Plus, User, SquarePen, Trash2 } from 'lucide-angular';
-import { AdminSearchComponent } from '../../../../components/admin-search/admin-search.component';
+import { AdminSearchComponent } from '../../../../components/dashboard/admin-search/admin-search.component';
 import { ClientService } from '../../../../services/client.service';
-import { GenericModal } from '../../../../components/generic-modal/generic-modal';
+import { GenericModal } from '../../../../components/dashboard/generic-modal/generic-modal';
 import { Client } from '../../../../models';
 import { DateFormatPipe } from '../../../../pipes/date-format.pipe';
 import { ClientForm } from '../../../../components/dashboard/modals/client-form/client-form';

@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { BannerComponent } from '../../../components/banner/banner.component';
+import { BannerComponent } from '../../../components/home/banner/banner.component';
 
 @Component({
     selector: 'app-home',

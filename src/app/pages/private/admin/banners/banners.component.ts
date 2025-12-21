@@ -5,10 +5,11 @@ import { BannerService } from '../../../../services/banner.service';
 import { Banner } from '../../../../models';
 import { environment } from '../../../../../environments/environment';
 import { signal } from '@angular/core';
-
-import { AdminSearchComponent } from '../../../../components/admin-search/admin-search.component';
-import { GenericModal } from '../../../../components/generic-modal/generic-modal';
+import { AdminSearchComponent } from '../../../../components/dashboard/admin-search/admin-search.component';
+import { GenericModal } from '../../../../components/dashboard/generic-modal/generic-modal';
 import { BannerForm } from '../../../../components/dashboard/modals/banner-form/banner-form';
+import { SkeletonBannerComponent } from '../../../../components/dashboard/skeleton/banner/skeletonBanner.component';
+import { EmptyStateComponent } from '../../../../components/dashboard/empty-state/empty-state.component';
 
 @Component({
   selector: 'app-banners',
@@ -20,6 +21,8 @@ import { BannerForm } from '../../../../components/dashboard/modals/banner-form/
     NgOptimizedImage,
     GenericModal,
     BannerForm,
+    SkeletonBannerComponent,
+    EmptyStateComponent
   ],
   templateUrl: './banners.component.html',
 })
@@ -34,7 +37,9 @@ export class BannersComponent implements OnInit {
 
   isModalVisible = signal(false);
   selectedBanner = signal<Banner | undefined>(undefined);
-  isLoading = signal(false);
+  isSaving = signal(false);
+  isLoading = this.bannerService.isLoading;
+  error = this.bannerService.error;
 
   ngOnInit(): void {
     this.bannerService.loadBanners();
@@ -62,7 +67,7 @@ export class BannersComponent implements OnInit {
       return;
     }
 
-    this.isLoading.set(true);
+    this.isSaving.set(true);
 
     const formValue = bannerForm.getFormValue();
 
@@ -70,11 +75,11 @@ export class BannersComponent implements OnInit {
       next: () => {
         this.bannerService.loadBanners();
         this.closeModal();
-        this.isLoading.set(false);
+        this.isSaving.set(false);
       },
       error: (err) => {
         console.error('Erro ao atualizar banner:', err);
-        this.isLoading.set(false);
+        this.isSaving.set(false);
       }
     });
   }

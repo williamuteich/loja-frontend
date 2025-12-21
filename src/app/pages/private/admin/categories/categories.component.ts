@@ -1,10 +1,10 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule, Plus, FolderTree, SquarePen, Trash2 } from 'lucide-angular';
-import { AdminSearchComponent } from '../../../../components/admin-search/admin-search.component';
+import { AdminSearchComponent } from '../../../../components/dashboard/admin-search/admin-search.component';
 import { CategoryService } from '../../../../services/category.service';
 import { environment } from '../../../../../environments/environment';
-import { GenericModal } from '../../../../components/generic-modal/generic-modal';
+import { GenericModal } from '../../../../components/dashboard/generic-modal/generic-modal';
 import { Category } from '../../../../models';
 import { CategoryForm } from '../../../../components/dashboard/modals/category-form/category-form';
 

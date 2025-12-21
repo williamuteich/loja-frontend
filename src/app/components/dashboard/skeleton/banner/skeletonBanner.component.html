@@ -1,0 +1,22 @@
+<div class="space-y-4">
+    @for (_ of [1,2,3]; track $index) {
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="flex items-center gap-4 p-4">
+            <div class="w-32 h-20 skeleton rounded-lg"></div>
+            <div class="flex-1 space-y-2">
+                <div class="h-4 skeleton rounded w-3/4"></div>
+                <div class="h-3 skeleton rounded w-1/2"></div>
+                <div class="h-3 skeleton rounded w-2/3"></div>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <div class="w-16 h-6 skeleton rounded-full"></div>
+                <div class="flex items-center gap-1">
+                    <div class="w-8 h-8 skeleton rounded-lg"></div>
+                    <div class="w-8 h-8 skeleton rounded-lg"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+</div>

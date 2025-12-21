@@ -9,6 +9,15 @@
     </div>
 
     <div class="space-y-4">
+        @if (isLoading()) {
+        <app-skeleton-banner></app-skeleton-banner>
+        } @else if (error()) {
+        <app-empty-state title="Erro ao carregar banners"
+            [description]="error() || 'Ocorreu um erro inesperado.'"></app-empty-state>
+        } @else if (banners().length === 0) {
+        <app-empty-state title="Nenhum banner encontrado"
+            description="Comece criando um novo banner para sua loja."></app-empty-state>
+        } @else {
         @for (banner of banners(); track banner.id; let i = $index) {
         <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
             <div class="flex items-center gap-4 p-4">
@@ -47,13 +56,14 @@
             </div>
         </div>
         }
+        }
     </div>
 </div>
 
 @if (isModalVisible()) {
 @if(selectedBanner(); as banner) {
 <app-generic-modal title="Editar Banner" (close)="closeModal()" (save)="handleSave(bannerForm)"
-    [isLoading]="isLoading() || !bannerForm.isValid()">
+    [isLoading]="isSaving() || !bannerForm.isValid()">
     <app-banner-form #bannerForm [itemToEdit]="banner"></app-banner-form>
 </app-generic-modal>
 }

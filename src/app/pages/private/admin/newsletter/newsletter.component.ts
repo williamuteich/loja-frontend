@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule, Download, Users, TrendingUp, Mail, Trash2 } from 'lucide-angular';
-import { AdminSearchComponent } from '../../../../components/admin-search/admin-search.component';
+import { AdminSearchComponent } from '../../../../components/dashboard/admin-search/admin-search.component';
 
 @Component({
   selector: 'app-newsletter',
