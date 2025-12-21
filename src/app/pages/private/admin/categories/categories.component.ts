@@ -5,8 +5,8 @@ import { AdminSearchComponent } from '../../../../components/admin-search/admin-
 import { CategoryService } from '../../../../services/category.service';
 import { environment } from '../../../../../environments/environment';
 import { GenericModal } from '../../../../components/generic-modal/generic-modal';
-import { CategoryForm } from '../../../../components/modals/category-form/category-form';
 import { Category } from '../../../../models';
+import { CategoryForm } from '../../../../components/dashboard/modals/category-form/category-form';
 
 @Component({
   selector: 'app-categories',

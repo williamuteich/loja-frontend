@@ -8,7 +8,7 @@ import { signal } from '@angular/core';
 
 import { AdminSearchComponent } from '../../../../components/admin-search/admin-search.component';
 import { GenericModal } from '../../../../components/generic-modal/generic-modal';
-import { BannerForm } from '../../../../components/modals/banner-form/banner-form';
+import { BannerForm } from '../../../../components/dashboard/modals/banner-form/banner-form';
 
 @Component({
   selector: 'app-banners',

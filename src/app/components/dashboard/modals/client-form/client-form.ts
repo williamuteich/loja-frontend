@@ -7,16 +7,16 @@ import {
     Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Category } from '../../../models';
+import { Client } from '../../../../models';
 
 @Component({
-    selector: 'app-category-form',
+    selector: 'app-client-form',
     standalone: true,
     imports: [CommonModule, ReactiveFormsModule],
-    templateUrl: './category-form.html',
+    templateUrl: './client-form.html',
 })
-export class CategoryForm {
-    itemToEdit = input.required<Category>();
+export class ClientForm {
+    itemToEdit = input.required<Client>();
 
     form: FormGroup;
 
@@ -24,9 +24,9 @@ export class CategoryForm {
 
     constructor(private fb: FormBuilder) {
         this.form = this.fb.group({
-            name: ['', [Validators.required, Validators.minLength(3)]],
-            description: ['', [Validators.required]],
-            isActive: [true],
+            name: ['', [Validators.required]],
+            lastName: ['', [Validators.required]],
+            email: ['', [Validators.required, Validators.email]],
         });
 
         this.form.statusChanges.subscribe(() => {
@@ -46,12 +46,12 @@ export class CategoryForm {
         return this.form.get('name') as FormControl;
     }
 
-    get description(): FormControl {
-        return this.form.get('description') as FormControl;
+    get lastName(): FormControl {
+        return this.form.get('lastName') as FormControl;
     }
 
-    get isActive(): FormControl {
-        return this.form.get('isActive') as FormControl;
+    get email(): FormControl {
+        return this.form.get('email') as FormControl;
     }
 
     getFormValue() {

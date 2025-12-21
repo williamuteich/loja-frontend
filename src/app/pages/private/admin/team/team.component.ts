@@ -6,7 +6,7 @@ import { TeamMemberService } from '../../../../services/team-member.service';
 import { GenericModal } from '../../../../components/generic-modal/generic-modal';
 import { TeamMember } from '../../../../models';
 import { DateFormatPipe } from '../../../../pipes/date-format.pipe';
-import { TeamMemberForm } from '../../../../components/modals/team-member-form/team-member-form';
+import { TeamMemberForm } from '../../../../components/dashboard/modals/team-member-form/team-member-form';
 
 @Component({
   selector: 'app-team',

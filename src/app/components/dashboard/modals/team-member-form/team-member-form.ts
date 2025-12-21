@@ -7,16 +7,16 @@ import {
     Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Brand } from '../../../models';
+import { TeamMember } from '../../../../models';
 
 @Component({
-    selector: 'app-brand-form',
+    selector: 'app-team-member-form',
     standalone: true,
     imports: [CommonModule, ReactiveFormsModule],
-    templateUrl: './brand-form.html',
+    templateUrl: './team-member-form.html',
 })
-export class BrandForm {
-    itemToEdit = input.required<Brand>();
+export class TeamMemberForm {
+    itemToEdit = input.required<TeamMember>();
 
     form: FormGroup;
 
@@ -24,8 +24,10 @@ export class BrandForm {
 
     constructor(private fb: FormBuilder) {
         this.form = this.fb.group({
-            name: ['', [Validators.required, Validators.minLength(3)]],
-            isActive: [true],
+            name: ['', [Validators.required]],
+            lastName: ['', [Validators.required]],
+            email: ['', [Validators.required, Validators.email]],
+            role: ['COLLABORATOR', [Validators.required]],
         });
 
         this.form.statusChanges.subscribe(() => {
@@ -45,8 +47,16 @@ export class BrandForm {
         return this.form.get('name') as FormControl;
     }
 
-    get isActive(): FormControl {
-        return this.form.get('isActive') as FormControl;
+    get lastName(): FormControl {
+        return this.form.get('lastName') as FormControl;
+    }
+
+    get email(): FormControl {
+        return this.form.get('email') as FormControl;
+    }
+
+    get role(): FormControl {
+        return this.form.get('role') as FormControl;
     }
 
     getFormValue() {
