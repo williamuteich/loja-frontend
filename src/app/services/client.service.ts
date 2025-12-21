@@ -9,16 +9,27 @@ export class ClientService {
 
     private readonly _clients = signal<Client[]>([]);
     readonly clients = this._clients.asReadonly();
+    readonly isLoading = signal(false);
+    readonly error = signal<string | null>(null);
 
     private loaded = false;
 
     public loadClients() {
         if (this.loaded) return;
 
+        this.isLoading.set(true);
+        this.error.set(null);
+
         this.api.get<Client[]>('client').subscribe({
             next: (clients) => {
                 this._clients.set(clients);
                 this.loaded = true;
+                this.isLoading.set(false);
+            },
+            error: (err) => {
+                console.error('Erro ao carregar clientes', err);
+                this.error.set('Não foi possível carregar a lista de clientes.');
+                this.isLoading.set(false);
             }
         });
     }

@@ -8,59 +8,72 @@
         </button>
     </div>
 
-    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="w-full">
-                <thead class="bg-gray-900">
-                    <tr class="text-left text-sm text-gray-900">
-                        <th class="px-6 py-4 font-medium text-white">Cliente</th>
-                        <th class="px-6 py-4 font-medium text-white">Email</th>
-                        <th class="px-6 py-4 font-medium text-white">Data de Cadastro</th>
-                        <th class="px-6 py-4 font-medium text-right text-white">Ações</th>
-                    </tr>
-                </thead>
-                <tbody class="text-sm">
-                    @for (client of clients(); track client.id) {
-                    <tr class="border-t border-slate-100 hover:bg-slate-50 transition-colors">
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <div
-                                    class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500">
-                                    <lucide-icon [img]="User" class="w-5 h-5"></lucide-icon>
+    <div class="space-y-4">
+        @if (isLoading()) {
+        <app-skeleton-table [rows]="5" [columns]="4"></app-skeleton-table>
+        } @else if (error()) {
+        <app-empty-state title="Erro ao carregar clientes"
+            [description]="error() || 'Ocorreu um erro inesperado.'"></app-empty-state>
+        } @else if (clients().length === 0) {
+        <app-empty-state title="Nenhum cliente encontrado"
+            description="Não há clientes cadastrados no sistema."></app-empty-state>
+        } @else {
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-900">
+                        <tr class="text-left text-sm text-gray-900">
+                            <th class="px-6 py-4 font-medium text-white">Cliente</th>
+                            <th class="px-6 py-4 font-medium text-white">Email</th>
+                            <th class="px-6 py-4 font-medium text-white">Data de Cadastro</th>
+                            <th class="px-6 py-4 font-medium text-right text-white">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        @for (client of clients(); track client.id) {
+                        <tr class="border-t border-slate-100 hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500">
+                                        <lucide-icon [img]="User" class="w-5 h-5"></lucide-icon>
+                                    </div>
+                                    <div>
+                                        <span class="font-medium text-slate-900 block">{{ client.name }} {{
+                                            client.lastName
+                                            }}</span>
+                                        <span class="text-slate-500 text-xs">ID: {{ client.id }}</span>
+                                    </div>
                                 </div>
-                                <div>
-                                    <span class="font-medium text-slate-900 block">{{ client.name }} {{ client.lastName
-                                        }}</span>
-                                    <span class="text-slate-500 text-xs">ID: {{ client.id }}</span>
+                            </td>
+                            <td class="px-6 py-4 text-slate-600">{{ client.email }}</td>
+                            <td class="px-6 py-4 text-slate-600">{{ client.createdAt | dateFormat }}</td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center justify-end gap-2">
+                                    <button (click)="openEditModal(client)"
+                                        class="p-2 text-slate-500 hover:text-primary hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
+                                        <lucide-icon [img]="SquarePen" class="w-4 h-4"></lucide-icon>
+                                    </button>
+                                    <button
+                                        class="p-2 text-slate-500 hover:text-rose-500 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
+                                        <lucide-icon [img]="Trash2" class="w-4 h-4"></lucide-icon>
+                                    </button>
                                 </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 text-slate-600">{{ client.email }}</td>
-                        <td class="px-6 py-4 text-slate-600">{{ client.createdAt | dateFormat }}</td>
-                        <td class="px-6 py-4">
-                            <div class="flex items-center justify-end gap-2">
-                                <button (click)="openEditModal(client)"
-                                    class="p-2 text-slate-500 hover:text-primary hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
-                                    <lucide-icon [img]="SquarePen" class="w-4 h-4"></lucide-icon>
-                                </button>
-                                <button
-                                    class="p-2 text-slate-500 hover:text-rose-500 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
-                                    <lucide-icon [img]="Trash2" class="w-4 h-4"></lucide-icon>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    }
-                </tbody>
-            </table>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
+        }
     </div>
 </div>
 
 @if (isModalVisible()) {
 @if(selectedClient(); as client) {
 <app-generic-modal title="Editar Cliente" (close)="closeModal()" (save)="handleSave(clientForm)"
-    [isLoading]="isLoading() || !clientForm.isValid()">
+    [isLoading]="isSaving() || !clientForm.isValid()">
     <app-client-form #clientForm [itemToEdit]="client"></app-client-form>
 </app-generic-modal>
 }

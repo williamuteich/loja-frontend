@@ -7,11 +7,13 @@ import { GenericModal } from '../../../../components/dashboard/generic-modal/gen
 import { Brand } from '../../../../models';
 import { BrandForm } from '../../../../components/dashboard/modals/brand-form/brand-form';
 import { DeleteConfirmationComponent } from '../../../../components/dashboard/modals/delete-confirmation/delete-confirmation.component';
+import { SkeletonTableComponent } from '../../../../components/dashboard/skeleton/form/skeletonForm.component';
+import { EmptyStateComponent } from '../../../../components/dashboard/empty-state/empty-state.component';
 
 @Component({
   selector: 'app-brands',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, BrandForm, DeleteConfirmationComponent],
+  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, BrandForm, DeleteConfirmationComponent, SkeletonTableComponent, EmptyStateComponent],
   templateUrl: 'brands.component.html'
 })
 export class BrandsComponent implements OnInit {
@@ -29,7 +31,9 @@ export class BrandsComponent implements OnInit {
   isDeleteModalVisible = signal(false);
   brandToDelete = signal<Brand | undefined>(undefined);
 
-  isLoading = signal(false);
+  isSaving = signal(false);
+  isLoading = this.brandService.isLoading;
+  error = this.brandService.error;
 
   ngOnInit(): void {
     this.brandService.loadBrands();
@@ -53,17 +57,17 @@ export class BrandsComponent implements OnInit {
   confirmDelete(): void {
     const id = this.brandToDelete()?.id;
     if (id) {
-      this.isLoading.set(true);
+      this.isSaving.set(true);
       this.brandService.delete(id).subscribe({
         next: () => {
           this.isDeleteModalVisible.set(false);
           this.brandToDelete.set(undefined);
-          this.isLoading.set(false);
+          this.isSaving.set(false);
           this.brandService.loadBrands();
         },
         error: (err) => {
           console.error(err);
-          this.isLoading.set(false);
+          this.isSaving.set(false);
         }
       });
     }
@@ -81,18 +85,18 @@ export class BrandsComponent implements OnInit {
       return;
     }
 
-    this.isLoading.set(true);
+    this.isSaving.set(true);
 
     const formValue = brandForm.getFormValue();
 
     this.brandService.update(brandId, formValue).subscribe({
       next: () => {
         this.closeModal();
-        this.isLoading.set(false);
+        this.isSaving.set(false);
       },
       error: (err) => {
         console.error('Erro ao atualizar marca:', err);
-        this.isLoading.set(false);
+        this.isSaving.set(false);
       }
     });
   }

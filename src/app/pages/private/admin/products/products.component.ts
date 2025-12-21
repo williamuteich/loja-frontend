@@ -6,11 +6,13 @@ import { ProductService } from '../../../../services/product.service';
 import { environment } from '../../../../../environments/environment';
 import { NgOptimizedImage } from '@angular/common';
 import { Router } from '@angular/router';
+import { SkeletonTableComponent } from '../../../../components/dashboard/skeleton/form/skeletonForm.component';
+import { EmptyStateComponent } from '../../../../components/dashboard/empty-state/empty-state.component';
 
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, NgOptimizedImage],
+  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, NgOptimizedImage, SkeletonTableComponent, EmptyStateComponent],
   templateUrl: './products.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -20,6 +22,8 @@ export class ProductsComponent implements OnInit {
 
   readonly backendUrl = environment.BACKEND_URL;
   readonly products = this.productService.products;
+  readonly isLoading = this.productService.isLoading;
+  readonly error = this.productService.error;
 
   protected readonly Plus = Plus;
   protected readonly SquarePen = SquarePen;

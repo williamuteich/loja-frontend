@@ -7,11 +7,14 @@ import { environment } from '../../../../../environments/environment';
 import { GenericModal } from '../../../../components/dashboard/generic-modal/generic-modal';
 import { Category } from '../../../../models';
 import { CategoryForm } from '../../../../components/dashboard/modals/category-form/category-form';
+import { SkeletonTableComponent } from '../../../../components/dashboard/skeleton/form/skeletonForm.component';
+import { EmptyStateComponent } from '../../../../components/dashboard/empty-state/empty-state.component';
+import { SkeletonCategoryComponent } from '../../../../components/dashboard/skeleton/category/skeleton-category.component';
 
 @Component({
   selector: 'app-categories',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, CategoryForm],
+  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, CategoryForm, SkeletonTableComponent, EmptyStateComponent, SkeletonCategoryComponent],
   templateUrl: './categories.component.html'
 })
 export class CategoriesComponent implements OnInit {
@@ -26,7 +29,9 @@ export class CategoriesComponent implements OnInit {
 
   isModalVisible = signal(false);
   selectedCategory = signal<Category | undefined>(undefined);
-  isLoading = signal(false);
+  isSaving = signal(false);
+  isLoading = this.categoryService.isLoading;
+  error = this.categoryService.error;
 
   ngOnInit(): void {
     this.categoryService.loadCategories();
@@ -54,18 +59,18 @@ export class CategoriesComponent implements OnInit {
       return;
     }
 
-    this.isLoading.set(true);
+    this.isSaving.set(true);
 
     const formValue = categoryForm.getFormValue();
 
     this.categoryService.update(categoryId, formValue).subscribe({
       next: () => {
         this.closeModal();
-        this.isLoading.set(false);
+        this.isSaving.set(false);
       },
       error: (err) => {
         console.error('Erro ao atualizar categoria:', err);
-        this.isLoading.set(false);
+        this.isSaving.set(false);
       }
     });
   }

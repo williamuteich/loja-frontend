@@ -1,0 +1,26 @@
+<div class="border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+    <div class="overflow-x-auto">
+        <table class="w-full bg-white">
+            <thead class="bg-slate-50 border-b border-slate-200">
+                <tr>
+                    @for (_ of [].constructor(columns); track $index) {
+                    <th class="py-4 px-6 text-left">
+                        <div class="h-4 skeleton rounded w-3/4"></div>
+                    </th>
+                    }
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+                @for (_ of [].constructor(rows); track $index) {
+                <tr class="hover:bg-slate-50/50 transition-colors">
+                    @for (_ of [].constructor(columns); track $index) {
+                    <td class="py-5 px-6">
+                        <div class="h-4 skeleton rounded"></div>
+                    </td>
+                    }
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

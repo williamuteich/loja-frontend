@@ -7,10 +7,12 @@ import { GenericModal } from '../../../../components/dashboard/generic-modal/gen
 import { Client } from '../../../../models';
 import { DateFormatPipe } from '../../../../pipes/date-format.pipe';
 import { ClientForm } from '../../../../components/dashboard/modals/client-form/client-form';
+import { SkeletonTableComponent } from '../../../../components/dashboard/skeleton/form/skeletonForm.component';
+import { EmptyStateComponent } from '../../../../components/dashboard/empty-state/empty-state.component';
 
 @Component({
   selector: 'app-clients',
-  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, ClientForm, DateFormatPipe],
+  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, ClientForm, DateFormatPipe, SkeletonTableComponent, EmptyStateComponent],
   templateUrl: './clients.component.html'
 })
 export class ClientsComponent implements OnInit {
@@ -24,7 +26,9 @@ export class ClientsComponent implements OnInit {
 
   isModalVisible = signal(false);
   selectedClient = signal<Client | undefined>(undefined);
-  isLoading = signal(false);
+  isSaving = signal(false);
+  isLoading = this.clientService.isLoading;
+  error = this.clientService.error;
 
   ngOnInit(): void {
     this.clientService.loadClients();
@@ -52,7 +56,7 @@ export class ClientsComponent implements OnInit {
       return;
     }
 
-    this.isLoading.set(true);
+    this.isSaving.set(true);
 
     const formValue = clientForm.getFormValue();
 
@@ -60,11 +64,11 @@ export class ClientsComponent implements OnInit {
       next: () => {
         this.clientService.loadClients();
         this.closeModal();
-        this.isLoading.set(false);
+        this.isSaving.set(false);
       },
       error: (err) => {
         console.error('Erro ao atualizar cliente:', err);
-        this.isLoading.set(false);
+        this.isSaving.set(false);
       }
     });
   }

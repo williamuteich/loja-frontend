@@ -8,66 +8,78 @@
         </button>
     </div>
 
-    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-        <table class="w-full">
-            <thead class="bg-gray-900">
-                <tr class="text-left text-sm text-white">
-                    <th class="px-6 py-4 font-medium text-white">Marca</th>
-                    <th class="px-6 py-4 font-medium text-white">Produtos</th>
-                    <th class="px-6 py-4 font-medium text-white">Status</th>
-                    <th class="px-6 py-4 font-medium text-right text-white">Ações</th>
-                </tr>
-            </thead>
-            <tbody class="text-sm">
-                @for (brand of brands(); track brand.id) {
-                <tr class="border-t border-slate-100 hover:bg-slate-50 transition-colors">
-                    <td class="px-6 py-4">
-                        <div class="flex items-center gap-3">
-                            <div
-                                class="w-10 h-10 rounded-lg bg-pink-100 flex items-center justify-center text-pink-700 font-bold text-sm">
-                                {{ getInitials(brand.name) }}
+    <div class="space-y-4">
+        @if (isLoading()) {
+        <app-skeleton-table [rows]="5" [columns]="4"></app-skeleton-table>
+        } @else if (error()) {
+        <app-empty-state title="Erro ao carregar marcas"
+            [description]="error() || 'Ocorreu um erro inesperado.'"></app-empty-state>
+        } @else if (brands().length === 0) {
+        <app-empty-state title="Nenhuma marca encontrada"
+            description="Comece criando sua primeira marca para os produtos."></app-empty-state>
+        } @else {
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <table class="w-full">
+                <thead class="bg-gray-900">
+                    <tr class="text-left text-sm text-white">
+                        <th class="px-6 py-4 font-medium text-white">Marca</th>
+                        <th class="px-6 py-4 font-medium text-white">Produtos</th>
+                        <th class="px-6 py-4 font-medium text-white">Status</th>
+                        <th class="px-6 py-4 font-medium text-right text-white">Ações</th>
+                    </tr>
+                </thead>
+                <tbody class="text-sm">
+                    @for (brand of brands(); track brand.id) {
+                    <tr class="border-t border-slate-100 hover:bg-slate-50 transition-colors">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="w-10 h-10 rounded-lg bg-pink-100 flex items-center justify-center text-pink-700 font-bold text-sm">
+                                    {{ getInitials(brand.name) }}
+                                </div>
+                                <span class="font-medium text-slate-900">{{ brand.name }}</span>
                             </div>
-                            <span class="font-medium text-slate-900">{{ brand.name }}</span>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4">
-                        <div class="flex items-center gap-2 text-slate-600">
-                            <lucide-icon [img]="Package" class="w-4 h-4"></lucide-icon>
-                            {{ brand._count.products }} produtos
-                        </div>
-                    </td>
-                    <td class="px-6 py-4">
-                        @if (brand.isActive) {
-                        <span
-                            class="px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">Ativo</span>
-                        } @else {
-                        <span
-                            class="px-2.5 py-1 rounded-full text-xs font-medium bg-rose-100 text-rose-700">Inativo</span>
-                        }
-                    </td>
-                    <td class="px-6 py-4">
-                        <div class="flex items-center justify-end gap-2">
-                            <button (click)="openEditModal(brand)"
-                                class="p-2 text-slate-500 hover:text-pink-600 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
-                                <lucide-icon [img]="SquarePen" class="w-4 h-4"></lucide-icon>
-                            </button>
-                            <button (click)="openDeleteModal(brand)"
-                                class="p-2 text-slate-500 hover:text-rose-500 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
-                                <lucide-icon [img]="Trash2" class="w-4 h-4"></lucide-icon>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                }
-            </tbody>
-        </table>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-2 text-slate-600">
+                                <lucide-icon [img]="Package" class="w-4 h-4"></lucide-icon>
+                                {{ brand._count.products }} produtos
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            @if (brand.isActive) {
+                            <span
+                                class="px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">Ativo</span>
+                            } @else {
+                            <span
+                                class="px-2.5 py-1 rounded-full text-xs font-medium bg-rose-100 text-rose-700">Inativo</span>
+                            }
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center justify-end gap-2">
+                                <button (click)="openEditModal(brand)"
+                                    class="p-2 text-slate-500 hover:text-pink-600 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
+                                    <lucide-icon [img]="SquarePen" class="w-4 h-4"></lucide-icon>
+                                </button>
+                                <button (click)="openDeleteModal(brand)"
+                                    class="p-2 text-slate-500 hover:text-rose-500 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
+                                    <lucide-icon [img]="Trash2" class="w-4 h-4"></lucide-icon>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        }
     </div>
 </div>
 
 @if (isModalVisible()) {
 @if (selectedBrand(); as brand) {
 <app-generic-modal title="Editar Marca" (close)="closeModal()" (save)="handleSave(brandForm)"
-    [isLoading]="isLoading() || !brandForm.isValid()">
+    [isLoading]="isSaving() || !brandForm.isValid()">
     <app-brand-form #brandForm [itemToEdit]="brand"></app-brand-form>
 </app-generic-modal>
 }

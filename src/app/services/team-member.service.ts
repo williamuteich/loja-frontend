@@ -9,16 +9,27 @@ export class TeamMemberService {
 
     private readonly _teamMembers = signal<TeamMember[]>([]);
     readonly teamMembers = this._teamMembers.asReadonly();
+    readonly isLoading = signal(false);
+    readonly error = signal<string | null>(null);
 
     private loaded = false;
 
     public loadTeamMembers() {
         if (this.loaded) return;
 
+        this.isLoading.set(true);
+        this.error.set(null);
+
         this.api.get<TeamMember[]>('team-members').subscribe({
             next: (teamMembers) => {
                 this._teamMembers.set(teamMembers);
                 this.loaded = true;
+                this.isLoading.set(false);
+            },
+            error: (err) => {
+                console.error('Erro ao carregar membros da equipe', err);
+                this.error.set('Não foi possível carregar a lista da equipe.');
+                this.isLoading.set(false);
             }
         });
     }

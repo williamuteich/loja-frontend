@@ -8,65 +8,78 @@
         </button>
     </div>
 
-    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="w-full">
-                <thead class="bg-gray-900">
-                    <tr class="text-left text-sm text-white">
-                        <th class="px-6 py-4 font-medium text-white">Produto</th>
-                        <th class="px-6 py-4 font-medium text-white">Categoria</th>
-                        <th class="px-6 py-4 font-medium text-white">Marca</th>
-                        <th class="px-6 py-4 font-medium text-white">Preço</th>
-                        <th class="px-6 py-4 font-medium text-white">Status</th>
-                        <th class="px-6 py-4 font-medium text-right text-white">Ações</th>
-                    </tr>
-                </thead>
-                <tbody class="text-sm">
-                    @for (product of products(); track product.id) {
-                    <tr class="border-t border-slate-100 hover:bg-slate-50 transition-colors">
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <img [ngSrc]="backendUrl + '/' + (product.images[0]?.url || 'https://via.placeholder.com/150')"
-                                    width="48" height="48" [alt]="product.title"
-                                    class="w-12 h-12 rounded-lg object-cover bg-slate-100">
-                                <div>
-                                    <span class="font-medium text-slate-900 block">{{ product.title }}</span>
-                                    <span class="text-slate-500 text-xs">ID: {{ product.id }}</span>
+    <div class="space-y-4">
+        @if (isLoading()) {
+        <app-skeleton-table [rows]="5" [columns]="6"></app-skeleton-table>
+        } @else if (error()) {
+        <app-empty-state title="Erro ao carregar produtos"
+            [description]="error() || 'Ocorreu um erro inesperado.'"></app-empty-state>
+        } @else if (products().length === 0) {
+        <app-empty-state title="Nenhum produto encontrado"
+            description="Comece adicionando seu primeiro produto à loja."></app-empty-state>
+        } @else {
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-900">
+                        <tr class="text-left text-sm text-white">
+                            <th class="px-6 py-4 font-medium text-white">Produto</th>
+                            <th class="px-6 py-4 font-medium text-white">Categoria</th>
+                            <th class="px-6 py-4 font-medium text-white">Marca</th>
+                            <th class="px-6 py-4 font-medium text-white">Preço</th>
+                            <th class="px-6 py-4 font-medium text-white">Status</th>
+                            <th class="px-6 py-4 font-medium text-right text-white">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        @for (product of products(); track product.id) {
+                        <tr class="border-t border-slate-100 hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <img [ngSrc]="backendUrl + '/' + (product.images[0]?.url || 'https://via.placeholder.com/150')"
+                                        width="48" height="48" [alt]="product.title"
+                                        class="w-12 h-12 rounded-lg object-cover bg-slate-100">
+                                    <div>
+                                        <span class="font-medium text-slate-900 block">{{ product.title }}</span>
+                                        <span class="text-slate-500 text-xs">ID: {{ product.id }}</span>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 text-slate-600">{{ product.categories[0]?.category?.name || 'N/A' }}</td>
-                        <td class="px-6 py-4 text-slate-600">{{ product.brand.name || 'N/A' }}</td>
-                        <td class="px-6 py-4">
-                            <div>
-                                <span class="font-medium text-slate-900">{{ product.price | currency:'BRL' }}</span>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4">
-                            @if (product.isActive) {
-                            <span
-                                class="px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">Ativo</span>
-                            } @else {
-                            <span
-                                class="px-2.5 py-1 rounded-full text-xs font-medium bg-rose-100 text-rose-700">Inativo</span>
-                            }
-                        </td>
-                        <td class="px-6 py-4">
-                            <div class="flex items-center justify-end gap-2">
-                                <button type="button" (click)="openEditPage(product.id)"
-                                    class="p-2 text-slate-500 hover:text-primary hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
-                                    <lucide-icon [img]="SquarePen" class="w-4 h-4"></lucide-icon>
-                                </button>
-                                <button type="button"
-                                    class="p-2 text-slate-500 hover:text-rose-500 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
-                                    <lucide-icon [img]="Trash2" class="w-4 h-4"></lucide-icon>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    }
-                </tbody>
-            </table>
+                            </td>
+                            <td class="px-6 py-4 text-slate-600">{{ product.categories[0]?.category?.name || 'N/A' }}
+                            </td>
+                            <td class="px-6 py-4 text-slate-600">{{ product.brand.name || 'N/A' }}</td>
+                            <td class="px-6 py-4">
+                                <div>
+                                    <span class="font-medium text-slate-900">{{ product.price | currency:'BRL' }}</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                @if (product.isActive) {
+                                <span
+                                    class="px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">Ativo</span>
+                                } @else {
+                                <span
+                                    class="px-2.5 py-1 rounded-full text-xs font-medium bg-rose-100 text-rose-700">Inativo</span>
+                                }
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center justify-end gap-2">
+                                    <button type="button" (click)="openEditPage(product.id)"
+                                        class="p-2 text-slate-500 hover:text-primary hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
+                                        <lucide-icon [img]="SquarePen" class="w-4 h-4"></lucide-icon>
+                                    </button>
+                                    <button type="button"
+                                        class="p-2 text-slate-500 hover:text-rose-500 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
+                                        <lucide-icon [img]="Trash2" class="w-4 h-4"></lucide-icon>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
+        }
     </div>
 </div>

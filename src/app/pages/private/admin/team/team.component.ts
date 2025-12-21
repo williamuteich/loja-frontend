@@ -7,10 +7,12 @@ import { GenericModal } from '../../../../components/dashboard/generic-modal/gen
 import { TeamMember } from '../../../../models';
 import { DateFormatPipe } from '../../../../pipes/date-format.pipe';
 import { TeamMemberForm } from '../../../../components/dashboard/modals/team-member-form/team-member-form';
+import { SkeletonTableComponent } from '../../../../components/dashboard/skeleton/form/skeletonForm.component';
+import { EmptyStateComponent } from '../../../../components/dashboard/empty-state/empty-state.component';
 
 @Component({
   selector: 'app-team',
-  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, TeamMemberForm, DateFormatPipe],
+  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, TeamMemberForm, DateFormatPipe, SkeletonTableComponent, EmptyStateComponent],
   templateUrl: './team.component.html'
 })
 export class TeamComponent implements OnInit {
@@ -24,7 +26,9 @@ export class TeamComponent implements OnInit {
 
   isModalVisible = signal(false);
   selectedMember = signal<TeamMember | undefined>(undefined);
-  isLoading = signal(false);
+  isSaving = signal(false);
+  isLoading = this.teamMemberService.isLoading;
+  error = this.teamMemberService.error;
 
   ngOnInit(): void {
     this.teamMemberService.loadTeamMembers();
@@ -52,7 +56,7 @@ export class TeamComponent implements OnInit {
       return;
     }
 
-    this.isLoading.set(true);
+    this.isSaving.set(true);
 
     const formValue = memberForm.getFormValue();
 
@@ -60,11 +64,11 @@ export class TeamComponent implements OnInit {
       next: () => {
         this.teamMemberService.loadTeamMembers();
         this.closeModal();
-        this.isLoading.set(false);
+        this.isSaving.set(false);
       },
       error: (err) => {
         console.error('Erro ao atualizar membro:', err);
-        this.isLoading.set(false);
+        this.isSaving.set(false);
       }
     });
   }

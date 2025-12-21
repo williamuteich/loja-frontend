@@ -8,71 +8,85 @@
         </button>
     </div>
 
-    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="w-full">
-                <thead class="bg-gray-900">
-                    <tr class="text-left text-sm text-gray-900">
-                        <th class="px-6 py-4 font-medium  text-white">Nome</th>
-                        <th class="px-6 py-4 font-medium  text-white">Email</th>
-                        <th class="px-6 py-4 font-medium  text-white">Função</th>
-                        <th class="px-6 py-4 font-medium  text-white">Data de Cadastro</th>
-                        <th class="px-6 py-4 font-medium  text-white text-right">Ações</th>
-                    </tr>
-                </thead>
-                <tbody class="text-sm">
-                    @for (member of team(); track member.id) {
-                    <tr class="border-t border-slate-100 hover:bg-slate-50 transition-colors">
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <div
-                                    class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500">
-                                    <lucide-icon [img]="UserCog" class="w-5 h-5"></lucide-icon>
+    <div class="space-y-4">
+        @if (isLoading()) {
+        <app-skeleton-table [rows]="5" [columns]="4"></app-skeleton-table>
+        } @else if (error()) {
+        <app-empty-state title="Erro ao carregar equipe"
+            [description]="error() || 'Ocorreu um erro inesperado.'"></app-empty-state>
+        } @else if (team().length === 0) {
+        <app-empty-state title="Nenhum membro encontrado"
+            description="Não há membros cadastrados na equipe."></app-empty-state>
+        } @else {
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-900 border-b border-slate-200">
+                        <tr class="text-left text-sm text-white">
+                            <th class="px-6 py-4 font-semibold text-white">Nome</th>
+                            <th class="px-6 py-4 font-semibold text-white">Email</th>
+                            <th class="px-6 py-4 font-semibold text-white">Função</th>
+                            <th class="px-6 py-4 font-semibold text-white">Data de Cadastro</th>
+                            <th class="px-6 py-4 font-semibold text-white text-right">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        @for (member of team(); track member.id) {
+                        <tr class="hover:bg-slate-50/50 transition-colors">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500">
+                                        <lucide-icon [img]="UserCog" class="w-5 h-5"></lucide-icon>
+                                    </div>
+                                    <div>
+                                        <span class="font-medium text-slate-900 block">{{ member.name }} {{
+                                            member.lastName
+                                            }}</span>
+                                        <span class="text-slate-500 text-xs">ID: {{ member.id }}</span>
+                                    </div>
                                 </div>
-                                <div>
-                                    <span class="font-medium text-slate-900 block">{{ member.name }} {{ member.lastName
-                                        }}</span>
-                                    <span class="text-slate-500 text-xs">ID: {{ member.id }}</span>
+                            </td>
+                            <td class="px-6 py-4 text-slate-600">{{ member.email }}</td>
+                            <td class="px-6 py-4">
+                                @if (member.role === 'ADMIN') {
+                                <span
+                                    class="px-2.5 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-700">
+                                    {{ member.role }}
+                                </span>
+                                } @else {
+                                <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
+                                    {{ member.role }}
+                                </span>
+                                }
+                            </td>
+                            <td class="px-6 py-4 text-slate-600">{{ member.createdAt | dateFormat }}</td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center justify-end gap-2">
+                                    <button (click)="openEditModal(member)"
+                                        class="p-2 text-slate-500 hover:text-primary hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
+                                        <lucide-icon [img]="SquarePen" class="w-4 h-4"></lucide-icon>
+                                    </button>
+                                    <button
+                                        class="p-2 text-slate-500 hover:text-rose-500 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
+                                        <lucide-icon [img]="Trash2" class="w-4 h-4"></lucide-icon>
+                                    </button>
                                 </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 text-slate-600">{{ member.email }}</td>
-                        <td class="px-6 py-4">
-                            @if (member.role === 'ADMIN') {
-                            <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-700">
-                                {{ member.role }}
-                            </span>
-                            } @else {
-                            <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
-                                {{ member.role }}
-                            </span>
-                            }
-                        </td>
-                        <td class="px-6 py-4 text-slate-600">{{ member.createdAt | dateFormat }}</td>
-                        <td class="px-6 py-4">
-                            <div class="flex items-center justify-end gap-2">
-                                <button (click)="openEditModal(member)"
-                                    class="p-2 text-slate-500 hover:text-primary hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
-                                    <lucide-icon [img]="SquarePen" class="w-4 h-4"></lucide-icon>
-                                </button>
-                                <button
-                                    class="p-2 text-slate-500 hover:text-rose-500 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
-                                    <lucide-icon [img]="Trash2" class="w-4 h-4"></lucide-icon>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    }
-                </tbody>
-            </table>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
+        }
     </div>
 </div>
 
 @if (isModalVisible()) {
 @if(selectedMember(); as member) {
-<app-generic-modal title="Editar Membro da Equipe" (close)="closeModal()" (save)="handleSave(memberForm)"
-    [isLoading]="isLoading() || !memberForm.isValid()">
+<app-generic-modal title="Editar Membro" (close)="closeModal()" (save)="handleSave(memberForm)"
+    [isLoading]="isSaving() || !memberForm.isValid()">
     <app-team-member-form #memberForm [itemToEdit]="member"></app-team-member-form>
 </app-generic-modal>
 }
