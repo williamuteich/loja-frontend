@@ -51,7 +51,7 @@
                                 class="p-2 text-slate-500 hover:text-pink-600 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
                                 <lucide-icon [img]="SquarePen" class="w-4 h-4"></lucide-icon>
                             </button>
-                            <button
+                            <button (click)="openDeleteModal(brand)"
                                 class="p-2 text-slate-500 hover:text-rose-500 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
                                 <lucide-icon [img]="Trash2" class="w-4 h-4"></lucide-icon>
                             </button>
@@ -65,10 +65,20 @@
 </div>
 
 @if (isModalVisible()) {
-@if(selectedBrand(); as brand) {
+@if (selectedBrand(); as brand) {
 <app-generic-modal title="Editar Marca" (close)="closeModal()" (save)="handleSave(brandForm)"
     [isLoading]="isLoading() || !brandForm.isValid()">
     <app-brand-form #brandForm [itemToEdit]="brand"></app-brand-form>
+</app-generic-modal>
+}
+}
+
+@if (isDeleteModalVisible()) {
+@if (brandToDelete(); as brand) {
+<app-generic-modal title="Excluir Marca" (close)="isDeleteModalVisible.set(false)" [showFooter]="false">
+    <app-delete-confirmation [itemName]="brand.name" itemType="esta marca" (confirm)="confirmDelete()"
+        (cancel)="isDeleteModalVisible.set(false)">
+    </app-delete-confirmation>
 </app-generic-modal>
 }
 }

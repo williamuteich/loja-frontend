@@ -5,13 +5,14 @@ import { AdminSearchComponent } from '../../../../components/admin-search/admin-
 import { BrandService } from '../../../../services/brand.service';
 import { GenericModal } from '../../../../components/generic-modal/generic-modal';
 import { BrandForm } from '../../../../components/modals/brand-form/brand-form';
+import { DeleteConfirmationComponent } from '../../../../components/modals/delete-confirmation/delete-confirmation.component';
 import { Brand } from '../../../../models';
 
 @Component({
   selector: 'app-brands',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, BrandForm],
-  templateUrl: './brands.component.html'
+  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, BrandForm, DeleteConfirmationComponent],
+  templateUrl: 'brands.component.html'
 })
 export class BrandsComponent implements OnInit {
   readonly Plus = Plus;
@@ -24,6 +25,10 @@ export class BrandsComponent implements OnInit {
 
   isModalVisible = signal(false);
   selectedBrand = signal<Brand | undefined>(undefined);
+
+  isDeleteModalVisible = signal(false);
+  brandToDelete = signal<Brand | undefined>(undefined);
+
   isLoading = signal(false);
 
   ngOnInit(): void {
@@ -38,6 +43,30 @@ export class BrandsComponent implements OnInit {
   closeModal(): void {
     this.isModalVisible.set(false);
     this.selectedBrand.set(undefined);
+  }
+
+  openDeleteModal(brand: Brand): void {
+    this.brandToDelete.set(brand);
+    this.isDeleteModalVisible.set(true);
+  }
+
+  confirmDelete(): void {
+    const id = this.brandToDelete()?.id;
+    if (id) {
+      this.isLoading.set(true);
+      this.brandService.delete(id).subscribe({
+        next: () => {
+          this.isDeleteModalVisible.set(false);
+          this.brandToDelete.set(undefined);
+          this.isLoading.set(false);
+          this.brandService.loadBrands();
+        },
+        error: (err) => {
+          console.error(err);
+          this.isLoading.set(false);
+        }
+      });
+    }
   }
 
   handleSave(brandForm: BrandForm): void {
