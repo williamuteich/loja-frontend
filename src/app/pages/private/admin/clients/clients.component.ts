@@ -4,7 +4,7 @@ import { LucideAngularModule, Plus, User, SquarePen, Trash2 } from 'lucide-angul
 import { AdminSearchComponent } from '../../../../components/admin-search/admin-search.component';
 import { ClientService } from '../../../../services/client.service';
 import { GenericModal } from '../../../../components/generic-modal/generic-modal';
-import { ClientForm } from '../../../../components/client-form/client-form';
+import { ClientForm } from '../../../../components/modals/client-form/client-form';
 import { Client } from '../../../../models';
 import { DateFormatPipe } from '../../../../pipes/date-format.pipe';
 

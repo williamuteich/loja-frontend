@@ -25,6 +25,24 @@ export class BrandService {
         })
     }
 
+    create(data: Brand): Observable<Brand> {
+        return this.api.post<Brand>('brand', data).pipe(
+            tap((newBrand) => {
+                this._brands.update(brands => [...brands, newBrand]);
+            })
+        );
+    }
+
+    delete(id: string): Observable<Brand['id']> {
+        return this.api.delete<Brand['id']>(`brand/${id}`).pipe(
+            tap(() => {
+                this._brands.update(brands =>
+                    brands.filter(b => b.id !== id)
+                );
+            })
+        );
+    }
+
     update(id: string, data: Partial<Brand>): Observable<Brand> {
         return this.api.patch<Brand>(`brand/${id}`, data).pipe(
             tap((updatedBrand) => {

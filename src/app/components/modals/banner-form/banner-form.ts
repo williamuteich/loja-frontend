@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Banner } from '../../models';
+import { Banner } from '../../../models';
 
 @Component({
   selector: 'app-banner-form',

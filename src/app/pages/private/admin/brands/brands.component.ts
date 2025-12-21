@@ -4,7 +4,7 @@ import { LucideAngularModule, Plus, Package, SquarePen, Trash2 } from 'lucide-an
 import { AdminSearchComponent } from '../../../../components/admin-search/admin-search.component';
 import { BrandService } from '../../../../services/brand.service';
 import { GenericModal } from '../../../../components/generic-modal/generic-modal';
-import { BrandForm } from '../../../../components/brand-form/brand-form';
+import { BrandForm } from '../../../../components/modals/brand-form/brand-form';
 import { Brand } from '../../../../models';
 
 @Component({

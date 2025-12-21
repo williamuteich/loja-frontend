@@ -5,7 +5,7 @@ import { AdminSearchComponent } from '../../../../components/admin-search/admin-
 import { CategoryService } from '../../../../services/category.service';
 import { environment } from '../../../../../environments/environment';
 import { GenericModal } from '../../../../components/generic-modal/generic-modal';
-import { CategoryForm } from '../../../../components/category-form/category-form';
+import { CategoryForm } from '../../../../components/modals/category-form/category-form';
 import { Category } from '../../../../models';
 
 @Component({
