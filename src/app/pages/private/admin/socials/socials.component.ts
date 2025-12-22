@@ -114,6 +114,7 @@ export class SocialsComponent implements OnInit {
 
     changes.forEach(social => {
       this.socialService.update(social.id, {
+        platform: social.platform,
         url: social.url,
         isActive: social.isActive
       }).subscribe({
@@ -122,7 +123,7 @@ export class SocialsComponent implements OnInit {
           if (completed + errors === changes.length) this.isSaving.set(false);
         },
         error: (err) => {
-          console.error(`Erro ao salvar ${social.platform}:`, err);
+          console.error(`Erro ao salvar ${social.platform}:`, err.error);
           errors++;
           if (completed + errors === changes.length) this.isSaving.set(false);
         }

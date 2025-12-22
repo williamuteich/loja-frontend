@@ -1,5 +1,31 @@
 <div class="p-12 md:p-24">
-    <div class="w-full space-y-6">
+    <div class="w-full space-y-6" [formGroup]="settingsForm">
+
+        <div class="space-y-4">
+            @if (saveSuccess()) {
+            <div
+                class="flex items-center gap-2 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 animate-in fade-in slide-in-from-top-2 duration-300">
+                <lucide-icon [img]="CheckCircle2" class="w-5 h-5"></lucide-icon>
+                <span class="text-sm font-medium">Configurações salvas com sucesso!</span>
+            </div>
+            }
+
+            @if (saveError()) {
+            <div
+                class="flex items-center gap-2 p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 animate-in fade-in slide-in-from-top-2 duration-300">
+                <lucide-icon [img]="AlertCircle" class="w-5 h-5"></lucide-icon>
+                <span class="text-sm font-medium">{{ saveError() }}</span>
+            </div>
+            }
+        </div>
+
+        @if (isLoading()) {
+        <div
+            class="flex flex-col items-center justify-center p-24 space-y-4 bg-white rounded-xl border border-slate-200">
+            <lucide-icon [img]="Loader2" class="w-8 h-8 text-primary animate-spin"></lucide-icon>
+            <p class="text-slate-500 font-medium">Carregando configurações...</p>
+        </div>
+        } @else {
 
         <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
             <div class="p-6 border-b border-slate-200 flex items-center gap-3 bg-gray-800">
@@ -14,42 +40,46 @@
             <div class="p-6 space-y-4">
                 <div class="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
                     <div>
-                        <label class="text-sm font-medium leading-none">Site Ativo</label>
+                        <label class="text-sm font-medium leading-none cursor-pointer"
+                            (click)="toggleSwitch('isActive')">Site Ativo</label>
                         <p class="text-sm text-slate-500">Desative para ocultar a loja publicamente</p>
                     </div>
-                    <button type="button" role="switch" [attr.aria-checked]="settings.isActive"
-                        [attr.data-state]="settings.isActive ? 'checked' : 'unchecked'"
-                        class="peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors data-[state=checked]:bg-primary data-[state=unchecked]:bg-slate-200">
-                        <span [attr.data-state]="settings.isActive ? 'checked' : 'unchecked'"
+                    <button type="button" role="switch" [attr.aria-checked]="settingsForm.get('isActive')?.value"
+                        (click)="toggleSwitch('isActive')"
+                        [attr.data-state]="settingsForm.get('isActive')?.value ? 'checked' : 'unchecked'"
+                        class="peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors data-[state=checked]:bg-emerald-500 data-[state=unchecked]:bg-slate-200">
+                        <span [attr.data-state]="settingsForm.get('isActive')?.value ? 'checked' : 'unchecked'"
                             class="pointer-events-none block h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0"></span>
                     </button>
                 </div>
                 <div class="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
                     <div>
-                        <label class="text-sm font-medium leading-none">Modo Manutenção</label>
+                        <label class="text-sm font-medium leading-none cursor-pointer"
+                            (click)="toggleSwitch('maintenanceMode')">Modo Manutenção</label>
                         <p class="text-sm text-slate-500">Exibe uma tela de manutenção para os visitantes</p>
                     </div>
-                    <button type="button" role="switch" [attr.aria-checked]="settings.maintenanceMode"
-                        [attr.data-state]="settings.maintenanceMode ? 'checked' : 'unchecked'"
-                        class="peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors data-[state=checked]:bg-primary data-[state=unchecked]:bg-slate-200">
-                        <span [attr.data-state]="settings.maintenanceMode ? 'checked' : 'unchecked'"
+                    <button type="button" role="switch" [attr.aria-checked]="settingsForm.get('maintenanceMode')?.value"
+                        (click)="toggleSwitch('maintenanceMode')"
+                        [attr.data-state]="settingsForm.get('maintenanceMode')?.value ? 'checked' : 'unchecked'"
+                        class="peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors data-[state=checked]:bg-amber-500 data-[state=unchecked]:bg-slate-200">
+                        <span [attr.data-state]="settingsForm.get('maintenanceMode')?.value ? 'checked' : 'unchecked'"
                             class="pointer-events-none block h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0"></span>
                     </button>
                 </div>
-                <div class="space-y-2" *ngIf="settings.maintenanceMode">
+                <div class="space-y-2 animate-in fade-in duration-300"
+                    *ngIf="settingsForm.get('maintenanceMode')?.value">
                     <label class="text-sm font-medium leading-none">Mensagem de Manutenção</label>
                     <textarea
-                        class="flex min-h-[80px] w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
-                        rows="3" [value]="settings.maintenanceMessage"></textarea>
+                        class="flex min-h-[80px] w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                        rows="3" formControlName="maintenanceMessage" placeholder="Estamos em manutenção..."></textarea>
                 </div>
             </div>
         </div>
 
         <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
             <div class="p-6 border-b border-slate-200 flex items-center gap-3 bg-gray-800">
-                <div
-                    class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-white border border-primary">
-                    <lucide-icon [img]="Store" class="w-5 h-5 text-primary"></lucide-icon>
+                <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
+                    <lucide-icon [img]="Store" class="w-5 h-5 text-blue-600"></lucide-icon>
                 </div>
                 <div>
                     <h2 class="text-lg font-semibold text-white">Informações da Loja</h2>
@@ -60,55 +90,63 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="space-y-2">
                         <label class="text-sm font-medium leading-none">Nome da Loja</label>
-                        <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
-                            [value]="settings.storeName">
+                        <input
+                            class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                            formControlName="storeName">
                     </div>
                     <div class="space-y-2">
                         <label class="text-sm font-medium leading-none">CNPJ</label>
-                        <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
-                            [value]="settings.cnpj">
+                        <input
+                            class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                            formControlName="cnpj">
                     </div>
                 </div>
                 <div class="space-y-2">
                     <label class="text-sm font-medium leading-none">Descrição</label>
                     <textarea
-                        class="flex min-h-[80px] w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
-                        rows="3" [value]="settings.description"></textarea>
+                        class="flex min-h-[80px] w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                        rows="3" formControlName="description"></textarea>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="space-y-2">
                         <label class="text-sm font-medium leading-none">Telefone</label>
-                        <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
-                            [value]="settings.phone">
+                        <input
+                            class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                            formControlName="phone">
                     </div>
                     <div class="space-y-2">
                         <label class="text-sm font-medium leading-none">WhatsApp</label>
-                        <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
-                            [value]="settings.whatsapp">
+                        <input
+                            class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                            formControlName="whatsapp">
                     </div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="space-y-2">
                         <label class="text-sm font-medium leading-none">Endereço</label>
-                        <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
-                            [value]="settings.address">
+                        <input
+                            class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                            formControlName="address">
                     </div>
                     <div class="space-y-2">
                         <label class="text-sm font-medium leading-none">CEP</label>
-                        <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
-                            [value]="settings.zipCode">
+                        <input
+                            class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                            formControlName="zipCode">
                     </div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="space-y-2">
                         <label class="text-sm font-medium leading-none">Cidade</label>
-                        <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
-                            [value]="settings.city">
+                        <input
+                            class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                            formControlName="city">
                     </div>
                     <div class="space-y-2">
-                        <label class="text-sm font-medium leading-none">Estado</label>
-                        <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
-                            [value]="settings.state">
+                        <label class="text-sm font-medium leading-none Estado">Estado</label>
+                        <input
+                            class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                            formControlName="state">
                     </div>
                 </div>
             </div>
@@ -121,24 +159,27 @@
                 </div>
                 <div>
                     <h2 class="text-lg font-semibold text-white">Identidade Visual</h2>
-                    <p class="text-sm text-white">Logos e imagens sociais</p>
+                    <p class="text-sm text-white">URLs de imagens</p>
                 </div>
             </div>
             <div class="p-6 space-y-4">
                 <div class="space-y-2">
                     <label class="text-sm font-medium leading-none">Logo URL</label>
-                    <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
-                        [value]="settings.logoUrl">
+                    <input
+                        class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                        formControlName="logoUrl" placeholder="https://...">
                 </div>
                 <div class="space-y-2">
                     <label class="text-sm font-medium leading-none">Favicon URL</label>
-                    <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
-                        [value]="settings.faviconUrl">
+                    <input
+                        class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                        formControlName="faviconUrl" placeholder="https://...">
                 </div>
                 <div class="space-y-2">
                     <label class="text-sm font-medium leading-none">Open Graph Image URL</label>
-                    <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
-                        [value]="settings.ogImageUrl">
+                    <input
+                        class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                        formControlName="ogImageUrl" placeholder="https://...">
                 </div>
             </div>
         </div>
@@ -156,30 +197,37 @@
             <div class="p-6 space-y-4">
                 <div class="space-y-2">
                     <label class="text-sm font-medium leading-none">Email de Contato</label>
-                    <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
-                        [value]="settings.contactEmail">
+                    <input
+                        class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                        formControlName="contactEmail">
                 </div>
                 <div class="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
                     <div>
-                        <label class="text-sm font-medium leading-none">Notificar novos pedidos</label>
+                        <label class="text-sm font-medium leading-none cursor-pointer"
+                            (click)="toggleSwitch('notifyNewOrders')">Notificar novos pedidos</label>
                         <p class="text-sm text-slate-500">Receber email quando houver novo pedido</p>
                     </div>
-                    <button type="button" role="switch" [attr.aria-checked]="settings.notifyNewOrders"
-                        [attr.data-state]="settings.notifyNewOrders ? 'checked' : 'unchecked'"
+                    <button type="button" role="switch" [attr.aria-checked]="settingsForm.get('notifyNewOrders')?.value"
+                        (click)="toggleSwitch('notifyNewOrders')"
+                        [attr.data-state]="settingsForm.get('notifyNewOrders')?.value ? 'checked' : 'unchecked'"
                         class="peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors data-[state=checked]:bg-primary data-[state=unchecked]:bg-slate-200">
-                        <span [attr.data-state]="settings.notifyNewOrders ? 'checked' : 'unchecked'"
+                        <span [attr.data-state]="settingsForm.get('notifyNewOrders')?.value ? 'checked' : 'unchecked'"
                             class="pointer-events-none block h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0"></span>
                     </button>
                 </div>
                 <div class="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
                     <div>
-                        <label class="text-sm font-medium leading-none">Newsletter automática</label>
+                        <label class="text-sm font-medium leading-none cursor-pointer"
+                            (click)="toggleSwitch('automaticNewsletter')">Newsletter automática</label>
                         <p class="text-sm text-slate-500">Enviar promoções automaticamente</p>
                     </div>
-                    <button type="button" role="switch" [attr.aria-checked]="settings.automaticNewsletter"
-                        [attr.data-state]="settings.automaticNewsletter ? 'checked' : 'unchecked'"
+                    <button type="button" role="switch"
+                        [attr.aria-checked]="settingsForm.get('automaticNewsletter')?.value"
+                        (click)="toggleSwitch('automaticNewsletter')"
+                        [attr.data-state]="settingsForm.get('automaticNewsletter')?.value ? 'checked' : 'unchecked'"
                         class="peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors data-[state=checked]:bg-primary data-[state=unchecked]:bg-slate-200">
-                        <span [attr.data-state]="settings.automaticNewsletter ? 'checked' : 'unchecked'"
+                        <span
+                            [attr.data-state]="settingsForm.get('automaticNewsletter')?.value ? 'checked' : 'unchecked'"
                             class="pointer-events-none block h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0"></span>
                     </button>
                 </div>
@@ -199,19 +247,21 @@
             <div class="p-6 space-y-4">
                 <div class="space-y-2">
                     <label class="text-sm font-medium leading-none">Título SEO</label>
-                    <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
-                        [value]="settings.seoTitle">
+                    <input
+                        class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                        formControlName="seoTitle">
                 </div>
                 <div class="space-y-2">
                     <label class="text-sm font-medium leading-none">Descrição SEO</label>
                     <textarea
-                        class="flex min-h-[80px] w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
-                        rows="3" [value]="settings.seoDescription"></textarea>
+                        class="flex min-h-[80px] w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                        rows="3" formControlName="seoDescription"></textarea>
                 </div>
                 <div class="space-y-2">
                     <label class="text-sm font-medium leading-none">Palavras-chave</label>
-                    <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
-                        [value]="settings.seoKeywords">
+                    <input
+                        class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                        formControlName="seoKeywords" placeholder="palavra1, palavra2, ...">
                 </div>
             </div>
         </div>
@@ -229,13 +279,15 @@
             <div class="p-6 space-y-4">
                 <div class="space-y-2">
                     <label class="text-sm font-medium leading-none">Google Maps Embed URL</label>
-                    <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
-                        [value]="settings.googleMapsEmbedUrl">
+                    <input
+                        class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                        formControlName="googleMapsEmbedUrl" placeholder='<iframe src="..."></iframe>'>
                 </div>
                 <div class="space-y-2">
                     <label class="text-sm font-medium leading-none">Horário de Funcionamento</label>
-                    <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
-                        [value]="settings.businessHours">
+                    <input
+                        class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                        formControlName="businessHours">
                 </div>
             </div>
         </div>
@@ -254,26 +306,32 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="space-y-2">
                         <label class="text-sm font-medium leading-none">Moeda</label>
-                        <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
-                            [value]="settings.currency" disabled>
+                        <input
+                            class="flex h-10 w-full rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-500"
+                            formControlName="currency">
                     </div>
                     <div class="space-y-2">
                         <label class="text-sm font-medium leading-none">Idioma</label>
-                        <input class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
-                            [value]="settings.locale" disabled>
+                        <input
+                            class="flex h-10 w-full rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-500"
+                            formControlName="locale">
                     </div>
                 </div>
             </div>
         </div>
 
-
         <div class="flex justify-end pt-6">
-            <button
-                class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-white shadow-soft hover:shadow-hover h-10 px-5 py-2 bg-slate-900 hover:bg-slate-800 cursor-pointer">
+            <button (click)="onSubmit()" [disabled]="isSaving() || settingsForm.invalid"
+                class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-white shadow-soft hover:shadow-hover h-10 px-8 py-2 bg-slate-900 hover:bg-slate-800 cursor-pointer">
+                @if (isSaving()) {
+                <lucide-icon [img]="Loader2" class="w-4 h-4 animate-spin"></lucide-icon>
+                Salvando...
+                } @else {
                 <lucide-icon [img]="Save" class="w-4 h-4"></lucide-icon>
                 Salvar Todas as Configurações
+                }
             </button>
         </div>
-
+        }
     </div>
 </div>

@@ -89,3 +89,29 @@ export interface Social {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface StoreConfig {
+  id: string;
+  isActive: boolean;
+  maintenanceMode: boolean;
+  maintenanceMessage?: string;
+  storeName: string;
+  cnpj: string;
+  description?: string;
+  phone?: string;
+  whatsapp?: string;
+  logoUrl?: string;
+  faviconUrl?: string;
+  googleMapsEmbedUrl?: string;
+  businessHours?: string;
+  contactEmail: string;
+  notifyNewOrders?: boolean;
+  automaticNewsletter?: boolean;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoKeywords?: string;
+  currency?: string;
+  locale?: string;
+  ogImageUrl?: string;
+  socialMedias?: Social[];
+}

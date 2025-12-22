@@ -1,13 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LucideAngularModule, Save, Store, Mail, Globe, MapPin, Image, Power, Search } from 'lucide-angular';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { LucideAngularModule, Save, Store, Mail, Globe, MapPin, Image, Power, Search, CheckCircle2, AlertCircle, Loader2 } from 'lucide-angular';
+import { StoreConfigService } from '../../../../services/store-config.service';
+import { StoreConfig } from '../../../../models';
 
 @Component({
   selector: 'app-settings',
-  imports: [CommonModule, LucideAngularModule],
+  standalone: true,
+  imports: [CommonModule, LucideAngularModule, ReactiveFormsModule],
   templateUrl: './settings.component.html'
 })
-export class SettingsComponent {
+export class SettingsComponent implements OnInit {
+  private readonly fb = inject(FormBuilder);
+  private readonly configService = inject(StoreConfigService);
+
   readonly Save = Save;
   readonly Store = Store;
   readonly Mail = Mail;
@@ -16,39 +23,103 @@ export class SettingsComponent {
   readonly Image = Image;
   readonly Power = Power;
   readonly Search = Search;
+  readonly CheckCircle2 = CheckCircle2;
+  readonly AlertCircle = AlertCircle;
+  readonly Loader2 = Loader2;
 
-  settings = {
-    isActive: true,
-    maintenanceMode: false,
-    maintenanceMessage: 'Estamos em manutenção, voltamos logo!',
+  settingsForm!: FormGroup;
+  isSaving = signal(false);
+  saveSuccess = signal(false);
+  saveError = signal<string | null>(null);
+  isLoading = this.configService.isLoading;
 
-    storeName: 'Minha Loja de Cosméticos',
-    cnpj: '12.345.678/0001-90',
-    description: 'Loja especializada em cosméticos e produtos de beleza de alta qualidade.',
-    phone: '(11) 99999-9999',
-    whatsapp: '(11) 99999-9999',
-    address: 'Av. Paulista, 1000',
-    city: 'São Paulo',
-    state: 'SP',
-    zipCode: '01310-100',
+  ngOnInit(): void {
+    this.initForm();
+    this.loadData();
+  }
 
-    logoUrl: 'https://example.com/logo.png',
-    faviconUrl: 'https://example.com/favicon.ico',
-    ogImageUrl: 'https://example.com/og-image.png',
+  private initForm(): void {
+    this.settingsForm = this.fb.group({
+      isActive: [true],
+      maintenanceMode: [false],
+      maintenanceMessage: [''],
+      storeName: ['', Validators.required],
+      cnpj: ['', Validators.required],
+      description: [''],
+      phone: [''],
+      whatsapp: [''],
+      address: [''],
+      city: [''],
+      state: [''],
+      zipCode: [''],
+      logoUrl: [''],
+      faviconUrl: [''],
+      ogImageUrl: [''],
+      googleMapsEmbedUrl: [''],
+      businessHours: [''],
+      contactEmail: ['', [Validators.required, Validators.email]],
+      notifyNewOrders: [false],
+      automaticNewsletter: [false],
+      seoTitle: [''],
+      seoDescription: [''],
+      seoKeywords: [''],
+      currency: [{ value: 'BRL', disabled: true }],
+      locale: [{ value: 'pt-BR', disabled: true }]
+    });
+  }
 
-    googleMapsEmbedUrl: '<iframe src="..."></iframe>',
+  private loadData(): void {
+    this.configService.loadConfigPublic();
 
-    businessHours: 'Seg-Sex, 9h às 18h',
+    const checkLoaded = setInterval(() => {
+      const config = this.configService.config();
+      if (config) {
+        this.settingsForm.patchValue(config);
+        clearInterval(checkLoaded);
+      }
+    }, 100);
 
-    contactEmail: 'contato@minhaloja.com',
-    notifyNewOrders: true,
-    automaticNewsletter: false,
+    setTimeout(() => clearInterval(checkLoaded), 5000);
+  }
 
-    seoTitle: 'Minha Loja - Os melhores cosméticos',
-    seoDescription: 'Compre os melhores cosméticos na Minha Loja.',
-    seoKeywords: 'cosméticos, beleza, maquiagem, skincare',
+  onSubmit(): void {
+    if (this.settingsForm.invalid) {
+      this.saveError.set('Por favor, preencha todos os campos obrigatórios corretamente.');
+      return;
+    }
 
-    currency: 'BRL',
-    locale: 'pt-BR'
-  };
+    this.isSaving.set(true);
+    this.saveSuccess.set(false);
+    this.saveError.set(null);
+
+    const formValue = this.settingsForm.getRawValue();
+    const payload: any = { ...formValue };
+
+    delete payload.id;
+    delete payload.socialMedias;
+    delete payload.createdAt;
+    delete payload.updatedAt;
+
+    this.configService.updateAdmin(payload).subscribe({
+      next: () => {
+        this.isSaving.set(false);
+        this.saveSuccess.set(true);
+        this.configService.loadConfigPublic();
+        setTimeout(() => this.saveSuccess.set(false), 3000);
+      },
+      error: (err) => {
+        console.error('Error saving settings:', err.error);
+        this.isSaving.set(false);
+        this.saveError.set(err.error?.message || 'Ocorreu um erro ao salvar as configurações.');
+        setTimeout(() => this.saveError.set(null), 5000);
+      }
+    });
+  }
+
+  toggleSwitch(controlName: string): void {
+    const control = this.settingsForm.get(controlName);
+    if (control) {
+      control.setValue(!control.value);
+    }
+  }
 }
