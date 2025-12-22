@@ -12,18 +12,18 @@ export class TeamMemberService {
     readonly isLoading = signal(false);
     readonly error = signal<string | null>(null);
 
-    private loaded = false;
+    private adminLoaded = false;
 
-    public loadTeamMembers() {
-        if (this.loaded) return;
+    public loadTeamMembersAdmin() {
+        if (this.adminLoaded) return;
 
         this.isLoading.set(true);
         this.error.set(null);
 
-        this.api.get<TeamMember[]>('team-members').subscribe({
+        this.api.get<TeamMember[]>('team-members/admin').subscribe({
             next: (teamMembers) => {
                 this._teamMembers.set(teamMembers);
-                this.loaded = true;
+                this.adminLoaded = true;
                 this.isLoading.set(false);
             },
             error: (err) => {
@@ -35,7 +35,7 @@ export class TeamMemberService {
     }
 
     update(id: string, data: Partial<TeamMember>): Observable<TeamMember> {
-        return this.api.patch<TeamMember>(`team-members/${id}`, data).pipe(
+        return this.api.patch<TeamMember>(`team-members/admin/${id}`, data).pipe(
             tap((updatedMember) => {
                 this._teamMembers.update(members =>
                     members.map(m => m.id === id ? updatedMember : m)

@@ -32,7 +32,7 @@ export class ProductsComponent implements OnInit {
   protected readonly Eye = Eye;
 
   ngOnInit() {
-    this.productService.loadProducts();
+    this.productService.loadProductsAdmin();
   }
 
   openEditPage(productId: string) {

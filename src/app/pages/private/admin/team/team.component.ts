@@ -31,7 +31,7 @@ export class TeamComponent implements OnInit {
   error = this.teamMemberService.error;
 
   ngOnInit(): void {
-    this.teamMemberService.loadTeamMembers();
+    this.teamMemberService.loadTeamMembersAdmin();
   }
 
   openEditModal(member: TeamMember): void {
@@ -62,7 +62,7 @@ export class TeamComponent implements OnInit {
 
     this.teamMemberService.update(memberId, formValue).subscribe({
       next: () => {
-        this.teamMemberService.loadTeamMembers();
+        this.teamMemberService.loadTeamMembersAdmin();
         this.closeModal();
         this.isSaving.set(false);
       },

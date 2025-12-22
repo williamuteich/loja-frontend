@@ -12,18 +12,18 @@ export class ClientService {
     readonly isLoading = signal(false);
     readonly error = signal<string | null>(null);
 
-    private loaded = false;
+    private adminLoaded = false;
 
-    public loadClients() {
-        if (this.loaded) return;
+    public loadClientsAdmin() {
+        if (this.adminLoaded) return;
 
         this.isLoading.set(true);
         this.error.set(null);
 
-        this.api.get<Client[]>('client').subscribe({
+        this.api.get<Client[]>('client/admin').subscribe({
             next: (clients) => {
                 this._clients.set(clients);
-                this.loaded = true;
+                this.adminLoaded = true;
                 this.isLoading.set(false);
             },
             error: (err) => {
@@ -35,7 +35,7 @@ export class ClientService {
     }
 
     update(id: string, data: Partial<Client>): Observable<Client> {
-        return this.api.patch<Client>(`client/${id}`, data).pipe(
+        return this.api.patch<Client>(`client/admin/${id}`, data).pipe(
             tap((updatedClient) => {
                 this._clients.update(clients =>
                     clients.map(c => c.id === id ? updatedClient : c)

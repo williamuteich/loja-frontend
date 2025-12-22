@@ -36,7 +36,7 @@ export class BrandsComponent implements OnInit {
   error = this.brandService.error;
 
   ngOnInit(): void {
-    this.brandService.loadBrands();
+    this.brandService.loadBrandsAdmin();
   }
 
   openEditModal(brand: Brand): void {
@@ -63,7 +63,7 @@ export class BrandsComponent implements OnInit {
           this.isDeleteModalVisible.set(false);
           this.brandToDelete.set(undefined);
           this.isSaving.set(false);
-          this.brandService.loadBrands();
+          this.brandService.loadBrandsAdmin();
         },
         error: (err) => {
           console.error(err);

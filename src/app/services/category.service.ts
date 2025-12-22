@@ -61,6 +61,10 @@ export class CategoryService {
         });
     }
 
+    public findOnePublic(id: string): Observable<Category> {
+        return this.api.get<Category>(`category/public/${id}`);
+    }
+
     update(id: string, data: Partial<Category>): Observable<Category> {
         return this.api.patch<Category>(`category/admin/${id}`, data).pipe(
             tap((updatedCategory) => {

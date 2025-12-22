@@ -41,9 +41,9 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.categoryService.loadCategories();
-    this.brandService.loadBrands();
-    this.productService.loadProducts();
+    this.categoryService.loadCategoriesAdmin();
+    this.brandService.loadBrandsAdmin();
+    this.productService.loadProductsAdmin();
   }
 }
 

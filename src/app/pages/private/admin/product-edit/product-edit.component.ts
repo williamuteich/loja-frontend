@@ -43,9 +43,9 @@ export class ProductEditComponent {
     form: FormGroup;
 
     constructor() {
-        this.brandService.loadBrands();
-        this.categoryService.loadCategories();
-        this.productService.loadProducts();
+        this.brandService.loadBrandsAdmin();
+        this.categoryService.loadCategoriesAdmin();
+        this.productService.loadProductsAdmin();
 
         this.form = this.fb.group({
             title: ['', [Validators.required, Validators.minLength(3)]],

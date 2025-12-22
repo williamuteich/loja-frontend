@@ -42,7 +42,7 @@ export class BannersComponent implements OnInit {
   error = this.bannerService.error;
 
   ngOnInit(): void {
-    this.bannerService.loadBanners();
+    this.bannerService.loadBannersAdmin();
   }
 
   openEditModal(banner: Banner): void {
@@ -73,7 +73,7 @@ export class BannersComponent implements OnInit {
 
     this.bannerService.update(bannerId, formValue).subscribe({
       next: () => {
-        this.bannerService.loadBanners();
+        this.bannerService.loadBannersAdmin();
         this.closeModal();
         this.isSaving.set(false);
       },

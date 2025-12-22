@@ -31,7 +31,7 @@ export class ClientsComponent implements OnInit {
   error = this.clientService.error;
 
   ngOnInit(): void {
-    this.clientService.loadClients();
+    this.clientService.loadClientsAdmin();
   }
 
   openEditModal(client: Client): void {
@@ -62,7 +62,7 @@ export class ClientsComponent implements OnInit {
 
     this.clientService.update(clientId, formValue).subscribe({
       next: () => {
-        this.clientService.loadClients();
+        this.clientService.loadClientsAdmin();
         this.closeModal();
         this.isSaving.set(false);
       },

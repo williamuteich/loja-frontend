@@ -16,14 +16,14 @@ import { environment } from '../../../../environments/environment';
 })
 export class BannerComponent implements OnInit, OnDestroy {
     private readonly bannerService = inject(BannerService);
-    protected readonly banners = this.bannerService.banners;
+    protected readonly banners = this.bannerService.publicBanners;
     protected readonly backendUrl = environment.BACKEND_URL;
 
     protected currentIndex = signal(0);
     private autoplayInterval?: any;
 
     ngOnInit(): void {
-        this.bannerService.loadBanners();
+        this.bannerService.loadBannersPublic();
         this.startAutoplay();
     }
 
