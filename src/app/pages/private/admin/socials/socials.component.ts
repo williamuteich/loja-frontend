@@ -114,7 +114,6 @@ export class SocialsComponent implements OnInit {
 
     changes.forEach(social => {
       this.socialService.update(social.id, {
-        platform: social.platform,
         url: social.url,
         isActive: social.isActive
       }).subscribe({

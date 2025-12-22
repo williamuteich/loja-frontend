@@ -52,10 +52,6 @@ export class SettingsComponent implements OnInit {
       city: [''],
       state: [''],
       zipCode: [''],
-      logoUrl: [''],
-      faviconUrl: [''],
-      ogImageUrl: [''],
-      googleMapsEmbedUrl: [''],
       businessHours: [''],
       contactEmail: ['', [Validators.required, Validators.email]],
       notifyNewOrders: [false],
@@ -74,7 +70,11 @@ export class SettingsComponent implements OnInit {
     const checkLoaded = setInterval(() => {
       const config = this.configService.config();
       if (config) {
-        this.settingsForm.patchValue(config);
+        this.settingsForm.patchValue({
+          ...config,
+          storeName: config.storeName || (config as any).name,
+          contactEmail: config.contactEmail || (config as any).email
+        });
         clearInterval(checkLoaded);
       }
     }, 100);
@@ -93,12 +93,30 @@ export class SettingsComponent implements OnInit {
     this.saveError.set(null);
 
     const formValue = this.settingsForm.getRawValue();
-    const payload: any = { ...formValue };
 
-    delete payload.id;
-    delete payload.socialMedias;
-    delete payload.createdAt;
-    delete payload.updatedAt;
+    const payload = {
+      name: formValue.storeName,
+      cnpj: formValue.cnpj,
+      phone: formValue.phone,
+      email: formValue.contactEmail,
+      description: formValue.description,
+      whatsapp: formValue.whatsapp,
+      address: formValue.address,
+      city: formValue.city,
+      state: formValue.state,
+      zipCode: formValue.zipCode,
+      isActive: formValue.isActive,
+      maintenanceMode: formValue.maintenanceMode,
+      maintenanceMessage: formValue.maintenanceMessage,
+      businessHours: formValue.businessHours,
+      notifyNewOrders: formValue.notifyNewOrders,
+      automaticNewsletter: formValue.automaticNewsletter,
+      seoTitle: formValue.seoTitle,
+      seoDescription: formValue.seoDescription,
+      seoKeywords: formValue.seoKeywords,
+      currency: formValue.currency,
+      locale: formValue.locale
+    };
 
     this.configService.updateAdmin(payload).subscribe({
       next: () => {
@@ -110,8 +128,9 @@ export class SettingsComponent implements OnInit {
       error: (err) => {
         console.error('Error saving settings:', err.error);
         this.isSaving.set(false);
-        this.saveError.set(err.error?.message || 'Ocorreu um erro ao salvar as configurações.');
-        setTimeout(() => this.saveError.set(null), 5000);
+        const msg = err.error?.message;
+        this.saveError.set(Array.isArray(msg) ? msg.join(' | ') : (msg || 'Erro ao salvar.'));
+        setTimeout(() => this.saveError.set(null), 8000);
       }
     });
   }
