@@ -152,7 +152,6 @@
             </div>
         </div>
 
-
         <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
             <div class="p-6 border-b border-slate-200 flex items-center gap-3 bg-gray-800">
                 <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
@@ -179,7 +178,7 @@
                     <button type="button" role="switch" [attr.aria-checked]="settingsForm.get('notifyNewOrders')?.value"
                         (click)="toggleSwitch('notifyNewOrders')"
                         [attr.data-state]="settingsForm.get('notifyNewOrders')?.value ? 'checked' : 'unchecked'"
-                        class="peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors data-[state=checked]:bg-primary data-[state=unchecked]:bg-slate-200">
+                        class="peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors data-[state=checked]:bg-emerald-500 data-[state=unchecked]:bg-slate-200">
                         <span [attr.data-state]="settingsForm.get('notifyNewOrders')?.value ? 'checked' : 'unchecked'"
                             class="pointer-events-none block h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0"></span>
                     </button>
@@ -194,7 +193,7 @@
                         [attr.aria-checked]="settingsForm.get('automaticNewsletter')?.value"
                         (click)="toggleSwitch('automaticNewsletter')"
                         [attr.data-state]="settingsForm.get('automaticNewsletter')?.value ? 'checked' : 'unchecked'"
-                        class="peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors data-[state=checked]:bg-primary data-[state=unchecked]:bg-slate-200">
+                        class="peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors data-[state=checked]:bg-emerald-500 data-[state=unchecked]:bg-slate-200">
                         <span
                             [attr.data-state]="settingsForm.get('automaticNewsletter')?.value ? 'checked' : 'unchecked'"
                             class="pointer-events-none block h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0"></span>
@@ -246,6 +245,12 @@
                 </div>
             </div>
             <div class="p-6 space-y-4">
+                <div class="space-y-2">
+                    <label class="text-sm font-medium leading-none">Google Maps Embed URL</label>
+                    <input
+                        class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                        formControlName="googleMapsEmbedUrl" placeholder='<iframe src="..."></iframe>'>
+                </div>
                 <div class="space-y-2">
                     <label class="text-sm font-medium leading-none">Horário de Funcionamento</label>
                     <input
