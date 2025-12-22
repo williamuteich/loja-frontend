@@ -7,14 +7,14 @@ import { environment } from '../../../../../environments/environment';
 import { GenericModal } from '../../../../components/dashboard/generic-modal/generic-modal';
 import { Category } from '../../../../models';
 import { CategoryForm } from '../../../../components/dashboard/modals/category-form/category-form';
-import { SkeletonTableComponent } from '../../../../components/dashboard/skeleton/form/skeletonForm.component';
 import { EmptyStateComponent } from '../../../../components/dashboard/empty-state/empty-state.component';
 import { SkeletonCategoryComponent } from '../../../../components/dashboard/skeleton/category/skeleton-category.component';
+import { SkeletonTableComponent } from '../../../../components/dashboard/skeleton/form/skeletonForm.component';
 
 @Component({
   selector: 'app-categories',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, CategoryForm, SkeletonTableComponent, EmptyStateComponent, SkeletonCategoryComponent],
+  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, CategoryForm, EmptyStateComponent, SkeletonCategoryComponent],
   templateUrl: './categories.component.html'
 })
 export class CategoriesComponent implements OnInit {

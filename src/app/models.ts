@@ -80,3 +80,12 @@ export interface TeamMember {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface Social {
+  id: string;
+  platform: string;
+  url: string;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
