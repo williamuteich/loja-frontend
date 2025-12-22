@@ -34,7 +34,7 @@ export class CategoriesComponent implements OnInit {
   error = this.categoryService.error;
 
   ngOnInit(): void {
-    this.categoryService.loadCategories();
+    this.categoryService.loadCategoriesAdmin();
   }
 
   openEditModal(category: Category): void {

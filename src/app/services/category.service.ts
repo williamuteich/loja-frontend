@@ -10,38 +10,64 @@ export class CategoryService {
     private readonly api = inject(ApiService)
 
     private readonly _categories = signal<Category[]>([]);
+    private readonly _publicCategories = signal<Category[]>([]);
+
     readonly categories = this._categories.asReadonly();
+    readonly publicCategories = this._publicCategories.asReadonly();
+
     readonly isLoading = signal(false);
     readonly error = signal<string | null>(null);
 
-    private loaded = false;
+    private adminLoaded = false;
+    private publicLoaded = false;
 
-    public loadCategories() {
-        if (this.loaded) return;
+    public loadCategoriesAdmin(): void {
+        if (this.adminLoaded) return;
 
         this.isLoading.set(true);
         this.error.set(null);
 
-        this.api.get<Category[]>('category').subscribe({
-            next: (category) => {
-                this._categories.set(category);
-                this.loaded = true;
+        this.api.get<Category[]>('category/admin').subscribe({
+            next: (categories) => {
+                this._categories.set(categories);
+                this.adminLoaded = true;
                 this.isLoading.set(false);
             },
             error: (err) => {
-                console.error('Erro ao carregar categorias', err);
-                this.error.set('Não foi possível carregar a lista de categorias.');
+                console.error('Erro ao carregar categorias admin', err);
+                this.error.set('Não foi possível carregar a lista de categorias do dashboard.');
                 this.isLoading.set(false);
             }
-        })
+        });
+    }
+
+    public loadCategoriesPublic(): void {
+        if (this.publicLoaded) return;
+
+        this.isLoading.set(true);
+        this.error.set(null);
+
+        this.api.get<Category[]>('category/public').subscribe({
+            next: (categories) => {
+                this._publicCategories.set(categories);
+                this.publicLoaded = true;
+                this.isLoading.set(false);
+            },
+            error: (err) => {
+                console.error('Erro ao carregar categorias públicas', err);
+                this.error.set('Não foi possível carregar as categorias da loja.');
+                this.isLoading.set(false);
+            }
+        });
     }
 
     update(id: string, data: Partial<Category>): Observable<Category> {
-        return this.api.patch<Category>(`category/${id}`, data).pipe(
+        return this.api.patch<Category>(`category/admin/${id}`, data).pipe(
             tap((updatedCategory) => {
                 this._categories.update(categories =>
                     categories.map(c => c.id === id ? { ...updatedCategory, _count: c._count } : c)
                 );
+                this.publicLoaded = false;
             })
         );
     }
