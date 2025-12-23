@@ -1,6 +1,7 @@
 @if (banners().length > 0) {
 <div class="banner-wrapper">
     <div class="banner-aspect">
+        <!-- Mobile Banner -->
         <div class="banner-container mobile-view">
             @for (banner of banners(); track banner.id; let i = $index) {
             <div class="slide" [class.active]="currentIndex() === i">
@@ -29,6 +30,7 @@
             }
         </div>
 
+        <!-- Desktop Banner -->
         <div class="banner-container desktop-view">
             @for (banner of banners(); track banner.id; let i = $index) {
             <div class="slide" [class.active]="currentIndex() === i">
