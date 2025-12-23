@@ -1,10 +1,11 @@
-import { Component, inject, OnInit, signal, OnDestroy } from '@angular/core';
-import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { Component, inject, OnInit, signal, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { CommonModule, NgOptimizedImage, isPlatformBrowser } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { TrustInfoComponent } from '../trust-info/trust-info.component';
 import { BannerService } from '../../../services/banner.service';
 import { environment } from '../../../../environments/environment';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 @Component({
     selector: 'app-banner',
@@ -15,11 +16,27 @@ import { environment } from '../../../../environments/environment';
 })
 export class BannerComponent implements OnInit, OnDestroy {
     private readonly bannerService = inject(BannerService);
+    private readonly breakpointObserver = inject(BreakpointObserver);
+    private readonly platformId = inject(PLATFORM_ID);
+
     protected readonly banners = this.bannerService.publicBanners;
     protected readonly backendUrl = environment.BACKEND_URL;
 
+    protected isDesktop = signal(true);
     protected currentIndex = signal(0);
     private autoplayInterval?: any;
+
+    constructor() {
+        if (isPlatformBrowser(this.platformId)) {
+            // Immediate check to prevent FOUC
+            this.isDesktop.set(window.innerWidth >= 1200);
+
+            // Re-sync on resize
+            this.breakpointObserver.observe('(min-width: 1200px)').subscribe(result => {
+                this.isDesktop.set(result.matches);
+            });
+        }
+    }
 
     ngOnInit(): void {
         this.bannerService.loadBannersPublic();

@@ -1,63 +1,49 @@
 @if (banners().length > 0) {
 <div class="banner-wrapper">
     <div class="banner-aspect">
-        <!-- Mobile Banner -->
-        <div class="banner-container mobile-view">
+        @if (isDesktop()) {
+        <!-- Desktop Banner Container -->
+        <div class="banner-container">
             @for (banner of banners(); track banner.id; let i = $index) {
             <div class="slide" [class.active]="currentIndex() === i">
                 @if (banner.linkUrl) {
                 <a [href]="banner.linkUrl" target="_blank" rel="noopener" class="banner-link">
-                    @if (banner.imageMobile) {
-                    <img [ngSrc]="backendUrl + '/' + banner.imageMobile" fill [alt]="banner.title" [priority]="i === 0"
-                        [loading]="i === 0 ? undefined : 'lazy'" class="banner-img" ngSkipSizeCheck>
-                    } @else if (banner.imageDesktop) {
-                    <img [ngSrc]="backendUrl + '/' + banner.imageDesktop" fill [alt]="banner.title" [priority]="i === 0"
-                        [loading]="i === 0 ? undefined : 'lazy'" class="banner-img" ngSkipSizeCheck>
-                    }
+                    <img [ngSrc]="backendUrl + '/' + (banner.imageDesktop || banner.imageMobile)" fill
+                        [alt]="banner.title" [priority]="i === 0" [loading]="i === 0 ? undefined : 'lazy'"
+                        class="banner-img" ngSkipSizeCheck>
                 </a>
                 } @else {
                 <div class="banner-link">
-                    @if (banner.imageMobile) {
-                    <img [ngSrc]="backendUrl + '/' + banner.imageMobile" fill [alt]="banner.title" [priority]="i === 0"
-                        [loading]="i === 0 ? undefined : 'lazy'" class="banner-img" ngSkipSizeCheck>
-                    } @else if (banner.imageDesktop) {
-                    <img [ngSrc]="backendUrl + '/' + banner.imageDesktop" fill [alt]="banner.title" [priority]="i === 0"
-                        [loading]="i === 0 ? undefined : 'lazy'" class="banner-img" ngSkipSizeCheck>
-                    }
+                    <img [ngSrc]="backendUrl + '/' + (banner.imageDesktop || banner.imageMobile)" fill
+                        [alt]="banner.title" [priority]="i === 0" [loading]="i === 0 ? undefined : 'lazy'"
+                        class="banner-img" ngSkipSizeCheck>
                 </div>
                 }
             </div>
             }
         </div>
-
-        <!-- Desktop Banner -->
-        <div class="banner-container desktop-view">
+        } @else {
+        <!-- Mobile Banner Container -->
+        <div class="banner-container">
             @for (banner of banners(); track banner.id; let i = $index) {
             <div class="slide" [class.active]="currentIndex() === i">
                 @if (banner.linkUrl) {
                 <a [href]="banner.linkUrl" target="_blank" rel="noopener" class="banner-link">
-                    @if (banner.imageDesktop) {
-                    <img [ngSrc]="backendUrl + '/' + banner.imageDesktop" fill [alt]="banner.title" [priority]="i === 0"
-                        [loading]="i === 0 ? undefined : 'lazy'" class="banner-img" ngSkipSizeCheck>
-                    } @else if (banner.imageMobile) {
-                    <img [ngSrc]="backendUrl + '/' + banner.imageMobile" fill [alt]="banner.title" [priority]="i === 0"
-                        [loading]="i === 0 ? undefined : 'lazy'" class="banner-img" ngSkipSizeCheck>
-                    }
+                    <img [ngSrc]="backendUrl + '/' + (banner.imageMobile || banner.imageDesktop)" fill
+                        [alt]="banner.title" [priority]="i === 0" [loading]="i === 0 ? undefined : 'lazy'"
+                        class="banner-img" ngSkipSizeCheck>
                 </a>
                 } @else {
                 <div class="banner-link">
-                    @if (banner.imageDesktop) {
-                    <img [ngSrc]="backendUrl + '/' + banner.imageDesktop" fill [alt]="banner.title" [priority]="i === 0"
-                        [loading]="i === 0 ? undefined : 'lazy'" class="banner-img" ngSkipSizeCheck>
-                    } @else if (banner.imageMobile) {
-                    <img [ngSrc]="backendUrl + '/' + banner.imageMobile" fill [alt]="banner.title" [priority]="i === 0"
-                        [loading]="i === 0 ? undefined : 'lazy'" class="banner-img" ngSkipSizeCheck>
-                    }
+                    <img [ngSrc]="backendUrl + '/' + (banner.imageMobile || banner.imageDesktop)" fill
+                        [alt]="banner.title" [priority]="i === 0" [loading]="i === 0 ? undefined : 'lazy'"
+                        class="banner-img" ngSkipSizeCheck>
                 </div>
                 }
             </div>
             }
         </div>
+        }
     </div>
 
     @if (banners().length > 1) {

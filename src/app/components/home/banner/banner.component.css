@@ -30,24 +30,6 @@
     height: 100%;
 }
 
-.mobile-view {
-    display: block !important;
-}
-
-.desktop-view {
-    display: none !important;
-}
-
-@media (min-width: 1200px) {
-    .mobile-view {
-        display: none !important;
-    }
-
-    .desktop-view {
-        display: block !important;
-    }
-}
-
 .banner-link {
     display: block;
     width: 100%;

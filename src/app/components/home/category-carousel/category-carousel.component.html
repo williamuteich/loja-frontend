@@ -36,14 +36,14 @@
                         </div>
                         }
 
-                        <!-- Novo Overlay 100% com Blur Leve -->
+                        <!-- Overlay 100% com Blur Leve e Texto Centralizado -->
                         <div
-                            class="absolute inset-0 bg-black/20 backdrop-blur-[2px] flex flex-col items-center justify-center p-2 text-center group-hover/card:bg-black/40 group-hover/card:backdrop-blur-xs transition-all duration-500">
+                            class="absolute inset-0 bg-black/25 backdrop-blur-[1px] flex flex-col items-center justify-center p-2 text-center group-hover/card:bg-black/40 group-hover/card:backdrop-blur-xs transition-all duration-500">
                             <h3
-                                class="text-white font-bold text-sm md:text-xl lg:text-2xl mb-1 line-clamp-1 capitalize drop-shadow-lg transform group-hover/card:scale-110 transition-transform duration-500">
+                                class="text-white font-bold text-sm md:text-xl lg:text-2xl mb-1 line-clamp-2 capitalize drop-shadow-xl transform group-hover/card:scale-105 transition-transform duration-500 px-2 leading-tight">
                                 {{ category.name }}</h3>
                             <span
-                                class="text-white/90 text-[6px] md:text-[9px] lg:text-[10px] uppercase tracking-[0.2em] font-bold block drop-shadow-md">
+                                class="text-white/80 text-[7px] md:text-[9px] lg:text-[10px] uppercase tracking-[0.25em] font-bold block drop-shadow-md">
                                 {{ category._count.products || 0 }} {{ (category._count.products === 1) ? 'item' :
                                 'itens' }}
                             </span>
