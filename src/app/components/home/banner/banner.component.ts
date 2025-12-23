@@ -6,7 +6,6 @@ import { TrustInfoComponent } from '../trust-info/trust-info.component';
 import { BannerService } from '../../../services/banner.service';
 import { environment } from '../../../../environments/environment';
 
-
 @Component({
     selector: 'app-banner',
     standalone: true,

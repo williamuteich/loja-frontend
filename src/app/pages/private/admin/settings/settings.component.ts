@@ -52,6 +52,9 @@ export class SettingsComponent implements OnInit {
       city: [''],
       state: [''],
       zipCode: [''],
+      logoUrl: [''],
+      faviconUrl: [''],
+      ogImageUrl: [''],
       googleMapsEmbedUrl: [''],
       businessHours: [''],
       contactEmail: ['', [Validators.required, Validators.email]],
@@ -106,7 +109,6 @@ export class SettingsComponent implements OnInit {
       city: formValue.city,
       state: formValue.state,
       zipCode: formValue.zipCode,
-      googleMapsEmbedUrl: formValue.googleMapsEmbedUrl,
       isActive: formValue.isActive,
       maintenanceMode: formValue.maintenanceMode,
       maintenanceMessage: formValue.maintenanceMessage,
@@ -139,15 +141,8 @@ export class SettingsComponent implements OnInit {
 
   toggleSwitch(controlName: string): void {
     const control = this.settingsForm.get(controlName);
-    if (!control) return;
-
-    const newValue = !control.value;
-    control.setValue(newValue);
-
-    if (controlName === 'isActive' && newValue === true) {
-      this.settingsForm.get('maintenanceMode')?.setValue(false);
-    } else if (controlName === 'maintenanceMode' && newValue === true) {
-      this.settingsForm.get('isActive')?.setValue(false);
+    if (control) {
+      control.setValue(!control.value);
     }
   }
 }

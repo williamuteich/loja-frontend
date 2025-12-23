@@ -1,14 +1,12 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { BannerComponent } from '../../../components/home/banner/banner.component';
+import { CategoryCarouselComponent } from '../../../components/home/category-carousel/category-carousel.component';
 
 @Component({
     selector: 'app-home',
-    standalone: true,
-    imports: [BannerComponent],
+    imports: [BannerComponent, CategoryCarouselComponent],
     templateUrl: './home.component.html',
-    styles: ``,
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    styles: ``
 })
 export class HomeComponent {
-
 }

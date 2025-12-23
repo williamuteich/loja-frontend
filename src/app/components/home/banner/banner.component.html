@@ -1,76 +1,82 @@
 @if (banners().length > 0) {
 <div class="banner-wrapper">
     <div class="banner-aspect">
-        <div class="banner-container block min-[1200px]:hidden">
+        <div class="banner-container mobile-view">
             @for (banner of banners(); track banner.id; let i = $index) {
             <div class="slide" [class.active]="currentIndex() === i">
                 @if (banner.linkUrl) {
                 <a [href]="banner.linkUrl" target="_blank" rel="noopener" class="banner-link">
                     @if (banner.imageMobile) {
-                    <img [ngSrc]="backendUrl + '/' + banner.imageMobile"
-                        [width]="getResolution(banner.resolutionMobile, true).width"
-                        [height]="getResolution(banner.resolutionMobile, true).height" [alt]="banner.title"
-                        [priority]="i === 0" class="banner-img" ngSkipSizeCheck>
+                    <img [ngSrc]="backendUrl + '/' + banner.imageMobile" fill [alt]="banner.title" [priority]="i === 0"
+                        [loading]="i === 0 ? undefined : 'lazy'" class="banner-img" ngSkipSizeCheck>
                     } @else if (banner.imageDesktop) {
-                    <img [ngSrc]="backendUrl + '/' + banner.imageDesktop"
-                        [width]="getResolution(banner.resolutionDesktop).width"
-                        [height]="getResolution(banner.resolutionDesktop).height" [alt]="banner.title"
-                        [priority]="i === 0" class="banner-img" ngSkipSizeCheck>
+                    <img [ngSrc]="backendUrl + '/' + banner.imageDesktop" fill [alt]="banner.title" [priority]="i === 0"
+                        [loading]="i === 0 ? undefined : 'lazy'" class="banner-img" ngSkipSizeCheck>
                     }
                 </a>
                 } @else {
-                @if (banner.imageMobile) {
-                <img [ngSrc]="backendUrl + '/' + banner.imageMobile"
-                    [width]="getResolution(banner.resolutionMobile, true).width"
-                    [height]="getResolution(banner.resolutionMobile, true).height" [alt]="banner.title"
-                    [priority]="i === 0" class="banner-img" ngSkipSizeCheck>
-                } @else if (banner.imageDesktop) {
-                <img [ngSrc]="backendUrl + '/' + banner.imageDesktop"
-                    [width]="getResolution(banner.resolutionDesktop).width"
-                    [height]="getResolution(banner.resolutionDesktop).height" [alt]="banner.title" [priority]="i === 0"
-                    class="banner-img" ngSkipSizeCheck>
-                }
+                <div class="banner-link">
+                    @if (banner.imageMobile) {
+                    <img [ngSrc]="backendUrl + '/' + banner.imageMobile" fill [alt]="banner.title" [priority]="i === 0"
+                        [loading]="i === 0 ? undefined : 'lazy'" class="banner-img" ngSkipSizeCheck>
+                    } @else if (banner.imageDesktop) {
+                    <img [ngSrc]="backendUrl + '/' + banner.imageDesktop" fill [alt]="banner.title" [priority]="i === 0"
+                        [loading]="i === 0 ? undefined : 'lazy'" class="banner-img" ngSkipSizeCheck>
+                    }
+                </div>
                 }
             </div>
             }
         </div>
 
-        <div class="banner-container hidden min-[1200px]:block">
+        <div class="banner-container desktop-view">
             @for (banner of banners(); track banner.id; let i = $index) {
             <div class="slide" [class.active]="currentIndex() === i">
                 @if (banner.linkUrl) {
                 <a [href]="banner.linkUrl" target="_blank" rel="noopener" class="banner-link">
                     @if (banner.imageDesktop) {
-                    <img [ngSrc]="backendUrl + '/' + banner.imageDesktop"
-                        [width]="getResolution(banner.resolutionDesktop).width"
-                        [height]="getResolution(banner.resolutionDesktop).height" [alt]="banner.title"
-                        [priority]="i === 0" class="banner-img" ngSkipSizeCheck>
+                    <img [ngSrc]="backendUrl + '/' + banner.imageDesktop" fill [alt]="banner.title" [priority]="i === 0"
+                        [loading]="i === 0 ? undefined : 'lazy'" class="banner-img" ngSkipSizeCheck>
                     } @else if (banner.imageMobile) {
-
-                    <img [ngSrc]="backendUrl + '/' + banner.imageMobile"
-                        [width]="getResolution(banner.resolutionMobile, true).width"
-                        [height]="getResolution(banner.resolutionMobile, true).height" [alt]="banner.title"
-                        [priority]="i === 0" class="banner-img" ngSkipSizeCheck>
+                    <img [ngSrc]="backendUrl + '/' + banner.imageMobile" fill [alt]="banner.title" [priority]="i === 0"
+                        [loading]="i === 0 ? undefined : 'lazy'" class="banner-img" ngSkipSizeCheck>
                     }
                 </a>
                 } @else {
-                @if (banner.imageDesktop) {
-                <img [ngSrc]="backendUrl + '/' + banner.imageDesktop"
-                    [width]="getResolution(banner.resolutionDesktop).width"
-                    [height]="getResolution(banner.resolutionDesktop).height" [alt]="banner.title" [priority]="i === 0"
-                    class="banner-img" ngSkipSizeCheck>
-                } @else if (banner.imageMobile) {
-
-                <img [ngSrc]="backendUrl + '/' + banner.imageMobile"
-                    [width]="getResolution(banner.resolutionMobile, true).width"
-                    [height]="getResolution(banner.resolutionMobile, true).height" [alt]="banner.title"
-                    [priority]="i === 0" class="banner-img" ngSkipSizeCheck>
-                }
+                <div class="banner-link">
+                    @if (banner.imageDesktop) {
+                    <img [ngSrc]="backendUrl + '/' + banner.imageDesktop" fill [alt]="banner.title" [priority]="i === 0"
+                        [loading]="i === 0 ? undefined : 'lazy'" class="banner-img" ngSkipSizeCheck>
+                    } @else if (banner.imageMobile) {
+                    <img [ngSrc]="backendUrl + '/' + banner.imageMobile" fill [alt]="banner.title" [priority]="i === 0"
+                        [loading]="i === 0 ? undefined : 'lazy'" class="banner-img" ngSkipSizeCheck>
+                    }
+                </div>
                 }
             </div>
             }
         </div>
     </div>
+
+    @if (banners().length > 1) {
+    <button (click)="prev()"
+        class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all hover:bg-white/40 z-20">
+        <mat-icon>chevron_left</mat-icon>
+    </button>
+    <button (click)="next()"
+        class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all hover:bg-white/40 z-20">
+        <mat-icon>chevron_right</mat-icon>
+    </button>
+
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+        @for (banner of banners(); track banner.id; let i = $index) {
+        <button (click)="goTo(i)" class="w-2.5 h-2.5 rounded-full transition-all duration-300"
+            [class]="currentIndex() === i ? 'bg-white w-8' : 'bg-white/40 hover:bg-white/60'">
+        </button>
+        }
+    </div>
+    }
+
     <app-trust-info />
 </div>
 }
