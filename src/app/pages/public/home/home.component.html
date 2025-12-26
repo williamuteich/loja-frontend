@@ -1,5 +1,11 @@
 <app-banner></app-banner>
 
-<app-category-carousel />
+<app-category-carousel></app-category-carousel>
 
-<app-offer-carousel />
+<app-offer-carousel></app-offer-carousel>
+
+@for (category of homeCategories(); track category.id) {
+<app-category-products-carousel [title]="category.name" [description]="category.description"
+    [products]="getCategoryProducts(category.id)" [categoryPath]="'/produtos?category=' + category.id">
+</app-category-products-carousel>
+}

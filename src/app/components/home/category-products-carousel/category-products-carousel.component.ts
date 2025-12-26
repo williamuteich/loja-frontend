@@ -1,30 +1,25 @@
-import { Component, inject, OnInit, ViewChild, ElementRef, computed } from '@angular/core';
+import { Component, input, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { ProductService } from '../../../services/product.service';
+import { Product } from '../../../models';
 import { environment } from '../../../../environments/environment';
 
 @Component({
-    selector: 'app-offer-carousel',
+    selector: 'app-category-products-carousel',
     standalone: true,
     imports: [CommonModule, NgOptimizedImage, RouterLink],
-    templateUrl: './offer-carousel.component.html',
-    styleUrl: './offer-carousel.component.css'
+    templateUrl: './category-products-carousel.component.html',
+    styleUrl: './category-products-carousel.component.css'
 })
-export class OfferCarouselComponent implements OnInit {
-    private readonly productService = inject(ProductService);
-
-    protected readonly products = computed(() =>
-        this.productService.publicProducts().filter(p => !!p.discountPrice && p.discountPrice > 0)
-    );
+export class CategoryProductsCarouselComponent {
+    title = input.required<string>();
+    description = input<string | null>(null);
+    products = input.required<Product[]>();
+    categoryPath = input<string>('/produtos');
 
     protected readonly backendUrl = environment.BACKEND_URL;
 
     @ViewChild('scrollContainer') scrollContainer!: ElementRef<HTMLDivElement>;
-
-    ngOnInit(): void {
-        this.productService.loadProductsPublic();
-    }
 
     scroll(direction: 'left' | 'right'): void {
         const container = this.scrollContainer.nativeElement;

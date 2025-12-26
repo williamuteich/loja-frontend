@@ -1,0 +1,15 @@
+.carousel-scroll {
+    scroll-behavior: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+.carousel-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.carousel-wrapper {
+    position: relative;
+    width: 100%;
+}
