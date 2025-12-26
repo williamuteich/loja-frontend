@@ -89,7 +89,9 @@
 @if (brandToDelete(); as brand) {
 <app-generic-modal title="Excluir Marca" (close)="isDeleteModalVisible.set(false)" [showFooter]="false">
     <app-delete-confirmation [itemName]="brand.name" itemType="esta marca" (confirm)="confirmDelete()"
-        (cancel)="isDeleteModalVisible.set(false)">
+        (cancel)="isDeleteModalVisible.set(false)"
+        [warningMessage]="brand._count.products > 0 ? 'Não é possível excluir esta marca pois existem ' + brand._count.products + ' produtos vinculados a ela. Remova ou altere os produtos antes de excluir.' : null"
+        [canConfirm]="brand._count.products === 0">
     </app-delete-confirmation>
 </app-generic-modal>
 }

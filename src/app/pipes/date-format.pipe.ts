@@ -6,7 +6,7 @@ import { DatePipe } from '@angular/common';
     standalone: true
 })
 export class DateFormatPipe implements PipeTransform {
-    private datePipe = new DatePipe('en-US');
+    private datePipe = new DatePipe('pt-BR');
 
     transform(value: string | Date | null | undefined): string {
         if (!value) return '';

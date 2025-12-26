@@ -78,7 +78,9 @@
 @if(categoryToDelete(); as category) {
 <app-generic-modal title="Excluir Categoria" (close)="isDeleteModalVisible.set(false)" [showFooter]="false">
     <app-delete-confirmation [itemName]="category.name" itemType="esta categoria" (confirm)="confirmDelete()"
-        (cancel)="isDeleteModalVisible.set(false)">
+        (cancel)="isDeleteModalVisible.set(false)"
+        [warningMessage]="category._count.products > 0 ? 'Não é possível excluir esta categoria pois existem ' + category._count.products + ' produtos vinculados a ela. Remova ou altere os produtos antes de excluir.' : null"
+        [canConfirm]="category._count.products === 0">
     </app-delete-confirmation>
 </app-generic-modal>
 }

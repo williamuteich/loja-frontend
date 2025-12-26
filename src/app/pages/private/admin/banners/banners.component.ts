@@ -6,7 +6,7 @@ import { Banner } from '../../../../models';
 import { environment } from '../../../../../environments/environment';
 import { signal } from '@angular/core';
 import { AdminSearchComponent } from '../../../../components/dashboard/admin-search/admin-search.component';
-import { GenericModal } from '../../../../components/dashboard/generic-modal/generic-modal';
+import { GenericModal } from '../../../../components/dashboard/modals/edit-modal/generic-modal';
 import { BannerForm } from '../../../../components/dashboard/modals/banner-form/banner-form';
 import { SkeletonBannerComponent } from '../../../../components/dashboard/skeleton/banner/skeletonBanner.component';
 import { EmptyStateComponent } from '../../../../components/dashboard/empty-state/empty-state.component';

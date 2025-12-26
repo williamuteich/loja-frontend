@@ -30,9 +30,9 @@ export const routes: Routes = [
     component: MainLayoutComponent,
     children: [
       { path: '', component: HomeComponent, canActivate: [maintenanceGuard] },
-      { path: 'login', component: LoginComponent, canActivate: [loginGuard] }
     ]
   },
+  { path: 'login', component: LoginComponent, canActivate: [loginGuard] },
   {
     path: 'dashboard',
     component: AdminLayoutComponent,

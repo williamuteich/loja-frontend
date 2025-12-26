@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { LucideAngularModule, Plus, Package, SquarePen, Trash2 } from 'lucide-angular';
 import { AdminSearchComponent } from '../../../../components/dashboard/admin-search/admin-search.component';
 import { BrandService } from '../../../../services/brand.service';
-import { GenericModal } from '../../../../components/dashboard/generic-modal/generic-modal';
+import { GenericModal } from '../../../../components/dashboard/modals/edit-modal/generic-modal';
 import { Brand } from '../../../../models';
 import { BrandForm } from '../../../../components/dashboard/modals/brand-form/brand-form';
 import { DeleteConfirmationComponent } from '../../../../components/dashboard/modals/delete-confirmation/delete-confirmation.component';

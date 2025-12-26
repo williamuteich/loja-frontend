@@ -4,7 +4,7 @@ import { LucideAngularModule, Instagram, Facebook, Twitter, Youtube, Linkedin, S
 import { SocialService } from '../../../../services/social.service';
 import { Social } from '../../../../models';
 import { FormsModule } from '@angular/forms';
-import { GenericModal } from '../../../../components/dashboard/generic-modal/generic-modal';
+import { GenericModal } from '../../../../components/dashboard/modals/edit-modal/generic-modal';
 import { DeleteConfirmationComponent } from '../../../../components/dashboard/modals/delete-confirmation/delete-confirmation.component';
 
 @Component({
