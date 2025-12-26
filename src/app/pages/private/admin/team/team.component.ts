@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule, Plus, UserCog, SquarePen, Trash2 } from 'lucide-angular';
 import { AdminSearchComponent } from '../../../../components/dashboard/admin-search/admin-search.component';
@@ -9,6 +9,7 @@ import { DateFormatPipe } from '../../../../pipes/date-format.pipe';
 import { TeamMemberForm } from '../../../../components/dashboard/modals/team-member-form/team-member-form';
 import { SkeletonTableComponent } from '../../../../components/dashboard/skeleton/form/skeletonForm.component';
 import { EmptyStateComponent } from '../../../../components/dashboard/empty-state/empty-state.component';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-team',
@@ -22,7 +23,10 @@ export class TeamComponent implements OnInit {
   readonly Trash2 = Trash2;
 
   private readonly teamMemberService = inject(TeamMemberService);
+  private readonly authService = inject(AuthService);
+
   protected readonly team = this.teamMemberService.teamMembers;
+  protected readonly isAdmin = computed(() => this.authService.hasRole(['ADMIN']));
 
   isModalVisible = signal(false);
   selectedMember = signal<TeamMember | undefined>(undefined);
@@ -34,7 +38,7 @@ export class TeamComponent implements OnInit {
     this.teamMemberService.loadTeamMembersAdmin();
   }
 
-  openEditModal(member: TeamMember): void {
+  openEditModal(member?: TeamMember): void {
     this.selectedMember.set(member);
     this.isModalVisible.set(true);
   }
@@ -60,7 +64,10 @@ export class TeamComponent implements OnInit {
 
     const formValue = memberForm.getFormValue();
 
-    this.teamMemberService.update(memberId, formValue).subscribe({
+    // Backend validation: "property role should not exist" on update
+    const { role, ...updateData } = formValue;
+
+    this.teamMemberService.update(memberId, updateData).subscribe({
       next: () => {
         this.teamMemberService.loadTeamMembersAdmin();
         this.closeModal();

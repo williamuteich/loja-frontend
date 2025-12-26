@@ -23,7 +23,7 @@
     </div>
 
     <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
-        @for (link of links; track link.path) {
+        @for (link of visibleLinks(); track link.path) {
         <a class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 text-slate-400 hover:text-white hover:bg-slate-800 group cursor-pointer"
             [routerLink]="link.path" routerLinkActive="bg-slate-800 text-white shadow-lg"
             [routerLinkActiveOptions]="{ exact: link.exact ?? false }">

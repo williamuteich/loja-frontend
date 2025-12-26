@@ -32,27 +32,27 @@ export const routes: Routes = [
     component: AdminLayoutComponent,
     canActivate: [authGuard],
     children: [
-      { path: '', component: AdminHomeComponent },
-      { path: 'brands', component: BrandsComponent },
-      { path: 'categories', component: CategoriesComponent },
+      { path: '', component: AdminHomeComponent, canActivate: [roleGuard], data: { roles: ['ADMIN', 'COLLABORATOR'] } },
+      { path: 'brands', component: BrandsComponent, canActivate: [roleGuard], data: { roles: ['ADMIN', 'COLLABORATOR'] } },
+      { path: 'categories', component: CategoriesComponent, canActivate: [roleGuard], data: { roles: ['ADMIN', 'COLLABORATOR'] } },
       {
         path: 'settings',
         component: SettingsComponent,
         canActivate: [roleGuard],
         data: { roles: ['ADMIN'] }
       },
-      { path: 'clients', component: ClientsComponent },
+      { path: 'clients', component: ClientsComponent, canActivate: [roleGuard], data: { roles: ['ADMIN', 'COLLABORATOR'] } },
       {
         path: 'team',
         component: TeamComponent,
         canActivate: [roleGuard],
         data: { roles: ['ADMIN'] }
       },
-      { path: 'products', component: ProductsComponent },
-      { path: 'products/edit/:id', component: ProductEditComponent },
-      { path: 'socials', component: SocialsComponent },
-      { path: 'newsletter', component: NewsletterComponent },
-      { path: 'banners', component: BannersComponent }
+      { path: 'products', component: ProductsComponent, canActivate: [roleGuard], data: { roles: ['ADMIN', 'COLLABORATOR'] } },
+      { path: 'products/edit/:id', component: ProductEditComponent, canActivate: [roleGuard], data: { roles: ['ADMIN', 'COLLABORATOR'] } },
+      { path: 'socials', component: SocialsComponent, canActivate: [roleGuard], data: { roles: ['ADMIN', 'COLLABORATOR'] } },
+      { path: 'newsletter', component: NewsletterComponent, canActivate: [roleGuard], data: { roles: ['ADMIN', 'COLLABORATOR'] } },
+      { path: 'banners', component: BannersComponent, canActivate: [roleGuard], data: { roles: ['ADMIN', 'COLLABORATOR'] } }
     ]
   }
 ];
