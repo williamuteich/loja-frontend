@@ -4,78 +4,98 @@
             <div class="container mx-auto px-4">
                 <div class="flex items-center justify-between text-xs font-light tracking-wide">
                     <div class="hidden sm:flex items-center gap-4">
+                        @if (config()?.phone) {
                         <span
                             class="flex items-center gap-1.5 opacity-90 transition-opacity hover:opacity-100 cursor-default">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="lucide lucide-phone w-3 h-3">
+                                stroke-linejoin="round" class="w-3 h-3">
                                 <path
                                     d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
                                 </path>
-                            </svg>(11) 99999-9999
+                            </svg>
+                            {{ config()?.phone }}
                         </span>
+                        }
                         <span
                             class="flex items-center gap-1.5 opacity-90 transition-opacity hover:opacity-100 cursor-default">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="lucide lucide-mail w-3 h-3">
+                                stroke-linejoin="round" class="w-3 h-3">
                                 <rect width="20" height="16" x="2" y="4" rx="2"></rect>
                                 <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                            </svg>contato@bella.com.br
+                            </svg>
+                            {{ config()?.contactEmail }}
                         </span>
                     </div>
-                    <div class="flex items-center gap-2 mx-auto sm:mx-0">
+                    <div class="flex items-center gap-2 mx-auto sm:mx-0 text-center px-4">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide lucide-sparkles w-3 h-3">
+                            class="w-3 h-3 text-pink-200">
                             <path
                                 d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z">
                             </path>
-                            <path d="M20 3v4"></path>
-                            <path d="M22 5h-4"></path>
-                            <path d="M4 17v2"></path>
-                            <path d="M5 18H3"></path>
                         </svg>
-                        <span class="font-medium">Realçando a beleza que existe em você</span>
+                        <span class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">{{ config()?.seoTitle
+                            || 'Beleza que existe em você' }}</span>
                     </div>
                     <div class="hidden md:flex items-center gap-3">
-                        <a href="#" class="opacity-80 hover:opacity-100 transition-opacity">
+                        @for (social of activeSocials(); track social.id) {
+                        <a [href]="social.url" target="_blank" class="opacity-80 hover:opacity-100 transition-opacity">
+                            @if (social.platform.toLowerCase().includes('instagram')) {
                             <lucide-icon [img]="Instagram" class="w-3.5 h-3.5"></lucide-icon>
-                        </a>
-                        <a href="#" class="opacity-80 hover:opacity-100 transition-opacity">
+                            } @else if (social.platform.toLowerCase().includes('facebook')) {
                             <lucide-icon [img]="Facebook" class="w-3.5 h-3.5"></lucide-icon>
+                            } @else {
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="w-3.5 h-3.5">
+                                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                            </svg>
+                            }
                         </a>
+                        }
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="header-main bg-background/95 backdrop-blur-sm border-b border-border border-slate-200 shadow-sm">
+    <div class="header-main bg-background/95 backdrop-blur-sm border-b border-slate-100 shadow-sm relative z-40">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between h-20 gap-6">
                 <a routerLink="/" class="flex items-center gap-3 shrink-0 group">
                     <div
                         class="w-13 h-13 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-                        <img ngSrc="logoBazar.png" width="52" height="43" alt="Logo Bazar Elegance" priority
+                        @if (config()?.logoUrl) {
+                        <img [ngSrc]="config()?.logoUrl!" width="52" height="43" alt="Logo" priority
                             class="rounded-full object-contain">
+                        } @else {
+                        <img ngSrc="logoBazar.png" width="52" height="43" alt="Logo" priority
+                            class="rounded-full object-contain">
+                        }
                     </div>
                     <div class="flex flex-col">
-                        <span class="font-display text-2xl font-bold text-pink-700 leading-tight">Elegance</span>
-                        <span class="text-[10px] text-muted-foreground uppercase tracking-[0.2em] -mt-1">Barra do
-                            Quarai</span>
+                        <span class="font-display text-2xl font-bold text-pink-700 leading-tight">{{ config()?.storeName
+                            || 'Elegance' }}</span>
+                        <div class="flex items-center gap-2 -mt-0.5">
+                            <span
+                                class="text-[10px] text-muted-foreground uppercase tracking-wider line-clamp-1 opacity-80">Barra
+                                do Quarai</span>
+                        </div>
                     </div>
                 </a>
 
-                <div class="hidden md:flex flex-1 max-w-2xl">
+                <div class="hidden md:flex flex-1 max-w-2xl px-4">
                     <div class="relative w-full">
                         <lucide-icon [img]="Search"
                             class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground"></lucide-icon>
                         <input type="search"
-                            class="flex px-3 py-2 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm w-full h-12 pl-16 pr-4 rounded-full bg-muted/30 border border-pink-300 focus:border-pink-500 focus:bg-background text-sm transition-all"
+                            class="w-full h-12 pl-12 pr-4 rounded-full bg-slate-50 border border-pink-100 focus:border-pink-500 focus:bg-white text-sm transition-all focus:outline-none focus:ring-4 focus:ring-pink-500/10"
                             placeholder="O que você está procurando hoje?">
                         <button
-                            class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-pink-700 text-white hover:bg-pink-800 shadow-soft hover:shadow-hover absolute right-1.5 top-1/2 -translate-y-1/2 rounded-full px-6 h-9">
+                            class="absolute right-1.5 top-1/2 -translate-y-1/2 bg-pink-700 text-white hover:bg-pink-800 rounded-full px-6 h-9 text-xs font-bold transition-all shadow-md active:scale-95">
                             Buscar
                         </button>
                     </div>
@@ -84,17 +104,17 @@
                 <nav class="hidden lg:flex items-center gap-1 shrink-0">
                     <a routerLink="/" routerLinkActive="text-pink-700 bg-pink-50"
                         [routerLinkActiveOptions]="{exact: true}"
-                        class="px-4 py-2 text-muted-foreground hover:text-pink-700 hover:bg-pink-50 rounded-full transition-all text-sm font-medium">Início</a>
+                        class="px-4 py-2 text-muted-foreground hover:text-pink-700 hover:bg-pink-50 rounded-full transition-all text-sm font-semibold">Início</a>
                     <a routerLink="/produtos" routerLinkActive="text-pink-700 bg-pink-50"
-                        class="px-4 py-2 text-muted-foreground hover:text-pink-700 hover:bg-pink-50 rounded-full transition-all text-sm font-medium">Produtos</a>
+                        class="px-4 py-2 text-muted-foreground hover:text-pink-700 hover:bg-pink-50 rounded-full transition-all text-sm font-semibold">Produtos</a>
                     <a routerLink="/categorias" routerLinkActive="text-pink-700 bg-pink-50"
-                        class="px-4 py-2 text-muted-foreground hover:text-pink-700 hover:bg-pink-50 rounded-full transition-all text-sm font-medium">Categorias</a>
+                        class="px-4 py-2 text-muted-foreground hover:text-pink-700 hover:bg-pink-50 rounded-full transition-all text-sm font-semibold">Categorias</a>
                     <a routerLink="/contato" routerLinkActive="text-pink-700 bg-pink-50"
-                        class="px-4 py-2 text-muted-foreground hover:text-pink-700 hover:bg-pink-50 rounded-full transition-all text-sm font-medium">Contato</a>
+                        class="px-4 py-2 text-muted-foreground hover:text-pink-700 hover:bg-pink-50 rounded-full transition-all text-sm font-semibold">Contato</a>
                 </nav>
 
                 <button (click)="toggleMenu()"
-                    class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 h-10 w-10 lg:hidden text-muted-foreground hover:text-pink-700 hover:bg-pink-50 rounded-full">
+                    class="lg:hidden w-10 h-10 flex items-center justify-center text-slate-600 hover:text-pink-700 hover:bg-pink-50 rounded-xl transition-all">
                     <lucide-icon [img]="Menu" class="w-6 h-6"></lucide-icon>
                 </button>
             </div>
@@ -104,60 +124,104 @@
     <div class="mobile-menu-overlay" [class.open]="isMenuOpen()" (click)="closeMenu()"></div>
 
     <div class="mobile-menu-panel" [class.open]="isMenuOpen()">
-        <div class="flex flex-col h-full bg-white shadow-2xl">
-            <div class="flex items-center justify-between p-6 border-b border-pink-100">
+        <div class="flex flex-col h-full bg-slate-50 overflow-y-auto">
+            <div
+                class="flex items-center justify-between p-6 bg-linear-to-r from-pink-600 to-pink-700 text-white shadow-lg sticky top-0 z-10">
                 <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 flex items-center justify-center">
-                        <img ngSrc="logoBazar.png" width="48" height="39" alt="Logo"
-                            class="rounded-full object-contain">
+                    <div
+                        class="w-12 h-12 bg-white/20 backdrop-blur-md flex items-center justify-center rounded-2xl overflow-hidden">
+                        @if (config()?.logoUrl) {
+                        <img [ngSrc]="config()?.logoUrl!" width="42" height="34" alt="Logo"
+                            class="rounded-lg object-contain brightness-110">
+                        } @else {
+                        <div class="w-full h-full flex items-center justify-center bg-white/10">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="w-6 h-6 opacity-60">
+                                <path
+                                    d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z">
+                                </path>
+                            </svg>
+                        </div>
+                        }
                     </div>
-                    <span class="font-display font-bold text-pink-700 uppercase tracking-wider text-sm">Bazar
-                        Elegance</span>
+                    <div class="flex flex-col">
+                        <span class="font-display font-bold uppercase tracking-widest text-sm leading-tight">{{
+                            config()?.storeName || 'Bazar Elegance' }}</span>
+                        <span class="text-[10px] text-pink-100 font-medium opacity-80 uppercase tracking-tighter">Menu
+                            de Navegação</span>
+                    </div>
                 </div>
-                <button (click)="closeMenu()" class="p-2 text-pink-700 hover:bg-pink-50 rounded-full transition-colors">
+                <button (click)="closeMenu()"
+                    class="p-2.5 bg-white/10 hover:bg-white/20 active:scale-90 rounded-xl transition-all">
                     <lucide-icon [img]="XIcon" class="w-6 h-6"></lucide-icon>
                 </button>
             </div>
 
-            <nav class="flex-1 px-4 py-8 flex flex-col gap-2">
-                <a routerLink="/" routerLinkActive="text-pink-700 bg-pink-50" (click)="closeMenu()"
-                    [routerLinkActiveOptions]="{exact: true}"
-                    class="flex items-center gap-4 px-6 py-4 text-muted-foreground hover:text-pink-700 hover:bg-pink-50 rounded-2xl transition-all font-medium">
-                    <lucide-icon [img]="Home" class="w-5 h-5"></lucide-icon>
-                    Início
+            <nav class="flex-1 px-4 py-8 flex flex-col gap-3">
+                <a routerLink="/" routerLinkActive="!text-pink-700 !bg-white shadow-md border-pink-100"
+                    (click)="closeMenu()" [routerLinkActiveOptions]="{exact: true}"
+                    class="flex items-center gap-4 px-6 py-4 text-slate-600 hover:text-pink-700 hover:bg-white rounded-3xl transition-all font-bold border border-transparent">
+                    <div
+                        class="w-10 h-10 bg-white rounded-2xl flex items-center justify-center shadow-sm text-pink-700">
+                        <lucide-icon [img]="Home" class="w-5 h-5"></lucide-icon>
+                    </div>
+                    <span>Início</span>
                 </a>
-                <a routerLink="/produtos" routerLinkActive="text-pink-700 bg-pink-50" (click)="closeMenu()"
-                    class="flex items-center gap-4 px-6 py-4 text-muted-foreground hover:text-pink-700 hover:bg-pink-50 rounded-2xl transition-all font-medium">
-                    <lucide-icon [img]="Package" class="w-5 h-5"></lucide-icon>
-                    Produtos
+                <a routerLink="/produtos" routerLinkActive="!text-pink-700 !bg-white shadow-md border-pink-100"
+                    (click)="closeMenu()"
+                    class="flex items-center gap-4 px-6 py-4 text-slate-600 hover:text-pink-700 hover:bg-white rounded-3xl transition-all font-bold border border-transparent">
+                    <div
+                        class="w-10 h-10 bg-white rounded-2xl flex items-center justify-center shadow-sm text-pink-700">
+                        <lucide-icon [img]="Package" class="w-5 h-5"></lucide-icon>
+                    </div>
+                    <span>Produtos</span>
                 </a>
-                <a routerLink="/categorias" routerLinkActive="text-pink-700 bg-pink-50" (click)="closeMenu()"
-                    class="flex items-center gap-4 px-6 py-4 text-muted-foreground hover:text-pink-700 hover:bg-pink-50 rounded-2xl transition-all font-medium">
-                    <lucide-icon [img]="Layers" class="w-5 h-5"></lucide-icon>
-                    Categorias
+                <a routerLink="/categorias" routerLinkActive="!text-pink-700 !bg-white shadow-md border-pink-100"
+                    (click)="closeMenu()"
+                    class="flex items-center gap-4 px-6 py-4 text-slate-600 hover:text-pink-700 hover:bg-white rounded-3xl transition-all font-bold border border-transparent">
+                    <div
+                        class="w-10 h-10 bg-white rounded-2xl flex items-center justify-center shadow-sm text-pink-700">
+                        <lucide-icon [img]="Layers" class="w-5 h-5"></lucide-icon>
+                    </div>
+                    <span>Categorias</span>
                 </a>
-                <a routerLink="/contato" routerLinkActive="text-pink-700 bg-pink-50" (click)="closeMenu()"
-                    class="flex items-center gap-4 px-6 py-4 text-muted-foreground hover:text-pink-700 hover:bg-pink-50 rounded-2xl transition-all font-medium">
-                    <lucide-icon [img]="Phone" class="w-5 h-5"></lucide-icon>
-                    Contato
+                <a routerLink="/contato" routerLinkActive="!text-pink-700 !bg-white shadow-md border-pink-100"
+                    (click)="closeMenu()"
+                    class="flex items-center gap-4 px-6 py-4 text-slate-600 hover:text-pink-700 hover:bg-white rounded-3xl transition-all font-bold border border-transparent">
+                    <div
+                        class="w-10 h-10 bg-white rounded-2xl flex items-center justify-center shadow-sm text-pink-700">
+                        <lucide-icon [img]="Phone" class="w-5 h-5"></lucide-icon>
+                    </div>
+                    <span>Contato</span>
                 </a>
             </nav>
 
-            <div class="p-8 border-t border-pink-100 mt-auto bg-pink-50/50">
-                <p class="text-[10px] text-pink-700/50 uppercase tracking-widest font-bold mb-4 text-center">Siga-nos
-                    nas redes
-                </p>
-                <div class="flex items-center justify-center gap-6">
-                    <a href="#"
-                        class="w-12 h-12 bg-white flex items-center justify-center rounded-2xl text-pink-700 shadow-sm hover:scale-110 active:scale-95 transition-all">
+            @if (activeSocials().length) {
+            <div class="p-8 border-t border-slate-200 mt-auto bg-white/80 backdrop-blur-sm">
+                <p class="text-[10px] text-pink-700/60 uppercase tracking-widest font-bold mb-6 text-center">Conecte-se
+                    conosco</p>
+                <div class="flex items-center justify-center gap-5">
+                    @for (social of activeSocials(); track social.id) {
+                    <a [href]="social.url" target="_blank"
+                        class="w-14 h-14 bg-pink-50 text-pink-700 flex items-center justify-center rounded-2xl shadow-soft hover:shadow-md hover:scale-110 active:scale-95 transition-all border border-pink-100">
+                        @if (social.platform.toLowerCase().includes('instagram')) {
                         <lucide-icon [img]="Instagram" class="w-6 h-6"></lucide-icon>
-                    </a>
-                    <a href="#"
-                        class="w-12 h-12 bg-white flex items-center justify-center rounded-2xl text-pink-700 shadow-sm hover:scale-110 active:scale-95 transition-all">
+                        } @else if (social.platform.toLowerCase().includes('facebook')) {
                         <lucide-icon [img]="Facebook" class="w-6 h-6"></lucide-icon>
+                        } @else {
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="w-6 h-6">
+                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                        </svg>
+                        }
                     </a>
+                    }
                 </div>
             </div>
+            }
         </div>
     </div>
 </header>

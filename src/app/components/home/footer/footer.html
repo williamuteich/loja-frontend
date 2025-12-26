@@ -1,115 +1,125 @@
-<footer class="border-t border-slate-200 bg-white">
+<footer class="border-t border-pink-100 bg-linear-to-br from-white via-pink-50/20 to-white">
   <div class="container mx-auto px-4 py-16">
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
-      <!-- Brand Info -->
-      <div class="col-span-2 md:col-span-1">
-        <a class="font-display text-2xl font-semibold text-slate-900" routerLink="/">
-          {{ config()?.storeName || 'Bella' }}
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 text-center md:text-left">
+      <div class="flex flex-col items-center md:items-start">
+        <a class="inline-flex items-center gap-2 group" routerLink="/">
+          <div
+            class="w-10 h-10 bg-linear-to-br from-pink-500 to-pink-700 rounded-xl flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="w-5 h-5 text-white">
+              <path
+                d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z">
+              </path>
+            </svg>
+          </div>
+          <span class="font-display text-xl font-bold text-slate-900">{{ config()?.storeName }}</span>
         </a>
-        <p class="text-slate-500 text-sm mt-3 max-w-xs">
-          {{ config()?.description || 'Produtos únicos e especiais para decorar sua casa e presentear quem você ama.' }}
+        <p class="text-slate-600 text-sm mt-4 leading-relaxed max-w-xs">
+          {{ config()?.description }}
         </p>
 
-        <!-- Social Links -->
-        @if (config()?.socialMedias?.length) {
-        <div class="flex gap-4 mt-6">
-          @for (social of config()?.socialMedias; track social.id) {
-          <a [href]="social.url" target="_blank" rel="noopener"
-            class="text-slate-400 hover:text-rose-600 transition-colors" [title]="social.platform">
-            @if (social.platform.toLowerCase().includes('instagram')) {
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
-              <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-              <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
-            </svg>
-            } @else if (social.platform.toLowerCase().includes('facebook')) {
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
-              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-            </svg>
-            } @else {
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
-              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-            </svg>
+        @if (activeSocials().length) {
+        <div class="mt-6">
+          <p class="text-xs text-pink-700 font-semibold uppercase tracking-wider mb-3">Siga-nos</p>
+          <div class="flex items-center justify-center md:justify-start gap-2">
+            @for (social of activeSocials(); track social.id) {
+            <a [href]="social.url" target="_blank" rel="noopener"
+              class="w-9 h-9 bg-white border border-pink-200 flex items-center justify-center rounded-lg text-pink-700 hover:bg-pink-700 hover:text-white hover:border-pink-700 hover:shadow-md hover:scale-110 active:scale-95 transition-all"
+              [title]="social.platform">
+              @if (social.platform.toLowerCase().includes('instagram')) {
+              <lucide-icon [img]="Instagram" class="w-4 h-4"></lucide-icon>
+              } @else if (social.platform.toLowerCase().includes('facebook')) {
+              <lucide-icon [img]="Facebook" class="w-4 h-4"></lucide-icon>
+              } @else {
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+              </svg>
+              }
+            </a>
             }
-          </a>
-          }
+          </div>
         </div>
         }
       </div>
 
-      <!-- Navigation -->
-      <div>
-        <h4 class="font-semibold text-slate-900 mb-4">Navegação</h4>
+      <div class="flex flex-col items-center md:items-start">
+        <h4 class="font-semibold text-slate-900 mb-5 text-sm uppercase tracking-wide">Navegação</h4>
         <ul class="space-y-3 text-sm">
-          <li><a class="text-slate-500 hover:text-rose-600 transition-colors" routerLink="/">Início</a></li>
-          <li><a class="text-slate-500 hover:text-rose-600 transition-colors" routerLink="/produtos">Produtos</a></li>
-          <li><a class="text-slate-500 hover:text-rose-600 transition-colors" routerLink="/categorias">Categorias</a>
+          <li><a class="text-slate-600 hover:text-pink-700 transition-colors" routerLink="/">Início</a></li>
+          <li><a class="text-slate-600 hover:text-pink-700 transition-colors" routerLink="/produtos">Produtos</a></li>
+          <li><a class="text-slate-600 hover:text-pink-700 transition-colors" routerLink="/categorias">Categorias</a>
           </li>
-          <li><a class="text-slate-500 hover:text-rose-600 transition-colors" routerLink="/contato">Contato</a></li>
+          <li><a class="text-slate-600 hover:text-pink-700 transition-colors" routerLink="/contato">Contato</a></li>
         </ul>
       </div>
 
-      <!-- Legal -->
-      <div>
-        <h4 class="font-semibold text-slate-900 mb-4">Legal</h4>
+      <div class="flex flex-col items-center md:items-start">
+        <h4 class="font-semibold text-slate-900 mb-5 text-sm uppercase tracking-wide">Legal</h4>
         <ul class="space-y-3 text-sm">
-          <li><a class="text-slate-500 hover:text-rose-600 transition-colors" routerLink="/privacidade">Privacidade
+          <li><a class="text-slate-600 hover:text-pink-700 transition-colors" routerLink="/privacidade">Privacidade
               (LGPD)</a></li>
-          <li><a class="text-slate-500 hover:text-rose-600 transition-colors" routerLink="/cookies">Cookies</a></li>
-          <li><a class="text-slate-500 hover:text-rose-600 transition-colors" routerLink="/termos">Termos e
+          <li><a class="text-slate-600 hover:text-pink-700 transition-colors" routerLink="/cookies">Cookies</a></li>
+          <li><a class="text-slate-600 hover:text-pink-700 transition-colors" routerLink="/termos">Termos e
               Condições</a></li>
         </ul>
       </div>
 
-      <!-- Contact/Info -->
-      <div>
-        <h4 class="font-semibold text-slate-900 mb-4">Contato</h4>
-        <ul class="space-y-3 text-sm text-slate-500">
-          <li class="flex items-start gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              class="w-4 h-4 mt-0.5 shrink-0">
-              <path
-                d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0">
-              </path>
-              <circle cx="12" cy="10" r="3"></circle>
-            </svg>
-            <span>Brasil</span>
+      <div class="flex flex-col items-center md:items-start">
+        <h4 class="font-semibold text-slate-900 mb-5 text-sm uppercase tracking-wide">Contato</h4>
+        <ul class="space-y-4 text-sm text-slate-600">
+          @if (config()?.address) {
+          <li class="flex flex-col items-center md:items-start gap-2">
+            <div class="text-xs">
+              <p class="font-medium text-slate-800">{{ config()?.address }}</p>
+              <p>{{ config()?.city }} - {{ config()?.state }}</p>
+              @if (config()?.zipCode) {
+              <p class="opacity-70">CEP: {{ config()?.zipCode }}</p>
+              }
+            </div>
           </li>
-          <li class="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              class="w-4 h-4 shrink-0">
-              <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-            </svg>
-            <span>{{ config()?.contactEmail || 'contato@bella.com' }}</span>
-          </li>
-          @if (config()?.whatsapp) {
-          <li class="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              class="w-4 h-4 shrink-0">
-              <path
-                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
-              </path>
-            </svg>
-            <span>{{ config()?.whatsapp }}</span>
-          </li>
+          }
+          <li class="text-xs">{{ config()?.contactEmail }}</li>
+          @if (config()?.phone) {
+          <li class="text-xs">{{ config()?.phone }}</li>
           }
         </ul>
       </div>
     </div>
 
-    <!-- Bottom bar -->
-    <div class="border-t border-slate-100 mt-12 pt-8 text-center">
-      <p class="text-sm text-slate-400">
-        © 2025 {{ config()?.storeName || 'Bella' }}. Todos os direitos reservados.
-      </p>
+    <div class="border-t border-pink-100 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex flex-col items-center md:items-start gap-1">
+        <p class="text-xs text-slate-500">
+          © 2025 {{ config()?.storeName }}. Todos os direitos reservados.
+        </p>
+        <p class="text-[10px] text-slate-400 font-medium tracking-wider">
+          PLATAFORMA DESENVOLVIDA COM ❤️ PARA BELEZA NATURAL
+        </p>
+      </div>
+
+      @if (config()?.cnpj) {
+      <div class="px-4 py-1.5 bg-pink-50 rounded-full border border-pink-100">
+        <p class="text-[10px] text-pink-700 font-bold uppercase tracking-widest">
+          CNPJ: {{ config()?.cnpj }}
+        </p>
+      </div>
+      }
     </div>
   </div>
 </footer>
+
+@if (config()?.whatsapp) {
+<a [href]="'https://wa.me/' + formatWhatsApp(config()?.whatsapp || '')" target="_blank"
+  class="fixed bottom-6 right-6 z-50 bg-linear-to-br from-[#25D366] to-[#128C7E] text-white p-3.5 rounded-2xl shadow-2xl hover:shadow-[0_20px_60px_-15px_rgba(37,211,102,0.5)] hover:scale-110 active:scale-95 transition-all group overflow-hidden flex items-center gap-0 hover:gap-3 h-14 px-4"
+  title="Fale conosco no WhatsApp">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"
+    class="w-6 h-6 shrink-0">
+    <path
+      d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+  </svg>
+  <span
+    class="max-w-0 group-hover:max-w-xs transition-all duration-300 whitespace-nowrap font-semibold overflow-hidden text-sm">WhatsApp</span>
+</a>
+}

@@ -1,12 +1,13 @@
-import { Component, ChangeDetectionStrategy, inject, signal, HostListener, effect, PLATFORM_ID } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal, HostListener, effect, PLATFORM_ID, computed } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { LucideAngularModule, Search, ShoppingBag, User, Menu, Instagram, Facebook, X, Home, Package, Layers, Phone } from 'lucide-angular';
-import { NgOptimizedImage, isPlatformBrowser } from '@angular/common';
+import { NgOptimizedImage, isPlatformBrowser, CommonModule } from '@angular/common';
+import { StoreConfigService } from '../../../services/store-config.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, LucideAngularModule, NgOptimizedImage],
+  imports: [CommonModule, RouterLink, RouterLinkActive, LucideAngularModule, NgOptimizedImage],
   templateUrl: './header.html',
   styleUrl: './header.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -14,6 +15,13 @@ import { NgOptimizedImage, isPlatformBrowser } from '@angular/common';
 export class Header {
   private router = inject(Router);
   private platformId = inject(PLATFORM_ID);
+  protected readonly storeConfigService = inject(StoreConfigService);
+
+  protected readonly config = this.storeConfigService.config;
+
+  protected readonly activeSocials = computed(() =>
+    this.config()?.socialMedias?.filter(s => s.isActive) || []
+  );
 
   protected readonly Search = Search;
   protected readonly ShoppingBag = ShoppingBag;
@@ -40,6 +48,10 @@ export class Header {
         document.body.style.overflow = '';
       }
     });
+
+    if (isPlatformBrowser(this.platformId)) {
+      this.storeConfigService.loadConfigPublic();
+    }
   }
 
   @HostListener('window:scroll', [])

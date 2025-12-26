@@ -101,6 +101,10 @@ export interface StoreConfig {
   description?: string;
   phone?: string;
   whatsapp?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  zipCode?: string;
   logoUrl?: string;
   faviconUrl?: string;
   googleMapsEmbedUrl?: string;
@@ -115,4 +119,6 @@ export interface StoreConfig {
   locale?: string;
   ogImageUrl?: string;
   socialMedias?: Social[];
+  createdAt: string;
+  updatedAt: string;
 }

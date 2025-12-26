@@ -1,33 +1,41 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { LucideAngularModule, Instagram, Facebook } from 'lucide-angular';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { StoreConfigService } from '../../../services/store-config.service';
+import { Social } from '../../../models';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, LucideAngularModule],
   templateUrl: './footer.html',
 })
 export class Footer implements OnInit {
+  private readonly sanitizer = inject(DomSanitizer);
   protected readonly storeConfigService = inject(StoreConfigService);
   protected readonly config = this.storeConfigService.config;
 
+  protected readonly Instagram = Instagram;
+  protected readonly Facebook = Facebook;
+
+  protected readonly activeSocials = computed(() =>
+    this.config()?.socialMedias?.filter((s: Social) => s.isActive) || []
+  );
+
   ngOnInit(): void {
-    // Ensure config is loaded if not already
     if (!this.config()) {
       this.storeConfigService.loadConfigPublic();
     }
   }
 
-  getPlatformIcon(platform: string): string {
-    const p = platform.toLowerCase();
-    if (p.includes('instagram')) return 'instagram';
-    if (p.includes('facebook')) return 'facebook';
-    if (p.includes('twitter') || p.includes('x')) return 'twitter';
-    if (p.includes('youtube')) return 'youtube';
-    if (p.includes('linkedin')) return 'linkedin';
-    if (p.includes('whatsapp')) return 'message-circle';
-    return 'link';
+  protected getSafeMapEmbed(): SafeHtml {
+    const embedUrl = this.config()?.googleMapsEmbedUrl || '';
+    return this.sanitizer.bypassSecurityTrustHtml(embedUrl);
+  }
+
+  protected formatWhatsApp(phone: string): string {
+    return phone.replace(/\D/g, '');
   }
 }

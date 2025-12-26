@@ -1,2 +1,8 @@
 @import "tailwindcss";
 @import "@angular/material/prebuilt-themes/indigo-pink.css";
+
+.map-container iframe {
+    width: 100% !important;
+    height: 100% !important;
+    border: 0;
+}
