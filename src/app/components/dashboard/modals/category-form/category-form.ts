@@ -26,6 +26,7 @@ export class CategoryForm {
         this.form = this.fb.group({
             name: ['', [Validators.required, Validators.minLength(3)]],
             description: ['', [Validators.required]],
+            isHome: [false],
             isActive: [true],
         });
 
@@ -48,6 +49,10 @@ export class CategoryForm {
 
     get description(): FormControl {
         return this.form.get('description') as FormControl;
+    }
+
+    get isHome(): FormControl {
+        return this.form.get('isHome') as FormControl;
     }
 
     get isActive(): FormControl {

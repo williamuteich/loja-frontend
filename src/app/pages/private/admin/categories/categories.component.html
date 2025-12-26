@@ -27,12 +27,17 @@
                     <div class="absolute bottom-4 left-4">
                         <h3 class="text-white font-semibold text-lg">{{ category.name }}</h3>
                     </div>
+                    @if (category.isHome) {
+                    <span
+                        class="absolute top-3 right-20 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700 shadow-sm border border-blue-200">Home</span>
+                    }
+
                     @if (category.isActive) {
                     <span
-                        class="absolute top-3 right-3 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">Ativo</span>
+                        class="absolute top-3 right-3 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700 shadow-sm border border-emerald-200">Ativo</span>
                     } @else {
                     <span
-                        class="absolute top-3 right-3 px-2.5 py-1 rounded-full text-xs font-medium bg-rose-100 text-rose-700">Inativo</span>
+                        class="absolute top-3 right-3 px-2.5 py-1 rounded-full text-xs font-medium bg-rose-100 text-rose-700 shadow-sm border border-rose-200">Inativo</span>
                     }
                 </div>
                 <div class="p-4">

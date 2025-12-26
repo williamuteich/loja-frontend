@@ -43,6 +43,7 @@ export interface Category {
   name: string;
   description: string;
   imageUrl: string;
+  isHome: boolean;
   isActive: boolean;
   createdAt: string;
   updatedAt: string;

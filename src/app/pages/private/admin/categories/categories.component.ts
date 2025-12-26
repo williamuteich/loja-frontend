@@ -9,7 +9,6 @@ import { Category } from '../../../../models';
 import { CategoryForm } from '../../../../components/dashboard/modals/category-form/category-form';
 import { EmptyStateComponent } from '../../../../components/dashboard/empty-state/empty-state.component';
 import { SkeletonCategoryComponent } from '../../../../components/dashboard/skeleton/category/skeleton-category.component';
-import { SkeletonTableComponent } from '../../../../components/dashboard/skeleton/form/skeletonForm.component';
 
 @Component({
   selector: 'app-categories',
@@ -62,6 +61,8 @@ export class CategoriesComponent implements OnInit {
     this.isSaving.set(true);
 
     const formValue = categoryForm.getFormValue();
+
+    console.log('Sending payload:', formValue);
 
     this.categoryService.update(categoryId, formValue).subscribe({
       next: () => {
