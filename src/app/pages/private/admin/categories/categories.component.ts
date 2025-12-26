@@ -66,6 +66,7 @@ export class CategoriesComponent implements OnInit {
           this.categoryToDelete.set(undefined);
           this.isSaving.set(false);
           this.categoryService.loadCategoriesAdmin();
+          alert('Conteúdo deletado com sucesso!');
         },
         error: (err) => {
           console.error(err);
@@ -97,6 +98,7 @@ export class CategoriesComponent implements OnInit {
       next: () => {
         this.closeModal();
         this.isSaving.set(false);
+        alert('Conteúdo atualizado com sucesso!');
       },
       error: (err) => {
         console.error('Erro ao atualizar categoria:', err);

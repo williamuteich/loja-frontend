@@ -172,6 +172,7 @@ export class ProductEditComponent {
 
         this.productService.update(productId, formData).subscribe({
             next: () => {
+                alert('Conteúdo atualizado com sucesso!');
                 this.router.navigate(['/dashboard/products']);
             },
             error: () => {

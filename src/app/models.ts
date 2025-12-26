@@ -11,10 +11,18 @@ export interface Product {
   variants: any[];
   images: { url: string }[];
   categories: {
+    productId: string;
+    categoryId: string;
     category: {
       id: string;
       name: string;
-    }
+      description: string;
+      imageUrl: string;
+      isActive: boolean;
+      isHome: boolean;
+      createdAt: string;
+      updatedAt: string;
+    };
   }[];
   brand: {
     id: string;

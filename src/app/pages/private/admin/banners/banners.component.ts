@@ -76,6 +76,7 @@ export class BannersComponent implements OnInit {
           this.bannerToDelete.set(undefined);
           this.isSaving.set(false);
           this.bannerService.loadBannersAdmin();
+          alert('Conteúdo deletado com sucesso!');
         },
         error: (err) => {
           console.error(err);
@@ -106,6 +107,7 @@ export class BannersComponent implements OnInit {
         this.bannerService.loadBannersAdmin();
         this.closeModal();
         this.isSaving.set(false);
+        alert('Conteúdo atualizado com sucesso!');
       },
       error: (err) => {
         console.error('Erro ao atualizar banner:', err);

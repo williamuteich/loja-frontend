@@ -1,5 +1,7 @@
-<div *ngIf="isOpen" class="fixed inset-0 bg-black/50 z-50 transition-opacity" (click)="close.emit()">
+@if (isOpen) {
+<div class="fixed inset-0 bg-black/50 z-50" (click)="close.emit()">
 </div>
+}
 
 <aside class="fixed inset-y-0 left-0 z-60 w-64 bg-slate-900 shadow-2xl transition-transform duration-300 transform"
     [class.-translate-x-full]="!isOpen" [class.translate-x-0]="isOpen">

@@ -1,21 +1,22 @@
-import { Component, inject, OnInit, signal, computed } from '@angular/core';
+import { Component, inject, OnInit, signal, computed, ChangeDetectorRef, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule, Plus, UserCog, SquarePen, Trash2 } from 'lucide-angular';
 import { AdminSearchComponent } from '../../../../components/dashboard/admin-search/admin-search.component';
 import { TeamMemberService } from '../../../../services/team-member.service';
 import { GenericModal } from '../../../../components/dashboard/modals/edit-modal/generic-modal';
 import { TeamMember } from '../../../../models';
-import { DateFormatPipe } from '../../../../pipes/date-format.pipe';
 import { TeamMemberForm } from '../../../../components/dashboard/modals/team-member-form/team-member-form';
+import { DeleteConfirmationComponent } from '../../../../components/dashboard/modals/delete-confirmation/delete-confirmation.component';
 import { SkeletonTableComponent } from '../../../../components/dashboard/skeleton/form/skeletonForm.component';
 import { EmptyStateComponent } from '../../../../components/dashboard/empty-state/empty-state.component';
-import { DeleteConfirmationComponent } from '../../../../components/dashboard/modals/delete-confirmation/delete-confirmation.component';
+import { DateFormatPipe } from '../../../../pipes/date-format.pipe';
 import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-team',
-  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, TeamMemberForm, DateFormatPipe, SkeletonTableComponent, EmptyStateComponent, DeleteConfirmationComponent],
-  templateUrl: './team.component.html'
+  standalone: true,
+  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, TeamMemberForm, DeleteConfirmationComponent, SkeletonTableComponent, EmptyStateComponent, DateFormatPipe],
+  templateUrl: 'team.component.html'
 })
 export class TeamComponent implements OnInit {
   readonly Plus = Plus;
@@ -25,8 +26,11 @@ export class TeamComponent implements OnInit {
 
   private readonly teamMemberService = inject(TeamMemberService);
   private readonly authService = inject(AuthService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   protected readonly team = this.teamMemberService.teamMembers;
+
+  // Computed signal to check if current user is admin
   protected readonly isAdmin = computed(() => this.authService.hasRole(['ADMIN']));
 
   isModalVisible = signal(false);
@@ -38,6 +42,13 @@ export class TeamComponent implements OnInit {
   isSaving = signal(false);
   isLoading = this.teamMemberService.isLoading;
   error = this.teamMemberService.error;
+
+  constructor() {
+    effect(() => {
+      this.team();
+      this.cdr.markForCheck();
+    });
+  }
 
   ngOnInit(): void {
     this.teamMemberService.loadTeamMembersAdmin();
@@ -68,6 +79,7 @@ export class TeamComponent implements OnInit {
           this.memberToDelete.set(undefined);
           this.isSaving.set(false);
           this.teamMemberService.loadTeamMembersAdmin();
+          alert('Conteúdo deletado com sucesso!');
         },
         error: (err) => {
           console.error(err);
@@ -93,13 +105,11 @@ export class TeamComponent implements OnInit {
 
     const formValue = memberForm.getFormValue();
 
-    const { role, ...updateData } = formValue;
-
-    this.teamMemberService.update(memberId, updateData).subscribe({
+    this.teamMemberService.update(memberId, formValue).subscribe({
       next: () => {
-        this.teamMemberService.loadTeamMembersAdmin();
         this.closeModal();
         this.isSaving.set(false);
+        alert('Conteúdo atualizado com sucesso!');
       },
       error: (err) => {
         console.error('Erro ao atualizar membro:', err);

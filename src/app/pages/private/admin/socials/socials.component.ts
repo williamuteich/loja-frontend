@@ -82,6 +82,7 @@ export class SocialsComponent implements OnInit {
           this.localSocials.update(socials => socials.filter(s => s.id !== social.id));
           this.isDeleteModalVisible.set(false);
           this.socialToDelete.set(null);
+          alert('Conteúdo deletado com sucesso!');
         },
         error: (err) => {
           console.error('Erro ao deletar rede social', err);
@@ -119,7 +120,10 @@ export class SocialsComponent implements OnInit {
       }).subscribe({
         next: () => {
           completed++;
-          if (completed + errors === changes.length) this.isSaving.set(false);
+          if (completed + errors === changes.length) {
+            this.isSaving.set(false);
+            if (errors === 0) alert('Conteúdo atualizado com sucesso!');
+          }
         },
         error: (err) => {
           console.error(`Erro ao salvar ${social.platform}:`, err.error);

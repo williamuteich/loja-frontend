@@ -125,6 +125,7 @@ export class SettingsComponent implements OnInit {
         this.isSaving.set(false);
         this.saveSuccess.set(true);
         this.configService.loadConfigPublic();
+        alert('Conteúdo atualizado com sucesso!');
         setTimeout(() => this.saveSuccess.set(false), 3000);
       },
       error: (err) => {

@@ -71,4 +71,15 @@ export class ProductService {
             })
         );
     }
+
+    delete(id: string): Observable<void> {
+        return this.api.delete<void>(`product/admin/${id}`).pipe(
+            tap(() => {
+                this._products.update(products =>
+                    products.filter(p => p.id !== id)
+                );
+                this.publicLoaded = false;
+            })
+        );
+    }
 }

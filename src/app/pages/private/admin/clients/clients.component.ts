@@ -1,20 +1,21 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ChangeDetectorRef, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule, Plus, User, SquarePen, Trash2 } from 'lucide-angular';
 import { AdminSearchComponent } from '../../../../components/dashboard/admin-search/admin-search.component';
 import { ClientService } from '../../../../services/client.service';
 import { GenericModal } from '../../../../components/dashboard/modals/edit-modal/generic-modal';
 import { Client } from '../../../../models';
-import { DateFormatPipe } from '../../../../pipes/date-format.pipe';
 import { ClientForm } from '../../../../components/dashboard/modals/client-form/client-form';
+import { DeleteConfirmationComponent } from '../../../../components/dashboard/modals/delete-confirmation/delete-confirmation.component';
 import { SkeletonTableComponent } from '../../../../components/dashboard/skeleton/form/skeletonForm.component';
 import { EmptyStateComponent } from '../../../../components/dashboard/empty-state/empty-state.component';
-import { DeleteConfirmationComponent } from '../../../../components/dashboard/modals/delete-confirmation/delete-confirmation.component';
+import { DateFormatPipe } from '../../../../pipes/date-format.pipe';
 
 @Component({
   selector: 'app-clients',
-  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, ClientForm, DateFormatPipe, SkeletonTableComponent, EmptyStateComponent, DeleteConfirmationComponent],
-  templateUrl: './clients.component.html'
+  standalone: true,
+  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, ClientForm, DeleteConfirmationComponent, SkeletonTableComponent, EmptyStateComponent, DateFormatPipe],
+  templateUrl: 'clients.component.html'
 })
 export class ClientsComponent implements OnInit {
   readonly Plus = Plus;
@@ -23,6 +24,8 @@ export class ClientsComponent implements OnInit {
   readonly Trash2 = Trash2;
 
   private readonly clientService = inject(ClientService);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   protected readonly clients = this.clientService.clients;
 
   isModalVisible = signal(false);
@@ -34,6 +37,13 @@ export class ClientsComponent implements OnInit {
   isSaving = signal(false);
   isLoading = this.clientService.isLoading;
   error = this.clientService.error;
+
+  constructor() {
+    effect(() => {
+      this.clients();
+      this.cdr.markForCheck();
+    });
+  }
 
   ngOnInit(): void {
     this.clientService.loadClientsAdmin();
@@ -64,6 +74,7 @@ export class ClientsComponent implements OnInit {
           this.clientToDelete.set(undefined);
           this.isSaving.set(false);
           this.clientService.loadClientsAdmin();
+          alert('Conteúdo deletado com sucesso!');
         },
         error: (err) => {
           console.error(err);
@@ -91,9 +102,9 @@ export class ClientsComponent implements OnInit {
 
     this.clientService.update(clientId, formValue).subscribe({
       next: () => {
-        this.clientService.loadClientsAdmin();
         this.closeModal();
         this.isSaving.set(false);
+        alert('Conteúdo atualizado com sucesso!');
       },
       error: (err) => {
         console.error('Erro ao atualizar cliente:', err);

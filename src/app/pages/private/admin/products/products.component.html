@@ -45,8 +45,16 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-6 py-4 text-slate-600">{{ product.categories[0]?.category?.name || 'N/A' }}
+                            <td class="px-6 py-4">
+                                <div class="flex flex-wrap gap-1">
+                                    @for (cat of product.categories; track cat.categoryId) {
+                                    <span class="px-2 py-0.5 text-xs rounded-md bg-slate-100 text-slate-700">
+                                        {{ cat.category.name }}
+                                    </span>
+                                    }
+                                </div>
                             </td>
+
                             <td class="px-6 py-4 text-slate-600">{{ product.brand.name || 'N/A' }}</td>
                             <td class="px-6 py-4">
                                 <div>
@@ -68,7 +76,7 @@
                                         class="p-2 text-slate-500 hover:text-primary hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
                                         <lucide-icon [img]="SquarePen" class="w-4 h-4"></lucide-icon>
                                     </button>
-                                    <button type="button"
+                                    <button type="button" (click)="openDeleteModal(product)"
                                         class="p-2 text-slate-500 hover:text-rose-500 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
                                         <lucide-icon [img]="Trash2" class="w-4 h-4"></lucide-icon>
                                     </button>
@@ -83,3 +91,13 @@
         }
     </div>
 </div>
+
+@if (isDeleteModalVisible()) {
+@if (productToDelete(); as product) {
+<app-generic-modal title="Excluir Produto" (close)="isDeleteModalVisible.set(false)" [showFooter]="false">
+    <app-delete-confirmation [itemName]="product.title" itemType="este produto" (confirm)="confirmDelete()"
+        (cancel)="isDeleteModalVisible.set(false)">
+    </app-delete-confirmation>
+</app-generic-modal>
+}
+}

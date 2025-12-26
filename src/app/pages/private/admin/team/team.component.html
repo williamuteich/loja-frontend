@@ -1,8 +1,8 @@
 <div class="p-12 md:p-24">
     <div class="flex flex-col sm:flex-row gap-4 mb-6">
-        <app-admin-search class="flex-1" placeholder="Buscar membros da equipe..."></app-admin-search>
+        <app-admin-search class="flex-1" placeholder="Buscar membros..."></app-admin-search>
         @if (isAdmin()) {
-        <button (click)="openEditModal()"
+        <button
             class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-white shadow-soft hover:shadow-hover h-10 px-5 py-2 bg-slate-900 hover:bg-slate-800 cursor-pointer">
             <lucide-icon [img]="Plus" class="w-4 h-4"></lucide-icon>
             Novo Membro
@@ -21,76 +21,76 @@
             description="Não há membros cadastrados na equipe."></app-empty-state>
         } @else {
         <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="w-full">
-                    <thead class="bg-gray-900 border-b border-slate-200">
-                        <tr class="text-left text-sm text-white">
-                            <th class="px-6 py-4 font-semibold text-white">Nome</th>
-                            <th class="px-6 py-4 font-semibold text-white">Email</th>
-                            <th class="px-6 py-4 font-semibold text-white">Função</th>
-                            <th class="px-6 py-4 font-semibold text-white">Data de Cadastro</th>
-                            @if (isAdmin()) {
-                            <th class="px-6 py-4 font-semibold text-white text-right">Ações</th>
-                            }
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100">
-                        @for (member of team(); track member.id) {
-                        <tr class="hover:bg-slate-50/50 transition-colors">
-                            <td class="px-6 py-4">
-                                <div class="flex items-center gap-3">
-                                    <div
-                                        class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500">
-                                        <lucide-icon [img]="UserCog" class="w-5 h-5"></lucide-icon>
-                                    </div>
-                                    <div>
-                                        <span class="font-medium text-slate-900 block">{{ member.name }} {{
-                                            member.lastName
-                                            }}</span>
-                                        <span class="text-slate-500 text-xs">ID: {{ member.id }}</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 text-slate-600">{{ member.email }}</td>
-                            <td class="px-6 py-4">
-                                @if (member.role === 'ADMIN') {
-                                <span
-                                    class="px-2.5 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-700">
-                                    {{ member.role }}
-                                </span>
-                                } @else {
-                                <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
-                                    {{ member.role }}
-                                </span>
-                                }
-                            </td>
-                            <td class="px-6 py-4 text-slate-600">{{ member.createdAt | dateFormat }}</td>
-                            @if (isAdmin()) {
-                            <td class="px-6 py-4">
-                                <div class="flex items-center justify-end gap-2">
-                                    <button (click)="openEditModal(member)"
-                                        class="p-2 text-slate-500 hover:text-primary hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
-                                        <lucide-icon [img]="SquarePen" class="w-4 h-4"></lucide-icon>
-                                    </button>
-                                    <button (click)="openDeleteModal(member)"
-                                        class="p-2 text-slate-500 hover:text-rose-500 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
-                                        <lucide-icon [img]="Trash2" class="w-4 h-4"></lucide-icon>
-                                    </button>
-                                </div>
-                            </td>
-                            }
-                        </tr>
+            <table class="w-full">
+                <thead class="bg-gray-900">
+                    <tr class="text-left text-sm text-white">
+                        <th class="px-6 py-4 font-medium text-white">Nome</th>
+                        <th class="px-6 py-4 font-medium text-white">Email</th>
+                        <th class="px-6 py-4 font-medium text-white">Função</th>
+                        <th class="px-6 py-4 font-medium text-white">Data de Cadastro</th>
+                        @if (isAdmin()) {
+                        <th class="px-6 py-4 font-medium text-right text-white">Ações</th>
                         }
-                    </tbody>
-                </table>
-            </div>
+                    </tr>
+                </thead>
+                <tbody class="text-sm">
+                    @for (member of team(); track $index) {
+                    <tr class="border-t border-slate-100 hover:bg-slate-50 transition-colors">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500">
+                                    <lucide-icon [img]="UserCog" class="w-5 h-5"></lucide-icon>
+                                </div>
+                                <div>
+                                    <span class="font-medium text-slate-900 block">{{ member.name }} {{ member.lastName
+                                        }}</span>
+                                    <span class="text-slate-500 text-xs">ID: {{ member.id }}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-slate-600">
+                            {{ member.email }}
+                        </td>
+                        <td class="px-6 py-4">
+                            @if (member.role === 'ADMIN') {
+                            <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-700">
+                                {{ member.role }}
+                            </span>
+                            } @else {
+                            <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
+                                {{ member.role }}
+                            </span>
+                            }
+                        </td>
+                        <td class="px-6 py-4 text-slate-600">
+                            {{ member.createdAt | dateFormat }}
+                        </td>
+                        @if (isAdmin()) {
+                        <td class="px-6 py-4">
+                            <div class="flex items-center justify-end gap-2">
+                                <button (click)="openEditModal(member)"
+                                    class="p-2 text-slate-500 hover:text-primary hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
+                                    <lucide-icon [img]="SquarePen" class="w-4 h-4"></lucide-icon>
+                                </button>
+                                <button (click)="openDeleteModal(member)"
+                                    class="p-2 text-slate-500 hover:text-rose-500 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
+                                    <lucide-icon [img]="Trash2" class="w-4 h-4"></lucide-icon>
+                                </button>
+                            </div>
+                        </td>
+                        }
+                    </tr>
+                    }
+                </tbody>
+            </table>
         </div>
         }
     </div>
 </div>
 
 @if (isModalVisible()) {
-@if(selectedMember(); as member) {
+@if (selectedMember(); as member) {
 <app-generic-modal title="Editar Membro" (close)="closeModal()" (save)="handleSave(memberForm)"
     [isLoading]="isSaving() || !memberForm.isValid()">
     <app-team-member-form #memberForm [itemToEdit]="member"></app-team-member-form>
@@ -99,10 +99,10 @@
 }
 
 @if (isDeleteModalVisible()) {
-@if(memberToDelete(); as member) {
+@if (memberToDelete(); as member) {
 <app-generic-modal title="Excluir Membro" (close)="isDeleteModalVisible.set(false)" [showFooter]="false">
-    <app-delete-confirmation [itemName]="member.name" itemType="este membro da equipe" (confirm)="confirmDelete()"
-        (cancel)="isDeleteModalVisible.set(false)">
+    <app-delete-confirmation [itemName]="member.name" itemType="este membro" (confirm)="confirmDelete()"
+        (cancel)="isDeleteModalVisible.set(false)" [warningMessage]="null">
     </app-delete-confirmation>
 </app-generic-modal>
 }
