@@ -10,6 +10,7 @@ import { GenericModal } from '../../../../components/dashboard/generic-modal/gen
 import { BannerForm } from '../../../../components/dashboard/modals/banner-form/banner-form';
 import { SkeletonBannerComponent } from '../../../../components/dashboard/skeleton/banner/skeletonBanner.component';
 import { EmptyStateComponent } from '../../../../components/dashboard/empty-state/empty-state.component';
+import { DeleteConfirmationComponent } from '../../../../components/dashboard/modals/delete-confirmation/delete-confirmation.component';
 
 @Component({
   selector: 'app-banners',
@@ -22,7 +23,8 @@ import { EmptyStateComponent } from '../../../../components/dashboard/empty-stat
     GenericModal,
     BannerForm,
     SkeletonBannerComponent,
-    EmptyStateComponent
+    EmptyStateComponent,
+    DeleteConfirmationComponent
   ],
   templateUrl: './banners.component.html',
 })
@@ -37,6 +39,10 @@ export class BannersComponent implements OnInit {
 
   isModalVisible = signal(false);
   selectedBanner = signal<Banner | undefined>(undefined);
+
+  isDeleteModalVisible = signal(false);
+  bannerToDelete = signal<Banner | undefined>(undefined);
+
   isSaving = signal(false);
   isLoading = this.bannerService.isLoading;
   error = this.bannerService.error;
@@ -53,6 +59,30 @@ export class BannersComponent implements OnInit {
   closeModal(): void {
     this.isModalVisible.set(false);
     this.selectedBanner.set(undefined);
+  }
+
+  openDeleteModal(banner: Banner): void {
+    this.bannerToDelete.set(banner);
+    this.isDeleteModalVisible.set(true);
+  }
+
+  confirmDelete(): void {
+    const id = this.bannerToDelete()?.id;
+    if (id) {
+      this.isSaving.set(true);
+      this.bannerService.delete(id).subscribe({
+        next: () => {
+          this.isDeleteModalVisible.set(false);
+          this.bannerToDelete.set(undefined);
+          this.isSaving.set(false);
+          this.bannerService.loadBannersAdmin();
+        },
+        error: (err) => {
+          console.error(err);
+          this.isSaving.set(false);
+        }
+      });
+    }
   }
 
   handleSave(bannerForm: BannerForm): void {

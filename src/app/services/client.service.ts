@@ -43,4 +43,14 @@ export class ClientService {
             })
         );
     }
+
+    delete(id: string): Observable<void> {
+        return this.api.delete<void>(`client/admin/${id}`).pipe(
+            tap(() => {
+                this._clients.update(clients =>
+                    clients.filter(c => c.id !== id)
+                );
+            })
+        );
+    }
 }

@@ -40,7 +40,6 @@ export class SettingsComponent implements OnInit {
 
   private initForm(): void {
     this.settingsForm = this.fb.group({
-      isActive: [true],
       maintenanceMode: [false],
       maintenanceMessage: [''],
       storeName: ['', Validators.required],
@@ -109,7 +108,6 @@ export class SettingsComponent implements OnInit {
       city: formValue.city,
       state: formValue.state,
       zipCode: formValue.zipCode,
-      isActive: formValue.isActive,
       maintenanceMode: formValue.maintenanceMode,
       maintenanceMessage: formValue.maintenanceMessage,
       businessHours: formValue.businessHours,

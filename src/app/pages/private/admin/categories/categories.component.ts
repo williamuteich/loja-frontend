@@ -9,11 +9,12 @@ import { Category } from '../../../../models';
 import { CategoryForm } from '../../../../components/dashboard/modals/category-form/category-form';
 import { EmptyStateComponent } from '../../../../components/dashboard/empty-state/empty-state.component';
 import { SkeletonCategoryComponent } from '../../../../components/dashboard/skeleton/category/skeleton-category.component';
+import { DeleteConfirmationComponent } from '../../../../components/dashboard/modals/delete-confirmation/delete-confirmation.component';
 
 @Component({
   selector: 'app-categories',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, CategoryForm, EmptyStateComponent, SkeletonCategoryComponent],
+  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, CategoryForm, EmptyStateComponent, SkeletonCategoryComponent, DeleteConfirmationComponent],
   templateUrl: './categories.component.html'
 })
 export class CategoriesComponent implements OnInit {
@@ -28,6 +29,10 @@ export class CategoriesComponent implements OnInit {
 
   isModalVisible = signal(false);
   selectedCategory = signal<Category | undefined>(undefined);
+
+  isDeleteModalVisible = signal(false);
+  categoryToDelete = signal<Category | undefined>(undefined);
+
   isSaving = signal(false);
   isLoading = this.categoryService.isLoading;
   error = this.categoryService.error;
@@ -44,6 +49,30 @@ export class CategoriesComponent implements OnInit {
   closeModal(): void {
     this.isModalVisible.set(false);
     this.selectedCategory.set(undefined);
+  }
+
+  openDeleteModal(category: Category): void {
+    this.categoryToDelete.set(category);
+    this.isDeleteModalVisible.set(true);
+  }
+
+  confirmDelete(): void {
+    const id = this.categoryToDelete()?.id;
+    if (id) {
+      this.isSaving.set(true);
+      this.categoryService.delete(id).subscribe({
+        next: () => {
+          this.isDeleteModalVisible.set(false);
+          this.categoryToDelete.set(undefined);
+          this.isSaving.set(false);
+          this.categoryService.loadCategoriesAdmin();
+        },
+        error: (err) => {
+          console.error(err);
+          this.isSaving.set(false);
+        }
+      });
+    }
   }
 
   handleSave(categoryForm: CategoryForm): void {

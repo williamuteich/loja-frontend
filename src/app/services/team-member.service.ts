@@ -43,4 +43,14 @@ export class TeamMemberService {
             })
         );
     }
+
+    delete(id: string): Observable<void> {
+        return this.api.delete<void>(`team-members/admin/${id}`).pipe(
+            tap(() => {
+                this._teamMembers.update(members =>
+                    members.filter(m => m.id !== id)
+                );
+            })
+        );
+    }
 }

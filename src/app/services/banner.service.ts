@@ -75,4 +75,15 @@ export class BannerService {
             })
         );
     }
+
+    delete(id: string): Observable<void> {
+        return this.api.delete<void>(`banner/admin/${id}`).pipe(
+            tap(() => {
+                this._banners.update(banners =>
+                    banners.filter(b => b.id !== id)
+                );
+                this.publicLoaded = false;
+            })
+        );
+    }
 }

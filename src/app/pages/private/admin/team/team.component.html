@@ -72,7 +72,7 @@
                                         class="p-2 text-slate-500 hover:text-primary hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
                                         <lucide-icon [img]="SquarePen" class="w-4 h-4"></lucide-icon>
                                     </button>
-                                    <button
+                                    <button (click)="openDeleteModal(member)"
                                         class="p-2 text-slate-500 hover:text-rose-500 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
                                         <lucide-icon [img]="Trash2" class="w-4 h-4"></lucide-icon>
                                     </button>
@@ -94,6 +94,16 @@
 <app-generic-modal title="Editar Membro" (close)="closeModal()" (save)="handleSave(memberForm)"
     [isLoading]="isSaving() || !memberForm.isValid()">
     <app-team-member-form #memberForm [itemToEdit]="member"></app-team-member-form>
+</app-generic-modal>
+}
+}
+
+@if (isDeleteModalVisible()) {
+@if(memberToDelete(); as member) {
+<app-generic-modal title="Excluir Membro" (close)="isDeleteModalVisible.set(false)" [showFooter]="false">
+    <app-delete-confirmation [itemName]="member.name" itemType="este membro da equipe" (confirm)="confirmDelete()"
+        (cancel)="isDeleteModalVisible.set(false)">
+    </app-delete-confirmation>
 </app-generic-modal>
 }
 }

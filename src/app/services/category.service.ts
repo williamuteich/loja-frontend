@@ -75,4 +75,15 @@ export class CategoryService {
             })
         );
     }
+
+    delete(id: string): Observable<void> {
+        return this.api.delete<void>(`category/admin/${id}`).pipe(
+            tap(() => {
+                this._categories.update(categories =>
+                    categories.filter(c => c.id !== id)
+                );
+                this.publicLoaded = false;
+            })
+        );
+    }
 }

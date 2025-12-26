@@ -54,7 +54,7 @@
                                         class="p-2 text-slate-500 hover:text-primary hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
                                         <lucide-icon [img]="SquarePen" class="w-4 h-4"></lucide-icon>
                                     </button>
-                                    <button
+                                    <button (click)="openDeleteModal(client)"
                                         class="p-2 text-slate-500 hover:text-rose-500 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
                                         <lucide-icon [img]="Trash2" class="w-4 h-4"></lucide-icon>
                                     </button>
@@ -75,6 +75,16 @@
 <app-generic-modal title="Editar Cliente" (close)="closeModal()" (save)="handleSave(clientForm)"
     [isLoading]="isSaving() || !clientForm.isValid()">
     <app-client-form #clientForm [itemToEdit]="client"></app-client-form>
+</app-generic-modal>
+}
+}
+
+@if (isDeleteModalVisible()) {
+@if(clientToDelete(); as client) {
+<app-generic-modal title="Excluir Cliente" (close)="isDeleteModalVisible.set(false)" [showFooter]="false">
+    <app-delete-confirmation [itemName]="client.name" itemType="este cliente" (confirm)="confirmDelete()"
+        (cancel)="isDeleteModalVisible.set(false)">
+    </app-delete-confirmation>
 </app-generic-modal>
 }
 }

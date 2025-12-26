@@ -41,20 +41,6 @@
                 <div class="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
                     <div>
                         <label class="text-sm font-medium leading-none cursor-pointer"
-                            (click)="toggleSwitch('isActive')">Site Ativo</label>
-                        <p class="text-sm text-slate-500">Desative para ocultar a loja publicamente</p>
-                    </div>
-                    <button type="button" role="switch" [attr.aria-checked]="settingsForm.get('isActive')?.value"
-                        (click)="toggleSwitch('isActive')"
-                        [attr.data-state]="settingsForm.get('isActive')?.value ? 'checked' : 'unchecked'"
-                        class="peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors data-[state=checked]:bg-emerald-500 data-[state=unchecked]:bg-slate-200">
-                        <span [attr.data-state]="settingsForm.get('isActive')?.value ? 'checked' : 'unchecked'"
-                            class="pointer-events-none block h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0"></span>
-                    </button>
-                </div>
-                <div class="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
-                    <div>
-                        <label class="text-sm font-medium leading-none cursor-pointer"
                             (click)="toggleSwitch('maintenanceMode')">Modo Manutenção</label>
                         <p class="text-sm text-slate-500">Exibe uma tela de manutenção para os visitantes</p>
                     </div>

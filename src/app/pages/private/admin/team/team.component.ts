@@ -9,11 +9,12 @@ import { DateFormatPipe } from '../../../../pipes/date-format.pipe';
 import { TeamMemberForm } from '../../../../components/dashboard/modals/team-member-form/team-member-form';
 import { SkeletonTableComponent } from '../../../../components/dashboard/skeleton/form/skeletonForm.component';
 import { EmptyStateComponent } from '../../../../components/dashboard/empty-state/empty-state.component';
+import { DeleteConfirmationComponent } from '../../../../components/dashboard/modals/delete-confirmation/delete-confirmation.component';
 import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-team',
-  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, TeamMemberForm, DateFormatPipe, SkeletonTableComponent, EmptyStateComponent],
+  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, TeamMemberForm, DateFormatPipe, SkeletonTableComponent, EmptyStateComponent, DeleteConfirmationComponent],
   templateUrl: './team.component.html'
 })
 export class TeamComponent implements OnInit {
@@ -30,6 +31,10 @@ export class TeamComponent implements OnInit {
 
   isModalVisible = signal(false);
   selectedMember = signal<TeamMember | undefined>(undefined);
+
+  isDeleteModalVisible = signal(false);
+  memberToDelete = signal<TeamMember | undefined>(undefined);
+
   isSaving = signal(false);
   isLoading = this.teamMemberService.isLoading;
   error = this.teamMemberService.error;
@@ -48,6 +53,30 @@ export class TeamComponent implements OnInit {
     this.selectedMember.set(undefined);
   }
 
+  openDeleteModal(member: TeamMember): void {
+    this.memberToDelete.set(member);
+    this.isDeleteModalVisible.set(true);
+  }
+
+  confirmDelete(): void {
+    const id = this.memberToDelete()?.id;
+    if (id) {
+      this.isSaving.set(true);
+      this.teamMemberService.delete(id).subscribe({
+        next: () => {
+          this.isDeleteModalVisible.set(false);
+          this.memberToDelete.set(undefined);
+          this.isSaving.set(false);
+          this.teamMemberService.loadTeamMembersAdmin();
+        },
+        error: (err) => {
+          console.error(err);
+          this.isSaving.set(false);
+        }
+      });
+    }
+  }
+
   handleSave(memberForm: TeamMemberForm): void {
     if (!memberForm.isValid()) {
       console.error("Formulário inválido!");
@@ -64,7 +93,6 @@ export class TeamComponent implements OnInit {
 
     const formValue = memberForm.getFormValue();
 
-    // Backend validation: "property role should not exist" on update
     const { role, ...updateData } = formValue;
 
     this.teamMemberService.update(memberId, updateData).subscribe({
