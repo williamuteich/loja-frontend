@@ -60,7 +60,7 @@ export class TeamMemberForm {
     }
 
     getFormValue() {
-        const { name, lastName, role } = this.form.value;
-        return { name, lastName, role };
+        const { name, lastName, email, role } = this.form.value;
+        return { name, lastName, email, role };
     }
 }
