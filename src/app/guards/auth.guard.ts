@@ -1,6 +1,5 @@
 import { inject } from '@angular/core';
 import { Router, CanActivateFn } from '@angular/router';
-import { map, catchError, of } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 
 export const authGuard: CanActivateFn = (route, state) => {
@@ -11,18 +10,6 @@ export const authGuard: CanActivateFn = (route, state) => {
         return true;
     }
 
-    return authService.getCurrentUser().pipe(
-        map(user => {
-            if (user && authService.hasRole(['ADMIN', 'COLLABORATOR'])) {
-                return true;
-            }
-
-            router.navigate(['/login']);
-            return false;
-        }),
-        catchError(() => {
-            router.navigate(['/login']);
-            return of(false);
-        })
-    );
+    router.navigate(['/login']);
+    return false;
 };

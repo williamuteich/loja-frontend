@@ -25,8 +25,11 @@ export class AuthService {
   getCurrentUser(): Observable<TeamMember | null> {
     return this.api.get<TeamMember>('auth/me', { withCredentials: true }).pipe(
       tap(user => this.currentUser.set(user)),
-      catchError(() => {
-        this.currentUser.set(null);
+      catchError((error) => {
+        if (error.status === 401 || error.status === 403) {
+          console.warn('Auth check failed (403/401) - User not authenticated or cookie missing');
+          this.currentUser.set(null);
+        }
         return of(null);
       })
     );
@@ -42,7 +45,13 @@ export class AuthService {
     return this.currentUser() !== null;
   }
 
-  logout(): void {
-    this.currentUser.set(null);
+  logout(): Observable<void> {
+    return this.api.post<void>('auth/logout', {}, { withCredentials: true }).pipe(
+      tap(() => this.currentUser.set(null)),
+      catchError(() => {
+        this.currentUser.set(null);
+        return of(undefined);
+      })
+    );
   }
 }

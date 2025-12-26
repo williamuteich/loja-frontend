@@ -1,6 +1,5 @@
 import { inject } from '@angular/core';
 import { Router, CanActivateFn } from '@angular/router';
-import { map } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 
 export const loginGuard: CanActivateFn = (route, state) => {
@@ -12,13 +11,5 @@ export const loginGuard: CanActivateFn = (route, state) => {
         return false;
     }
 
-    return authService.getCurrentUser().pipe(
-        map(user => {
-            if (user) {
-                router.navigate(['/dashboard']);
-                return false;
-            }
-            return true;
-        })
-    );
+    return true;
 };
