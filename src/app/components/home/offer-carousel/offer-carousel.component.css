@@ -1,0 +1,18 @@
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.carousel-scroll {
+    mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+}
+
+@media (min-width: 768px) {
+    .carousel-scroll {
+        mask-image: none;
+    }
+}

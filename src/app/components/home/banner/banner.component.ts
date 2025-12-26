@@ -40,7 +40,9 @@ export class BannerComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.bannerService.loadBannersPublic();
-        this.autoplay = window.setInterval(() => this.next(), 5000);
+        if (isPlatformBrowser(this.platformId)) {
+            this.autoplay = window.setInterval(() => this.next(), 5000);
+        }
     }
 
     ngOnDestroy(): void {

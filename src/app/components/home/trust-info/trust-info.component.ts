@@ -1,5 +1,5 @@
-import { Component, ChangeDetectionStrategy, signal, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, ChangeDetectionStrategy, signal, OnInit, OnDestroy, inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 
 @Component({
     selector: 'app-trust-info',
@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TrustInfoComponent implements OnInit, OnDestroy {
+    private readonly platformId = inject(PLATFORM_ID);
     protected currentIndex = signal(0);
     private autoplayInterval?: any;
 
@@ -41,7 +42,9 @@ export class TrustInfoComponent implements OnInit, OnDestroy {
     ];
 
     ngOnInit() {
-        this.startAutoplay();
+        if (isPlatformBrowser(this.platformId)) {
+            this.startAutoplay();
+        }
     }
 
     ngOnDestroy() {

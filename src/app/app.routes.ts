@@ -14,6 +14,9 @@ import { NewsletterComponent } from './pages/private/admin/newsletter/newsletter
 import { BannersComponent } from './pages/private/admin/banners/banners.component';
 import { MainLayoutComponent } from './pages/public/layout/main-layout.component';
 import { ProductEditComponent } from './pages/private/admin/product-edit/product-edit.component';
+import { authGuard } from './guards/auth.guard';
+import { roleGuard } from './guards/role.guard';
+import { loginGuard } from './guards/login.guard';
 
 export const routes: Routes = [
   {
@@ -21,19 +24,30 @@ export const routes: Routes = [
     component: MainLayoutComponent,
     children: [
       { path: '', component: HomeComponent },
-      { path: 'login', component: LoginComponent }
+      { path: 'login', component: LoginComponent, canActivate: [loginGuard] }
     ]
   },
   {
     path: 'dashboard',
     component: AdminLayoutComponent,
+    canActivate: [authGuard],
     children: [
       { path: '', component: AdminHomeComponent },
       { path: 'brands', component: BrandsComponent },
       { path: 'categories', component: CategoriesComponent },
-      { path: 'settings', component: SettingsComponent },
+      {
+        path: 'settings',
+        component: SettingsComponent,
+        canActivate: [roleGuard],
+        data: { roles: ['ADMIN'] }
+      },
       { path: 'clients', component: ClientsComponent },
-      { path: 'team', component: TeamComponent },
+      {
+        path: 'team',
+        component: TeamComponent,
+        canActivate: [roleGuard],
+        data: { roles: ['ADMIN'] }
+      },
       { path: 'products', component: ProductsComponent },
       { path: 'products/edit/:id', component: ProductEditComponent },
       { path: 'socials', component: SocialsComponent },
