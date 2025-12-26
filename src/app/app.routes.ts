@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './pages/public/home/home.component';
 import { LoginComponent } from './pages/public/login/login.component';
+import { MaintenanceComponent } from './pages/public/maintenance/maintenance.component';
 import { AdminLayoutComponent } from './pages/private/admin/layout/admin-layout.component';
 import { HomeComponent as AdminHomeComponent } from './pages/private/admin/home/home.component';
 import { BrandsComponent } from './pages/private/admin/brands/brands.component';
@@ -17,13 +18,18 @@ import { ProductEditComponent } from './pages/private/admin/product-edit/product
 import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/role.guard';
 import { loginGuard } from './guards/login.guard';
+import { maintenanceGuard } from './guards/maintenance.guard';
 
 export const routes: Routes = [
+  {
+    path: 'maintenance',
+    component: MaintenanceComponent
+  },
   {
     path: '',
     component: MainLayoutComponent,
     children: [
-      { path: '', component: HomeComponent },
+      { path: '', component: HomeComponent, canActivate: [maintenanceGuard] },
       { path: 'login', component: LoginComponent, canActivate: [loginGuard] }
     ]
   },
