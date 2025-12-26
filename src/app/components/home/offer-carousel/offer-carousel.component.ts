@@ -25,11 +25,34 @@ export class OfferCarouselComponent implements OnInit {
 
     scroll(direction: 'left' | 'right'): void {
         const container = this.scrollContainer.nativeElement;
-        const scrollAmount = container.clientWidth * 0.8;
-        container.scrollBy({
-            left: direction === 'left' ? -scrollAmount : scrollAmount,
-            behavior: 'smooth'
-        });
+        const scrollAmount = container.clientWidth * 0.5;
+        const targetScrollLeft = direction === 'left'
+            ? Math.max(0, container.scrollLeft - scrollAmount)
+            : Math.min(container.scrollWidth - container.clientWidth, container.scrollLeft + scrollAmount);
+
+        this.smoothScrollTo(container, targetScrollLeft, 600);
+    }
+
+    private smoothScrollTo(element: HTMLElement, target: number, duration: number): void {
+        const start = element.scrollLeft;
+        const change = target - start;
+        const startTime = performance.now();
+
+        const animateScroll = (currentTime: number) => {
+            const elapsed = currentTime - startTime;
+
+            if (elapsed < duration) {
+                const t = elapsed / duration;
+                const ease = t < .5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+
+                element.scrollLeft = start + change * ease;
+                requestAnimationFrame(animateScroll);
+            } else {
+                element.scrollLeft = target;
+            }
+        };
+
+        requestAnimationFrame(animateScroll);
     }
 
     calculateDiscountPercentage(price: number, discountPrice: number): number {
