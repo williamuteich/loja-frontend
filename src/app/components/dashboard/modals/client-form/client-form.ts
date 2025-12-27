@@ -16,7 +16,7 @@ import { Client } from '../../../../models';
     templateUrl: './client-form.html',
 })
 export class ClientForm {
-    itemToEdit = input.required<Client>();
+    itemToEdit = input<Client | undefined>();
 
     form: FormGroup;
 
@@ -37,8 +37,10 @@ export class ClientForm {
             const item = this.itemToEdit();
             if (item) {
                 this.form.patchValue(item);
-                this.isValid.set(this.form.valid);
+            } else {
+                this.form.reset();
             }
+            this.isValid.set(this.form.valid);
         });
     }
 

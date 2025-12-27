@@ -44,6 +44,14 @@ export class ClientService {
         );
     }
 
+    create(data: Client): Observable<Client> {
+        return this.api.post<Client>('client/admin', data).pipe(
+            tap((newClient) => {
+                this._clients.update(clients => [...clients, newClient]);
+            })
+        );
+    }
+
     delete(id: string): Observable<void> {
         return this.api.delete<void>(`client/admin/${id}`).pipe(
             tap(() => {

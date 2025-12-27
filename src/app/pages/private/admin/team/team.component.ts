@@ -30,7 +30,6 @@ export class TeamComponent implements OnInit {
 
   protected readonly team = this.teamMemberService.teamMembers;
 
-  // Computed signal to check if current user is admin
   protected readonly isAdmin = computed(() => this.authService.hasRole(['ADMIN']));
 
   isModalVisible = signal(false);
@@ -52,6 +51,11 @@ export class TeamComponent implements OnInit {
 
   ngOnInit(): void {
     this.teamMemberService.loadTeamMembersAdmin();
+  }
+
+  openAddModal(): void {
+    this.selectedMember.set(undefined);
+    this.isModalVisible.set(true);
   }
 
   openEditModal(member?: TeamMember): void {
@@ -95,26 +99,34 @@ export class TeamComponent implements OnInit {
       return;
     }
 
-    const memberId = this.selectedMember()?.id;
-    if (!memberId) {
-      console.error("Member ID não encontrado!");
-      return;
-    }
-
     this.isSaving.set(true);
-
     const formValue = memberForm.getFormValue();
+    const memberId = this.selectedMember()?.id;
 
-    this.teamMemberService.update(memberId, formValue).subscribe({
-      next: () => {
-        this.closeModal();
-        this.isSaving.set(false);
-        alert('Conteúdo atualizado com sucesso!');
-      },
-      error: (err) => {
-        console.error('Erro ao atualizar membro:', err);
-        this.isSaving.set(false);
-      }
-    });
+    if (memberId) {
+      this.teamMemberService.update(memberId, formValue).subscribe({
+        next: () => {
+          this.closeModal();
+          this.isSaving.set(false);
+          alert('Conteúdo atualizado com sucesso!');
+        },
+        error: (err) => {
+          console.error('Erro ao atualizar membro:', err);
+          this.isSaving.set(false);
+        }
+      });
+    } else {
+      this.teamMemberService.create(formValue as any).subscribe({
+        next: () => {
+          this.closeModal();
+          this.isSaving.set(false);
+          alert('Membro criado com sucesso!');
+        },
+        error: (err) => {
+          console.error('Erro ao criar membro:', err);
+          this.isSaving.set(false);
+        }
+      });
+    }
   }
 }

@@ -44,6 +44,14 @@ export class TeamMemberService {
         );
     }
 
+    create(data: TeamMember): Observable<TeamMember> {
+        return this.api.post<TeamMember>('team-members/admin', data).pipe(
+            tap((newMember) => {
+                this._teamMembers.update(members => [...members, newMember]);
+            })
+        );
+    }
+
     delete(id: string): Observable<void> {
         return this.api.delete<void>(`team-members/admin/${id}`).pipe(
             tap(() => {

@@ -16,7 +16,7 @@ import { TeamMember } from '../../../../models';
     templateUrl: './team-member-form.html',
 })
 export class TeamMemberForm {
-    itemToEdit = input.required<TeamMember>();
+    itemToEdit = input<TeamMember | undefined>();
 
     form: FormGroup;
 
@@ -38,8 +38,15 @@ export class TeamMemberForm {
             const item = this.itemToEdit();
             if (item) {
                 this.form.patchValue(item);
-                this.isValid.set(this.form.valid);
+            } else {
+                this.form.reset({
+                    name: '',
+                    lastName: '',
+                    email: '',
+                    role: 'COLLABORATOR'
+                });
             }
+            this.isValid.set(this.form.valid);
         });
     }
 

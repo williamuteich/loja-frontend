@@ -49,6 +49,11 @@ export class ClientsComponent implements OnInit {
     this.clientService.loadClientsAdmin();
   }
 
+  openAddModal(): void {
+    this.selectedClient.set(undefined);
+    this.isModalVisible.set(true);
+  }
+
   openEditModal(client: Client): void {
     this.selectedClient.set(client);
     this.isModalVisible.set(true);
@@ -90,26 +95,34 @@ export class ClientsComponent implements OnInit {
       return;
     }
 
-    const clientId = this.selectedClient()?.id;
-    if (!clientId) {
-      console.error("Client ID não encontrado!");
-      return;
-    }
-
     this.isSaving.set(true);
-
     const formValue = clientForm.getFormValue();
+    const clientId = this.selectedClient()?.id;
 
-    this.clientService.update(clientId, formValue).subscribe({
-      next: () => {
-        this.closeModal();
-        this.isSaving.set(false);
-        alert('Conteúdo atualizado com sucesso!');
-      },
-      error: (err) => {
-        console.error('Erro ao atualizar cliente:', err);
-        this.isSaving.set(false);
-      }
-    });
+    if (clientId) {
+      this.clientService.update(clientId, formValue).subscribe({
+        next: () => {
+          this.closeModal();
+          this.isSaving.set(false);
+          alert('Conteúdo atualizado com sucesso!');
+        },
+        error: (err) => {
+          console.error('Erro ao atualizar cliente:', err);
+          this.isSaving.set(false);
+        }
+      });
+    } else {
+      this.clientService.create(formValue).subscribe({
+        next: () => {
+          this.closeModal();
+          this.isSaving.set(false);
+          alert('Cliente criado com sucesso!');
+        },
+        error: (err) => {
+          console.error('Erro ao criar cliente:', err);
+          this.isSaving.set(false);
+        }
+      });
+    }
   }
 }
