@@ -6,18 +6,26 @@
         </div>
 
         <div class="flex flex-col md:flex-row gap-8 items-center relative z-10">
+            @if (product()) {
             <div class="relative">
                 <div
                     class="w-32 h-32 md:w-40 md:h-40 rounded-2xl bg-slate-50 p-1 border border-slate-100 shadow-soft overflow-hidden group/img">
-                    <img [src]="product()?.images?.[0] ? backendUrl + '/' + product()?.images?.[0]?.url + '?v=' + imageVersion() : 'https://via.placeholder.com/150'"
+                    @if (product()?.images?.[0]) {
+                    <img [src]="backendUrl + '/' + product()?.images?.[0]?.url + '?v=' + imageVersion()"
                         class="w-full h-full object-cover rounded-xl transition-transform duration-500 group-hover/img:scale-105"
                         alt="Previsualização">
+                    } @else {
+                    <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">
+                        <lucide-icon [img]="Plus" class="w-10 h-10"></lucide-icon>
+                    </div>
+                    }
                 </div>
                 <div class="absolute -top-2 -right-2 w-8 h-8 flex items-center justify-center rounded-full border-4 border-white shadow-md transition-colors"
                     [class.bg-emerald-500]="product()?.isActive" [class.bg-rose-500]="!product()?.isActive">
                     <div class="w-2 h-2 rounded-full bg-white animate-pulse"></div>
                 </div>
             </div>
+            }
 
             <div class="flex-1 text-center md:text-left">
                 <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 mb-3">
