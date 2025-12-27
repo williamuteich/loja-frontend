@@ -1,5 +1,4 @@
-@if (categories().length > 0) {
-<section id="categorias" class="py-12 md:py-20 bg-white">
+<section id="categorias" class="py-12 md:py-20 bg-white min-h-[300px]">
     <div class="container mx-auto px-4 relative">
         <div class="mb-8 md:mb-12 text-center">
             <span class="inline-block text-pink-600 text-sm font-medium tracking-wider uppercase mb-2">Explore</span>
@@ -9,6 +8,7 @@
         </div>
 
         <div class="carousel-wrapper relative group">
+            @if (categories().length > 0) {
             <button (click)="scroll('left')"
                 class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 hidden md:flex w-12 h-12 items-center justify-center rounded-full bg-white shadow-lg border border-slate-100 text-pink-600 hover:bg-pink-50 hover:scale-110 transition-all opacity-0 group-hover:opacity-100 cursor-pointer">
                 <lucide-icon [img]="ChevronLeft" class="w-6 h-6"></lucide-icon>
@@ -17,9 +17,11 @@
                 class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 hidden md:flex w-12 h-12 items-center justify-center rounded-full bg-white shadow-lg border border-slate-100 text-pink-600 hover:bg-pink-50 hover:scale-110 transition-all opacity-0 group-hover:opacity-100 cursor-pointer">
                 <lucide-icon [img]="ChevronRight" class="w-6 h-6"></lucide-icon>
             </button>
+            }
 
             <div #scrollContainer
                 class="carousel-scroll flex overflow-x-auto gap-2 md:gap-3 pb-6 scroll-smooth no-scrollbar cursor-grab active:cursor-grabbing">
+                @if (categories().length > 0) {
                 @for (category of categories(); track category.id; let i = $index) {
                 <a [routerLink]="['/produtos']" [queryParams]="{ categoria: category.id }"
                     class="group/card relative flex-none w-20 md:w-28 lg:w-36">
@@ -49,9 +51,12 @@
                     </div>
                 </a>
                 }
+                } @else {
+                @for (i of [1,2,3,4,5,6,7,8]; track i) {
+                <div class="flex-none w-20 md:w-28 lg:w-36 aspect-square rounded-2xl bg-slate-100 animate-pulse"></div>
+                }
+                }
             </div>
-
         </div>
     </div>
 </section>
-}

@@ -1,20 +1,4 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './pages/public/home/home.component';
-import { LoginComponent } from './pages/public/login/login.component';
-import { MaintenanceComponent } from './pages/public/maintenance/maintenance.component';
-import { AdminLayoutComponent } from './pages/private/admin/layout/admin-layout.component';
-import { HomeComponent as AdminHomeComponent } from './pages/private/admin/home/home.component';
-import { BrandsComponent } from './pages/private/admin/brands/brands.component';
-import { CategoriesComponent } from './pages/private/admin/categories/categories.component';
-import { SettingsComponent } from './pages/private/admin/settings/settings.component';
-import { ClientsComponent } from './pages/private/admin/clients/clients.component';
-import { TeamComponent } from './pages/private/admin/team/team.component';
-import { ProductsComponent } from './pages/private/admin/products/products.component';
-import { SocialsComponent } from './pages/private/admin/socials/socials.component';
-import { NewsletterComponent } from './pages/private/admin/newsletter/newsletter.component';
-import { BannersComponent } from './pages/private/admin/banners/banners.component';
-import { MainLayoutComponent } from './pages/public/layout/main-layout.component';
-import { ProductEditComponent } from './pages/private/admin/product-edit/product-edit.component';
 import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/role.guard';
 import { loginGuard } from './guards/login.guard';
@@ -23,43 +7,101 @@ import { maintenanceGuard } from './guards/maintenance.guard';
 export const routes: Routes = [
   {
     path: 'maintenance',
-    component: MaintenanceComponent
+    loadComponent: () => import('./pages/public/maintenance/maintenance.component').then(m => m.MaintenanceComponent)
   },
   {
     path: '',
-    component: MainLayoutComponent,
+    loadComponent: () => import('./pages/public/layout/main-layout.component').then(m => m.MainLayoutComponent),
     children: [
-      { path: '', component: HomeComponent, canActivate: [maintenanceGuard] },
+      {
+        path: '',
+        loadComponent: () => import('./pages/public/home/home.component').then(m => m.HomeComponent),
+        canActivate: [maintenanceGuard]
+      },
     ]
   },
-  { path: 'login', component: LoginComponent, canActivate: [loginGuard] },
+  {
+    path: 'login',
+    loadComponent: () => import('./pages/public/login/login.component').then(m => m.LoginComponent),
+    canActivate: [loginGuard]
+  },
   {
     path: 'dashboard',
-    component: AdminLayoutComponent,
+    loadComponent: () => import('./pages/private/admin/layout/admin-layout.component').then(m => m.AdminLayoutComponent),
     canActivate: [authGuard],
     children: [
-      { path: '', component: AdminHomeComponent, canActivate: [roleGuard], data: { roles: ['ADMIN', 'COLLABORATOR'] } },
-      { path: 'brands', component: BrandsComponent, canActivate: [roleGuard], data: { roles: ['ADMIN', 'COLLABORATOR'] } },
-      { path: 'categories', component: CategoriesComponent, canActivate: [roleGuard], data: { roles: ['ADMIN', 'COLLABORATOR'] } },
+      {
+        path: '',
+        loadComponent: () => import('./pages/private/admin/home/home.component').then(m => m.HomeComponent),
+        canActivate: [roleGuard],
+        data: { roles: ['ADMIN', 'COLLABORATOR'] }
+      },
+      {
+        path: 'brands',
+        loadComponent: () => import('./pages/private/admin/brands/brands.component').then(m => m.BrandsComponent),
+        canActivate: [roleGuard],
+        data: { roles: ['ADMIN', 'COLLABORATOR'] }
+      },
+      {
+        path: 'categories',
+        loadComponent: () => import('./pages/private/admin/categories/categories.component').then(m => m.CategoriesComponent),
+        canActivate: [roleGuard],
+        data: { roles: ['ADMIN', 'COLLABORATOR'] }
+      },
       {
         path: 'settings',
-        component: SettingsComponent,
+        loadComponent: () => import('./pages/private/admin/settings/settings.component').then(m => m.SettingsComponent),
         canActivate: [roleGuard],
         data: { roles: ['ADMIN'] }
       },
-      { path: 'clients', component: ClientsComponent, canActivate: [roleGuard], data: { roles: ['ADMIN', 'COLLABORATOR'] } },
+      {
+        path: 'clients',
+        loadComponent: () => import('./pages/private/admin/clients/clients.component').then(m => m.ClientsComponent),
+        canActivate: [roleGuard],
+        data: { roles: ['ADMIN', 'COLLABORATOR'] }
+      },
       {
         path: 'team',
-        component: TeamComponent,
+        loadComponent: () => import('./pages/private/admin/team/team.component').then(m => m.TeamComponent),
         canActivate: [roleGuard],
         data: { roles: ['ADMIN'] }
       },
-      { path: 'products', component: ProductsComponent, canActivate: [roleGuard], data: { roles: ['ADMIN', 'COLLABORATOR'] } },
-      { path: 'products/create', component: ProductEditComponent, canActivate: [roleGuard], data: { roles: ['ADMIN', 'COLLABORATOR'] } },
-      { path: 'products/edit/:id', component: ProductEditComponent, canActivate: [roleGuard], data: { roles: ['ADMIN', 'COLLABORATOR'] } },
-      { path: 'socials', component: SocialsComponent, canActivate: [roleGuard], data: { roles: ['ADMIN', 'COLLABORATOR'] } },
-      { path: 'newsletter', component: NewsletterComponent, canActivate: [roleGuard], data: { roles: ['ADMIN', 'COLLABORATOR'] } },
-      { path: 'banners', component: BannersComponent, canActivate: [roleGuard], data: { roles: ['ADMIN', 'COLLABORATOR'] } }
+      {
+        path: 'products',
+        loadComponent: () => import('./pages/private/admin/products/products.component').then(m => m.ProductsComponent),
+        canActivate: [roleGuard],
+        data: { roles: ['ADMIN', 'COLLABORATOR'] }
+      },
+      {
+        path: 'products/create',
+        loadComponent: () => import('./pages/private/admin/product-edit/product-edit.component').then(m => m.ProductEditComponent),
+        canActivate: [roleGuard],
+        data: { roles: ['ADMIN', 'COLLABORATOR'] }
+      },
+      {
+        path: 'products/edit/:id',
+        loadComponent: () => import('./pages/private/admin/product-edit/product-edit.component').then(m => m.ProductEditComponent),
+        canActivate: [roleGuard],
+        data: { roles: ['ADMIN', 'COLLABORATOR'] }
+      },
+      {
+        path: 'socials',
+        loadComponent: () => import('./pages/private/admin/socials/socials.component').then(m => m.SocialsComponent),
+        canActivate: [roleGuard],
+        data: { roles: ['ADMIN', 'COLLABORATOR'] }
+      },
+      {
+        path: 'newsletter',
+        loadComponent: () => import('./pages/private/admin/newsletter/newsletter.component').then(m => m.NewsletterComponent),
+        canActivate: [roleGuard],
+        data: { roles: ['ADMIN', 'COLLABORATOR'] }
+      },
+      {
+        path: 'banners',
+        loadComponent: () => import('./pages/private/admin/banners/banners.component').then(m => m.BannersComponent),
+        canActivate: [roleGuard],
+        data: { roles: ['ADMIN', 'COLLABORATOR'] }
+      }
     ]
   }
 ];
