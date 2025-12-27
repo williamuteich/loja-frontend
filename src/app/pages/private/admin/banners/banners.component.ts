@@ -101,9 +101,23 @@ export class BannersComponent implements OnInit {
     const formValue = bannerForm.getFormValue();
     const bannerId = this.selectedBanner()?.id;
 
+    const formData = new FormData();
+    formData.append('title', formValue.title);
+
+    if (formValue.subtitle) formData.append('subtitle', formValue.subtitle);
+    if (formValue.linkUrl) formData.append('linkUrl', formValue.linkUrl);
+    if (formValue.resolutionDesktop) formData.append('resolutionDesktop', formValue.resolutionDesktop);
+    if (formValue.resolutionMobile) formData.append('resolutionMobile', formValue.resolutionMobile);
+
+    if (bannerForm.selectedDesktopFile) {
+      formData.append('desktopImage', bannerForm.selectedDesktopFile);
+    }
+    if (bannerForm.selectedMobileFile) {
+      formData.append('mobileImage', bannerForm.selectedMobileFile);
+    }
+
     if (bannerId) {
-      // Editar
-      this.bannerService.update(bannerId, formValue).subscribe({
+      this.bannerService.update(bannerId, formData).subscribe({
         next: () => {
           this.closeModal();
           this.isSaving.set(false);
@@ -115,20 +129,11 @@ export class BannersComponent implements OnInit {
         }
       });
     } else {
-      // Criar
-      const formData = new FormData();
-      formData.append('title', formValue.title);
-      formData.append('subtitle', formValue.subtitle || '');
-      formData.append('linkUrl', formValue.linkUrl || '');
-      formData.append('isActive', formValue.isActive ? 'true' : 'false');
-
-      if (!bannerForm.selectedFile) {
-        alert('A imagem é obrigatória para criar um novo banner!');
+      if (!bannerForm.selectedDesktopFile) {
+        alert('A imagem desktop é obrigatória para criar um novo banner!');
         this.isSaving.set(false);
         return;
       }
-
-      formData.append('file', bannerForm.selectedFile);
 
       this.bannerService.create(formData).subscribe({
         next: () => {

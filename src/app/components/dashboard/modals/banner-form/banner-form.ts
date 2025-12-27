@@ -20,7 +20,8 @@ export class BannerForm {
   itemToEdit = input<Banner | undefined>();
 
   form: FormGroup;
-  selectedFile: File | null = null;
+  selectedDesktopFile: File | null = null;
+  selectedMobileFile: File | null = null;
 
   readonly isValid = signal(false);
 
@@ -29,6 +30,8 @@ export class BannerForm {
       title: ['', [Validators.required]],
       subtitle: [''],
       linkUrl: [''],
+      resolutionDesktop: [''],
+      resolutionMobile: [''],
       isActive: [true],
     });
 
@@ -45,17 +48,28 @@ export class BannerForm {
           title: '',
           subtitle: '',
           linkUrl: '',
+          resolutionDesktop: '',
+          resolutionMobile: '',
           isActive: true
         });
+        this.selectedDesktopFile = null;
+        this.selectedMobileFile = null;
       }
       this.isValid.set(this.form.valid);
     });
   }
 
-  onFileSelected(event: Event): void {
+  onDesktopFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      this.selectedFile = input.files[0];
+      this.selectedDesktopFile = input.files[0];
+    }
+  }
+
+  onMobileFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedMobileFile = input.files[0];
     }
   }
 

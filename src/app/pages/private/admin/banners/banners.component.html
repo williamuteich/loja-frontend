@@ -21,8 +21,13 @@
         @for (banner of banners(); track banner.id; let i = $index) {
         <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
             <div class="flex items-center gap-4 p-4">
-                <img [ngSrc]="backendUrl + '/' + banner.imageDesktop" width="320" height="160" [priority]="i === 0"
-                    ngSkipSizeCheck [alt]="banner.title" class="rounded-lg object-cover bg-slate-100 w-32 h-20">
+                @if (i === 0) {
+                <img [ngSrc]="backendUrl + '/' + banner.imageDesktop" width="320" height="160" priority ngSkipSizeCheck
+                    [alt]="banner.title" class="rounded-lg object-cover bg-slate-100 w-32 h-20">
+                } @else {
+                <img [ngSrc]="backendUrl + '/' + banner.imageDesktop" width="320" height="160" ngSkipSizeCheck
+                    [alt]="banner.title" class="rounded-lg object-cover bg-slate-100 w-32 h-20">
+                }
                 <div class="flex-1">
                     <h3 class="font-semibold text-slate-900">{{ banner.title }}</h3>
                     @if(banner.subtitle) {

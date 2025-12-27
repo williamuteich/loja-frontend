@@ -65,7 +65,7 @@ export class BannerService {
         return this.api.get<Banner>(`banner/public/${id}`);
     }
 
-    update(id: string, data: Partial<Banner>): Observable<Banner> {
+    update(id: string, data: any): Observable<Banner> {
         return this.api.patch<Banner>(`banner/admin/${id}`, data).pipe(
             tap((updatedBanner) => {
                 this._banners.update(banners =>

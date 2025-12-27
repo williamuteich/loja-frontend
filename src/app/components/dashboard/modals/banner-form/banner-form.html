@@ -1,18 +1,32 @@
 <form [formGroup]="form" class="banner-form-container">
-  @if (!itemToEdit()) {
   <div class="form-field">
-    <label for="image">Imagem do Banner *</label>
-    <input id="image" type="file" (change)="onFileSelected($event)" accept="image/*" />
-  </div>
-  }
-  <div class="form-field">
-    <label for="title">Título</label>
+    <label for="title">Título *</label>
     <input id="title" type="text" formControlName="title" />
   </div>
 
   <div class="form-field">
     <label for="subtitle">Subtítulo</label>
     <input id="subtitle" type="text" formControlName="subtitle" />
+  </div>
+
+  <div class="form-field">
+    <label for="resolutionDesktop">Resolução Desktop (ex: 1920x1080)</label>
+    <input id="resolutionDesktop" type="text" formControlName="resolutionDesktop" />
+  </div>
+
+  <div class="form-field">
+    <label for="resolutionMobile">Resolução Mobile (ex: 600x600)</label>
+    <input id="resolutionMobile" type="text" formControlName="resolutionMobile" />
+  </div>
+
+  <div class="form-field">
+    <label for="desktopImage">Imagem Desktop @if(!itemToEdit()){ * }</label>
+    <input id="desktopImage" type="file" (change)="onDesktopFileSelected($event)" accept="image/*" />
+  </div>
+
+  <div class="form-field">
+    <label for="mobileImage">Imagem Mobile</label>
+    <input id="mobileImage" type="file" (change)="onMobileFileSelected($event)" accept="image/*" />
   </div>
 
   <div class="form-field">

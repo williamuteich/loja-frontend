@@ -90,7 +90,6 @@ export class BrandsComponent implements OnInit {
     const brandId = this.selectedBrand()?.id;
 
     if (brandId) {
-      // Edit mode - send everything (name, isActive)
       this.brandService.update(brandId, formValue).subscribe({
         next: () => {
           this.closeModal();
@@ -103,15 +102,11 @@ export class BrandsComponent implements OnInit {
         }
       });
     } else {
-      // Create mode - send ONLY name
       const payload = {
         name: formValue.name,
-        isActive: true, // sending this just in case the model requires it locally, but the service/backend might ignore or require it depending on the specific DTO. User said "somente mandar o nome". 
-        // WAIT, user said "nao precisa colocar os isActive. é somente mandar o nome DA MARCA".
-        // So I will construct payload with ONLY name.
+        isActive: true,
       };
 
-      // Redoing payload to match request strictly
       const createPayload: any = {
         name: formValue.name
       };
