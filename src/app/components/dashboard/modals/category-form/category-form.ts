@@ -16,7 +16,7 @@ import { Category } from '../../../../models';
     templateUrl: './category-form.html',
 })
 export class CategoryForm {
-    itemToEdit = input.required<Category>();
+    itemToEdit = input<Category | undefined>();
 
     form: FormGroup;
 
@@ -38,8 +38,15 @@ export class CategoryForm {
             const item = this.itemToEdit();
             if (item) {
                 this.form.patchValue(item);
-                this.isValid.set(this.form.valid);
+            } else {
+                this.form.reset({
+                    name: '',
+                    description: '',
+                    isHome: false,
+                    isActive: true
+                });
             }
+            this.isValid.set(this.form.valid);
         });
     }
 
@@ -57,6 +64,15 @@ export class CategoryForm {
 
     get isActive(): FormControl {
         return this.form.get('isActive') as FormControl;
+    }
+
+    selectedFile: File | null = null;
+
+    onFileSelected(event: Event) {
+        const input = event.target as HTMLInputElement;
+        if (input.files && input.files.length > 0) {
+            this.selectedFile = input.files[0];
+        }
     }
 
     getFormValue() {

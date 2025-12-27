@@ -41,6 +41,11 @@ export class CategoriesComponent implements OnInit {
     this.categoryService.loadCategoriesAdmin();
   }
 
+  openAddModal(): void {
+    this.selectedCategory.set(undefined);
+    this.isModalVisible.set(true);
+  }
+
   openEditModal(category: Category): void {
     this.selectedCategory.set(category);
     this.isModalVisible.set(true);
@@ -82,28 +87,53 @@ export class CategoriesComponent implements OnInit {
       return;
     }
 
-    const categoryId = this.selectedCategory()?.id;
-    if (!categoryId) {
-      console.error("Category ID não encontrado!");
-      return;
-    }
-
     this.isSaving.set(true);
-
     const formValue = categoryForm.getFormValue();
+    const categoryId = this.selectedCategory()?.id;
 
-    console.log('Sending payload:', formValue);
+    if (categoryId) {
+      this.categoryService.update(categoryId, formValue).subscribe({
+        next: () => {
+          this.closeModal();
+          this.isSaving.set(false);
+          alert('Conteúdo atualizado com sucesso!');
+        },
+        error: (err) => {
+          console.error('Erro ao atualizar categoria:', err);
+          this.isSaving.set(false);
+        }
+      });
+    } else {
+      const formData = new FormData();
+      formData.append('name', formValue.name);
 
-    this.categoryService.update(categoryId, formValue).subscribe({
-      next: () => {
-        this.closeModal();
-        this.isSaving.set(false);
-        alert('Conteúdo atualizado com sucesso!');
-      },
-      error: (err) => {
-        console.error('Erro ao atualizar categoria:', err);
-        this.isSaving.set(false);
+      if (formValue.description && formValue.description.trim().length > 0) {
+        formData.append('description', formValue.description);
       }
-    });
+
+      if (formValue.isHome) {
+        formData.append('isHome', 'true');
+      }
+
+      if (!categoryForm.selectedFile) {
+        alert('A imagem é obrigatória para criar uma nova categoria!');
+        this.isSaving.set(false);
+        return;
+      }
+
+      formData.append('file', categoryForm.selectedFile);
+
+      this.categoryService.create(formData).subscribe({
+        next: () => {
+          this.closeModal();
+          this.isSaving.set(false);
+          alert('Categoria criada com sucesso!');
+        },
+        error: (err) => {
+          console.error('Erro ao criar categoria:', err);
+          this.isSaving.set(false);
+        }
+      });
+    }
   }
 }

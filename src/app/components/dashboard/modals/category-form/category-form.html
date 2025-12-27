@@ -25,6 +25,17 @@
         }
     </div>
 
+    <div>
+        <label class="block text-sm font-medium text-slate-700 mb-2">Imagem da Categoria</label>
+        <input type="file" (change)="onFileSelected($event)" accept="image/*" class="w-full text-sm text-slate-500
+            file:mr-4 file:py-2 file:px-4
+            file:rounded-lg file:border-0
+            file:text-sm file:font-semibold
+            file:bg-primary/10 file:text-primary
+            hover:file:bg-primary/20
+            hover:cursor-pointer">
+    </div>
+
     <div class="flex items-center gap-3">
         <input type="checkbox" [formControl]="isHome" id="categoryHome"
             class="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2">

@@ -68,7 +68,7 @@ export class BrandService {
     create(data: Brand): Observable<Brand> {
         return this.api.post<Brand>('brand/admin', data).pipe(
             tap((newBrand) => {
-                this._brands.update(brands => [...brands, newBrand]);
+                this._brands.update(brands => [...brands, { ...newBrand, _count: { products: 0 } }]);
                 this.publicLoaded = false;
             })
         );

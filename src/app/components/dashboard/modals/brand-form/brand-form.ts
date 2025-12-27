@@ -16,7 +16,7 @@ import { Brand } from '../../../../models';
     templateUrl: './brand-form.html',
 })
 export class BrandForm {
-    itemToEdit = input.required<Brand>();
+    itemToEdit = input<Brand | undefined>();
 
     form: FormGroup;
 
@@ -36,8 +36,13 @@ export class BrandForm {
             const item = this.itemToEdit();
             if (item) {
                 this.form.patchValue(item);
-                this.isValid.set(this.form.valid);
+            } else {
+                this.form.reset({
+                    name: '',
+                    isActive: true
+                });
             }
+            this.isValid.set(this.form.valid);
         });
     }
 

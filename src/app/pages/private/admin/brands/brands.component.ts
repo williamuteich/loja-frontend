@@ -39,6 +39,11 @@ export class BrandsComponent implements OnInit {
     this.brandService.loadBrandsAdmin();
   }
 
+  openAddModal(): void {
+    this.selectedBrand.set(undefined);
+    this.isModalVisible.set(true);
+  }
+
   openEditModal(brand: Brand): void {
     this.selectedBrand.set(brand);
     this.isModalVisible.set(true);
@@ -80,27 +85,49 @@ export class BrandsComponent implements OnInit {
       return;
     }
 
-    const brandId = this.selectedBrand()?.id;
-    if (!brandId) {
-      console.error("Brand ID não encontrado!");
-      return;
-    }
-
     this.isSaving.set(true);
-
     const formValue = brandForm.getFormValue();
+    const brandId = this.selectedBrand()?.id;
 
-    this.brandService.update(brandId, formValue).subscribe({
-      next: () => {
-        this.closeModal();
-        this.isSaving.set(false);
-        alert('Conteúdo atualizado com sucesso!');
-      },
-      error: (err) => {
-        console.error('Erro ao atualizar marca:', err);
-        this.isSaving.set(false);
-      }
-    });
+    if (brandId) {
+      // Edit mode - send everything (name, isActive)
+      this.brandService.update(brandId, formValue).subscribe({
+        next: () => {
+          this.closeModal();
+          this.isSaving.set(false);
+          alert('Conteúdo atualizado com sucesso!');
+        },
+        error: (err) => {
+          console.error('Erro ao atualizar marca:', err);
+          this.isSaving.set(false);
+        }
+      });
+    } else {
+      // Create mode - send ONLY name
+      const payload = {
+        name: formValue.name,
+        isActive: true, // sending this just in case the model requires it locally, but the service/backend might ignore or require it depending on the specific DTO. User said "somente mandar o nome". 
+        // WAIT, user said "nao precisa colocar os isActive. é somente mandar o nome DA MARCA".
+        // So I will construct payload with ONLY name.
+      };
+
+      // Redoing payload to match request strictly
+      const createPayload: any = {
+        name: formValue.name
+      };
+
+      this.brandService.create(createPayload).subscribe({
+        next: () => {
+          this.closeModal();
+          this.isSaving.set(false);
+          alert('Marca criada com sucesso!');
+        },
+        error: (err) => {
+          console.error('Erro ao criar marca:', err);
+          this.isSaving.set(false);
+        }
+      });
+    }
   }
 
   protected getInitials(name: string): string {

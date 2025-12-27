@@ -76,6 +76,17 @@ export class CategoryService {
         );
     }
 
+    create(data: FormData): Observable<Category> {
+        return this.api.post<Category>('category/admin', data).pipe(
+            tap((newCategory) => {
+                this._categories.update(categories =>
+                    [...categories, { ...newCategory, _count: { products: 0 } }]
+                );
+                this.publicLoaded = false;
+            })
+        );
+    }
+
     delete(id: string): Observable<void> {
         return this.api.delete<void>(`category/admin/${id}`).pipe(
             tap(() => {
