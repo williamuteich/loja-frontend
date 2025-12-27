@@ -86,4 +86,13 @@ export class BannerService {
             })
         );
     }
+
+    create(data: FormData): Observable<Banner> {
+        return this.api.post<Banner>('banner/admin', data).pipe(
+            tap((newBanner) => {
+                this._banners.update(banners => [...banners, newBanner]);
+                this.publicLoaded = false;
+            })
+        );
+    }
 }

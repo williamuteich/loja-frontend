@@ -1,4 +1,10 @@
 <form [formGroup]="form" class="banner-form-container">
+  @if (!itemToEdit()) {
+  <div class="form-field">
+    <label for="image">Imagem do Banner *</label>
+    <input id="image" type="file" (change)="onFileSelected($event)" accept="image/*" />
+  </div>
+  }
   <div class="form-field">
     <label for="title">Título</label>
     <input id="title" type="text" formControlName="title" />

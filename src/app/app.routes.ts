@@ -55,6 +55,7 @@ export const routes: Routes = [
         data: { roles: ['ADMIN'] }
       },
       { path: 'products', component: ProductsComponent, canActivate: [roleGuard], data: { roles: ['ADMIN', 'COLLABORATOR'] } },
+      { path: 'products/create', component: ProductEditComponent, canActivate: [roleGuard], data: { roles: ['ADMIN', 'COLLABORATOR'] } },
       { path: 'products/edit/:id', component: ProductEditComponent, canActivate: [roleGuard], data: { roles: ['ADMIN', 'COLLABORATOR'] } },
       { path: 'socials', component: SocialsComponent, canActivate: [roleGuard], data: { roles: ['ADMIN', 'COLLABORATOR'] } },
       { path: 'newsletter', component: NewsletterComponent, canActivate: [roleGuard], data: { roles: ['ADMIN', 'COLLABORATOR'] } },

@@ -66,8 +66,8 @@
 </div>
 
 @if (isModalVisible()) {
-<app-generic-modal [title]="selectedCategory() ? 'Editar Categoria' : 'Nova Categoria'" (close)="closeModal()" (save)="handleSave(categoryForm)"
-    [isLoading]="isSaving() || !categoryForm.isValid()">
+<app-generic-modal [title]="selectedCategory() ? 'Editar Categoria' : 'Nova Categoria'" (close)="closeModal()"
+    (save)="handleSave(categoryForm)" [isLoading]="isSaving()" [disabled]="!categoryForm.isValid()">
     <app-category-form #categoryForm [itemToEdit]="selectedCategory()"></app-category-form>
 </app-generic-modal>
 }

@@ -28,6 +28,7 @@ export class TeamMemberForm {
             lastName: ['', [Validators.required]],
             email: ['', [Validators.required, Validators.email]],
             role: ['COLLABORATOR', [Validators.required]],
+            password: [''],
         });
 
         this.form.statusChanges.subscribe(() => {
@@ -36,14 +37,21 @@ export class TeamMemberForm {
 
         effect(() => {
             const item = this.itemToEdit();
+            const passwordControl = this.form.get('password');
+
             if (item) {
+                passwordControl?.clearValidators();
+                passwordControl?.updateValueAndValidity();
                 this.form.patchValue(item);
             } else {
+                passwordControl?.setValidators([Validators.required, Validators.minLength(6)]);
+                passwordControl?.updateValueAndValidity();
                 this.form.reset({
                     name: '',
                     lastName: '',
                     email: '',
-                    role: 'COLLABORATOR'
+                    role: 'COLLABORATOR',
+                    password: ''
                 });
             }
             this.isValid.set(this.form.valid);
@@ -66,8 +74,12 @@ export class TeamMemberForm {
         return this.form.get('role') as FormControl;
     }
 
+    get password(): FormControl {
+        return this.form.get('password') as FormControl;
+    }
+
     getFormValue() {
-        const { name, lastName, email, role } = this.form.value;
-        return { name, lastName, email, role };
+        const { name, lastName, email, role, password } = this.form.value;
+        return { name, lastName, email, role, password };
     }
 }

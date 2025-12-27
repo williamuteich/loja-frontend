@@ -91,7 +91,7 @@
 
 @if (isModalVisible()) {
 <app-generic-modal [title]="selectedMember() ? 'Editar Membro' : 'Novo Membro'" (close)="closeModal()"
-    (save)="handleSave(memberForm)" [isLoading]="isSaving() || !memberForm.isValid()">
+    (save)="handleSave(memberForm)" [isLoading]="isSaving()" [disabled]="!memberForm.isValid()">
     <app-team-member-form #memberForm [itemToEdit]="selectedMember()"></app-team-member-form>
 </app-generic-modal>
 }

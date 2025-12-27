@@ -13,6 +13,7 @@ export class GenericModal {
   @Input() cancelText: string = 'Cancelar';
   @Input() saveText: string = 'Salvar';
   @Input() isLoading: boolean = false;
+  @Input() disabled: boolean = false;
   @Input() showFooter: boolean = true;
 
   @Output() close = new EventEmitter<void>();

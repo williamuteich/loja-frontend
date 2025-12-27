@@ -27,6 +27,7 @@ export class ClientForm {
             name: ['', [Validators.required]],
             lastName: ['', [Validators.required]],
             email: ['', [Validators.required, Validators.email]],
+            password: ['']
         });
 
         this.form.statusChanges.subscribe(() => {
@@ -35,9 +36,15 @@ export class ClientForm {
 
         effect(() => {
             const item = this.itemToEdit();
+            const passwordControl = this.form.get('password');
+
             if (item) {
+                passwordControl?.clearValidators();
+                passwordControl?.updateValueAndValidity();
                 this.form.patchValue(item);
             } else {
+                passwordControl?.setValidators([Validators.required, Validators.minLength(6)]);
+                passwordControl?.updateValueAndValidity();
                 this.form.reset();
             }
             this.isValid.set(this.form.valid);
@@ -54,6 +61,10 @@ export class ClientForm {
 
     get email(): FormControl {
         return this.form.get('email') as FormControl;
+    }
+
+    get password(): FormControl {
+        return this.form.get('password') as FormControl;
     }
 
     getFormValue() {

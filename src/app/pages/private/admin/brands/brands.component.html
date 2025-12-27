@@ -78,7 +78,7 @@
 
 @if (isModalVisible()) {
 <app-generic-modal [title]="selectedBrand() ? 'Editar Marca' : 'Nova Marca'" (close)="closeModal()"
-    (save)="handleSave(brandForm)" [isLoading]="isSaving() || !brandForm.isValid()">
+    (save)="handleSave(brandForm)" [isLoading]="isSaving()" [disabled]="!brandForm.isValid()">
     <app-brand-form #brandForm [itemToEdit]="selectedBrand()"></app-brand-form>
 </app-generic-modal>
 }

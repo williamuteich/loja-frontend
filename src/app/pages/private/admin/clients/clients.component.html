@@ -75,7 +75,7 @@
 
 @if (isModalVisible()) {
 <app-generic-modal [title]="selectedClient() ? 'Editar Cliente' : 'Novo Cliente'" (close)="closeModal()"
-    (save)="handleSave(clientForm)" [isLoading]="isSaving() || !clientForm.isValid()">
+    (save)="handleSave(clientForm)" [isLoading]="isSaving()" [disabled]="!clientForm.isValid()">
     <app-client-form #clientForm [itemToEdit]="selectedClient()"></app-client-form>
 </app-generic-modal>
 }

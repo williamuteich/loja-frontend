@@ -82,4 +82,13 @@ export class ProductService {
             })
         );
     }
+
+    create(data: FormData): Observable<Product> {
+        return this.api.post<Product>('product/admin', data).pipe(
+            tap((newProduct) => {
+                this._products.update(products => [...products, newProduct]);
+                this.publicLoaded = false;
+            })
+        );
+    }
 }

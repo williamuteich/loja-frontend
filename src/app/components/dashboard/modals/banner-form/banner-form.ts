@@ -17,9 +17,10 @@ import { Banner } from '../../../../models';
   styleUrl: './banner-form.css',
 })
 export class BannerForm {
-  itemToEdit = input.required<Banner>();
+  itemToEdit = input<Banner | undefined>();
 
   form: FormGroup;
+  selectedFile: File | null = null;
 
   readonly isValid = signal(false);
 
@@ -34,13 +35,28 @@ export class BannerForm {
     this.form.statusChanges.subscribe(() => {
       this.isValid.set(this.form.valid);
     });
+
     effect(() => {
       const item = this.itemToEdit();
       if (item) {
         this.form.patchValue(item);
-        this.isValid.set(this.form.valid);
+      } else {
+        this.form.reset({
+          title: '',
+          subtitle: '',
+          linkUrl: '',
+          isActive: true
+        });
       }
+      this.isValid.set(this.form.valid);
     });
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
+    }
   }
 
   get title(): FormControl {

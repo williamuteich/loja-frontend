@@ -59,7 +59,6 @@ export class ProductEditComponent {
             variants: this.fb.array([])
         });
 
-
         effect(() => {
             const products = this.productService.products();
             const productId = this.route.snapshot.paramMap.get('id');
@@ -71,11 +70,12 @@ export class ProductEditComponent {
                         this.loadProductData(product);
                     }
                 }
+            } else if (!productId) {
+                this.product.set(null);
+                this.keptImageUrls.set([]);
             }
         });
     }
-
-
 
     get variants(): FormArray {
         return this.form.get('variants') as FormArray;
@@ -165,14 +165,16 @@ export class ProductEditComponent {
         }
 
         const productId = this.route.snapshot.paramMap.get('id');
-        if (!productId) return;
-
         this.isLoading.set(true);
         const formData = this.buildFormData();
 
-        this.productService.update(productId, formData).subscribe({
+        const request = productId
+            ? this.productService.update(productId, formData)
+            : this.productService.create(formData);
+
+        request.subscribe({
             next: () => {
-                alert('Conteúdo atualizado com sucesso!');
+                alert(productId ? 'Conteúdo atualizado com sucesso!' : 'Produto criado com sucesso!');
                 this.router.navigate(['/dashboard/products']);
             },
             error: () => {

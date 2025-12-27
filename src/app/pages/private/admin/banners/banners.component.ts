@@ -51,6 +51,11 @@ export class BannersComponent implements OnInit {
     this.bannerService.loadBannersAdmin();
   }
 
+  openAddModal(): void {
+    this.selectedBanner.set(undefined);
+    this.isModalVisible.set(true);
+  }
+
   openEditModal(banner: Banner): void {
     this.selectedBanner.set(banner);
     this.isModalVisible.set(true);
@@ -92,27 +97,50 @@ export class BannersComponent implements OnInit {
       return;
     }
 
-    const bannerId = this.selectedBanner()?.id;
-    if (!bannerId) {
-      console.error("Banner ID não encontrado!");
-      return;
-    }
-
     this.isSaving.set(true);
-
     const formValue = bannerForm.getFormValue();
+    const bannerId = this.selectedBanner()?.id;
 
-    this.bannerService.update(bannerId, formValue).subscribe({
-      next: () => {
-        this.bannerService.loadBannersAdmin();
-        this.closeModal();
+    if (bannerId) {
+      // Editar
+      this.bannerService.update(bannerId, formValue).subscribe({
+        next: () => {
+          this.closeModal();
+          this.isSaving.set(false);
+          alert('Conteúdo atualizado com sucesso!');
+        },
+        error: (err) => {
+          console.error('Erro ao atualizar banner:', err);
+          this.isSaving.set(false);
+        }
+      });
+    } else {
+      // Criar
+      const formData = new FormData();
+      formData.append('title', formValue.title);
+      formData.append('subtitle', formValue.subtitle || '');
+      formData.append('linkUrl', formValue.linkUrl || '');
+      formData.append('isActive', formValue.isActive ? 'true' : 'false');
+
+      if (!bannerForm.selectedFile) {
+        alert('A imagem é obrigatória para criar um novo banner!');
         this.isSaving.set(false);
-        alert('Conteúdo atualizado com sucesso!');
-      },
-      error: (err) => {
-        console.error('Erro ao atualizar banner:', err);
-        this.isSaving.set(false);
+        return;
       }
-    });
+
+      formData.append('file', bannerForm.selectedFile);
+
+      this.bannerService.create(formData).subscribe({
+        next: () => {
+          this.closeModal();
+          this.isSaving.set(false);
+          alert('Banner criado com sucesso!');
+        },
+        error: (err) => {
+          console.error('Erro ao criar banner:', err);
+          this.isSaving.set(false);
+        }
+      });
+    }
   }
 }

@@ -42,6 +42,10 @@ export class ProductsComponent implements OnInit {
     this.productService.loadProductsAdmin();
   }
 
+  openCreatePage() {
+    this.router.navigate(['/dashboard/products/create']);
+  }
+
   openEditPage(productId: string) {
     this.router.navigate(['/dashboard/products/edit', productId]);
   }

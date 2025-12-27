@@ -16,9 +16,12 @@
       <button type="button" class="btn btn-secondary" (click)="close.emit()">
         {{ cancelText }}
       </button>
-      <button type="button" class="btn btn-primary" (click)="save.emit()" [disabled]="isLoading">
-        <span *ngIf="!isLoading">{{ saveText }}</span>
-        <span *ngIf="isLoading">Salvando...</span>
+      <button type="button" class="btn btn-primary" (click)="save.emit()" [disabled]="isLoading || disabled">
+        @if (isLoading) {
+        <span>Salvando...</span>
+        } @else {
+        <span>{{ saveText }}</span>
+        }
       </button>
     </footer>
     }
