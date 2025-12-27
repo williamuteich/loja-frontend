@@ -36,9 +36,17 @@
                         <tr class="border-t border-slate-100 hover:bg-slate-50 transition-colors">
                             <td class="px-6 py-4">
                                 <div class="flex items-center gap-3">
-                                    <img [ngSrc]="backendUrl + '/' + (product.images[0]?.url || 'https://via.placeholder.com/150')"
-                                        width="48" height="48" [alt]="product.title"
-                                        class="w-12 h-12 rounded-lg object-cover bg-slate-100">
+                                    @if (product.images[0]) {
+                                    <div class="w-12 h-12 relative shrink-0">
+                                        <img [ngSrc]="backendUrl + '/' + product.images[0].url" fill
+                                            [alt]="product.title" class="rounded-lg object-cover bg-slate-100">
+                                    </div>
+                                    } @else {
+                                    <div
+                                        class="w-12 h-12 rounded-lg bg-slate-100 flex items-center justify-center text-slate-300">
+                                        <lucide-icon [img]="Plus" class="w-6 h-6"></lucide-icon>
+                                    </div>
+                                    }
                                     <div>
                                         <span class="font-medium text-slate-900 block">{{ product.title }}</span>
                                         <span class="text-slate-500 text-xs">ID: {{ product.id }}</span>
