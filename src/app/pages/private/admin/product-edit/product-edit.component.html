@@ -21,6 +21,7 @@
 
             <div class="flex-1 text-center md:text-left">
                 <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 mb-3">
+                    @if (product()) {
                     <span
                         class="px-2.5 py-1 bg-slate-100 text-slate-500 text-[10px] uppercase font-bold tracking-widest rounded-lg border border-slate-200">
                         PRODUTO #{{ product()?.id?.slice(0,8) }}
@@ -29,20 +30,27 @@
                         class="px-2.5 py-1 bg-primary/10 text-primary text-[10px] uppercase font-bold tracking-widest rounded-lg border border-primary/20">
                         {{ product()?.brand?.name || 'Sem Marca' }}
                     </span>
+                    } @else {
+                    <span
+                        class="px-2.5 py-1 bg-emerald-100 text-emerald-600 text-[10px] uppercase font-bold tracking-widest rounded-lg border border-emerald-200">
+                        Modo de Criação
+                    </span>
+                    }
                 </div>
 
                 <h1 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tight leading-none mb-2">
-                    {{ product()?.title || 'Editando Produto' }}
+                    {{ product()?.title || 'Novo Produto' }}
                 </h1>
 
                 <p class="text-slate-400 text-sm font-medium max-w-lg">
-                    Ajuste as informações, gerencie o estoque das variantes e organize as mídias para exibição na loja.
+                    {{ product() ? 'Ajuste as informações, gerencie o estoque das variantes e organize as mídias para
+                    exibição na loja.' : 'Preecha os dados abaixo para cadastrar um novo produto em sua loja.' }}
                 </p>
             </div>
 
             <div class="flex items-center gap-3">
                 <button (click)="cancel()"
-                    class="flex items-center justify-center gap-2 px-6 py-3 bg-slate-50 hover:bg-slate-100 text-slate-600 rounded-2xl transition-all border border-slate-200 font-bold text-sm">
+                    class="flex items-center cursor-pointer justify-center gap-2 px-6 py-3 bg-slate-50 hover:bg-slate-100 text-slate-600 rounded-2xl transition-all border border-slate-200 font-bold text-sm">
                     <lucide-icon [img]="X" class="w-4 h-4"></lucide-icon>
                     Sair
                 </button>
@@ -109,7 +117,7 @@
                             <h2 class="text-lg font-bold text-slate-900">Cores e Variantes</h2>
                         </div>
                         <button type="button" (click)="addVariant()"
-                            class="flex items-center gap-2 text-primary hover:text-primary-dark font-bold text-sm bg-primary/5 px-4 py-2 rounded-xl transition-all">
+                            class="flex items-center gap-2 cursor-pointer text-primary hover:text-primary-dark font-bold text-sm bg-primary/5 px-4 py-2 rounded-xl transition-all">
                             <lucide-icon [img]="Plus" class="w-4 h-4"></lucide-icon>
                             Adicionar
                         </button>
@@ -152,7 +160,7 @@
 
                             <div class="pt-6">
                                 <button type="button" (click)="removeVariant(i)"
-                                    class="p-2.5 text-rose-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all">
+                                    class="p-2.5 text-rose-400 cursor-pointer hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all">
                                     <lucide-icon [img]="Trash2" class="w-5 h-5"></lucide-icon>
                                 </button>
                             </div>
@@ -168,13 +176,13 @@
 
                 <div class="flex items-center justify-end gap-4 pt-4">
                     <button type="button" (click)="cancel()"
-                        class="px-8 py-3.5 text-slate-600 hover:bg-slate-100 rounded-2xl transition-all font-bold">
-                        Descartar
+                        class="px-8 py-3.5 text-slate-600 cursor-pointer hover:bg-slate-100 rounded-2xl transition-all font-bold">
+                        Cancelar
                     </button>
                     <button type="submit" [disabled]="form.invalid || isLoading()"
-                        class="px-10 py-3.5 bg-slate-900 text-white rounded-2xl hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/10 disabled:opacity-50 flex items-center gap-3 font-bold">
+                        class="px-10 py-3.5 bg-slate-900 text-white cursor-pointer rounded-2xl hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/10 disabled:opacity-50 flex items-center gap-3 font-bold">
                         <lucide-icon [img]="Save" class="w-5 h-5"></lucide-icon>
-                        {{ isLoading() ? 'Sincronizando...' : 'Salvar Alterações' }}
+                        {{ isLoading() ? 'Sincronizando...' : (product() ? 'Salvar Alterações' : 'Criar Produto') }}
                     </button>
                 </div>
             </div>
@@ -200,12 +208,12 @@
                             class="bg-slate-50 rounded-2xl border border-slate-200 p-4 max-h-[300px] overflow-y-auto custom-scrollbar">
                             <div class="space-y-3">
                                 @for (category of categories(); track category.id) {
-                                <div class="flex items-center gap-3 group cursor-pointer"
+                                <div class="flex items-center gap-3 group cursor-pointer p-2 rounded-md hover:bg-slate-200"
                                     (click)="onCategoryChange(category.id, $any({target: {checked: !isCategorySelected(category.id)}}))">
                                     <div class="w-5 h-5 rounded-lg border-2 flex items-center justify-center transition-all bg-white"
-                                        [class.bg-slate-900]="isCategorySelected(category.id)"
-                                        [class.border-slate-900]="isCategorySelected(category.id)"
-                                        [class.border-slate-200]="!isCategorySelected(category.id)">
+                                        [class.bg-green-600]="isCategorySelected(category.id)"
+                                        [class.border-green-600]="isCategorySelected(category.id)"
+                                        [class.border-red-600]="!isCategorySelected(category.id)">
                                         @if (isCategorySelected(category.id)) {
                                         <lucide-icon [img]="Check" class="w-3.5 h-3.5 text-white"></lucide-icon>
                                         }
@@ -239,7 +247,7 @@
                             <div
                                 class="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
                                 <button type="button" (click)="removeExistingImage(url)"
-                                    class="p-2.5 bg-rose-500 text-white rounded-xl shadow-lg hover:scale-110 active:scale-95 transition-all">
+                                    class="p-2.5 bg-rose-500 text-white cursor-pointer rounded-xl shadow-lg hover:scale-110 active:scale-95 transition-all">
                                     <lucide-icon [img]="Trash2" class="w-4 h-4"></lucide-icon>
                                 </button>
                             </div>

@@ -186,6 +186,7 @@ export class ProductEditComponent {
     private buildFormData(): FormData {
         const formData = new FormData();
         const formValue = this.form.getRawValue();
+        const productId = this.route.snapshot.paramMap.get('id');
 
         formData.append('title', (formValue.title || '').trim());
         formData.append('description', (formValue.description || '').trim());
@@ -199,10 +200,14 @@ export class ProductEditComponent {
             formData.append('brandId', formValue.brandId);
         }
 
-        formData.append('isActive', formValue.isActive ? 'true' : 'false');
+        if (productId) {
+            formData.append('isActive', formValue.isActive ? 'true' : 'false');
+        }
 
         const categoryIds = formValue.categoryIds || [];
-        formData.append('categoryIds', JSON.stringify(categoryIds));
+        if (categoryIds.length > 0) {
+            formData.append('categoryIds', JSON.stringify(categoryIds));
+        }
 
         const specsObj: any = {};
         if (formValue.specs && formValue.specs.trim()) {
@@ -213,9 +218,13 @@ export class ProductEditComponent {
                 }
             });
         }
-        formData.append('specs', JSON.stringify(specsObj));
 
-        formData.append('variants', JSON.stringify(formValue.variants || []));
+        if (Object.keys(specsObj).length > 0) {
+            formData.append('specs', JSON.stringify(specsObj));
+        }
+
+        const variants = formValue.variants || [];
+        formData.append('variants', JSON.stringify(variants));
 
         if (this.selectedFiles.length > 0) {
             this.selectedFiles.forEach(file => {
@@ -223,7 +232,9 @@ export class ProductEditComponent {
             });
         }
 
-        formData.append('imageUrls', JSON.stringify(this.keptImageUrls()));
+        if (this.keptImageUrls().length > 0) {
+            formData.append('imageUrls', JSON.stringify(this.keptImageUrls()));
+        }
 
         return formData;
     }

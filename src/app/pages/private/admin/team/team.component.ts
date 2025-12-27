@@ -116,7 +116,6 @@ export class TeamComponent implements OnInit {
         }
       });
     } else {
-      console.log('Enviando payload para criação de membro:', formValue);
       this.teamMemberService.create(formValue as any).subscribe({
         next: () => {
           this.closeModal();
