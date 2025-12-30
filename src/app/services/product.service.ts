@@ -40,6 +40,11 @@ export class ProductService {
             });
     }
 
+    getPublicPaged(skip = 0, take = 12): Observable<Product[]> {
+        const params = new URLSearchParams({ skip: String(skip), take: String(take) }).toString();
+        return this.api.get<Product[]>(`product/public?${params}`);
+    }
+
     loadProductsPublic(): void {
         if (this.publicLoaded) return;
 

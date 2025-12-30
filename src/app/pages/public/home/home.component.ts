@@ -1,10 +1,13 @@
-import { Component, inject, computed, OnInit, effect } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, computed, OnInit, effect, signal } from '@angular/core';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { Title, Meta } from '@angular/platform-browser';
+import { RouterLink } from '@angular/router';
 import { BannerComponent } from '../../../components/home/banner/banner.component';
 import { CategoryCarouselComponent } from '../../../components/home/category-carousel/category-carousel.component';
 import { OfferCarouselComponent } from '../../../components/home/offer-carousel/offer-carousel.component';
 import { CategoryProductsCarouselComponent } from '../../../components/home/category-products-carousel/category-products-carousel.component';
+import { ProductsGridComponent } from '../../../components/home/products-grid/products-grid.component';
+import { PromotionsBannerComponent } from '../../../components/home/promotions-banner/promotions-banner.component';
 import { CategoryService } from '../../../services/category.service';
 import { ProductService } from '../../../services/product.service';
 import { StoreConfigService } from '../../../services/store-config.service';
@@ -13,12 +16,14 @@ import { StoreConfigService } from '../../../services/store-config.service';
     selector: 'app-home',
     standalone: true,
     imports: [
-        CommonModule,
-        BannerComponent,
-        CategoryCarouselComponent,
-        OfferCarouselComponent,
-        CategoryProductsCarouselComponent
-    ],
+    CommonModule,
+    BannerComponent,
+    CategoryCarouselComponent,
+    OfferCarouselComponent,
+    CategoryProductsCarouselComponent,
+    ProductsGridComponent,
+    PromotionsBannerComponent
+],
     templateUrl: './home.component.html',
     styles: ``
 })
@@ -37,7 +42,6 @@ export class HomeComponent implements OnInit {
             return categories;
         }
 
-        // Mantém apenas categorias que realmente possuem ao menos um produto público associado
         return categories.filter(category =>
             products.some(p =>
                 p.isActive && p.categories?.some(cat => cat.category.id === category.id)
