@@ -6,13 +6,14 @@ import { Product } from '../../../models';
 import { ProductService } from '../../../services/product.service';
 import { StoreConfigService } from '../../../services/store-config.service';
 import { RelatedProductsCarouselComponent } from '../../../components/product/related-products-carousel/related-products-carousel.component';
+import { ProductSkeletonComponent } from '../../../components/public/skeleton/product/product-skeleton.component';
 
 import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [CommonModule, NgOptimizedImage, RouterLink, RelatedProductsCarouselComponent],
+  imports: [CommonModule, NgOptimizedImage, RouterLink, RelatedProductsCarouselComponent, ProductSkeletonComponent],
   templateUrl: './product.component.html'
 })
 export class ProductComponent implements OnInit {

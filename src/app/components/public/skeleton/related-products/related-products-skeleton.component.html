@@ -1,0 +1,32 @@
+<section class="py-12 bg-white overflow-hidden">
+  <div class="container mx-auto px-4">
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
+      <div class="space-y-2">
+        <div class="h-6 w-52 bg-slate-100 rounded-lg animate-pulse"></div>
+        <div class="h-4 w-72 bg-slate-100 rounded-lg animate-pulse"></div>
+      </div>
+    </div>
+
+    <div class="relative px-1 md:px-0">
+      <div class="relative">
+        <div class="flex overflow-x-hidden gap-4 md:gap-5 pb-2">
+          @for (i of [1,2,3,4]; track i) {
+            <div class="w-[190px] sm:w-[200px] md:w-[210px] lg:w-[220px] xl:w-[230px] flex-shrink-0">
+              <div class="rounded-2xl md:rounded-3xl overflow-hidden border border-slate-100 bg-white">
+                <div class="w-full aspect-[4/5] bg-slate-100 animate-pulse"></div>
+                <div class="p-4 md:p-5 space-y-2">
+                  <div class="h-4 w-11/12 bg-slate-100 rounded-lg animate-pulse"></div>
+                  <div class="h-3 w-10/12 bg-slate-100 rounded-lg animate-pulse"></div>
+                  <div class="flex items-center gap-2 pt-1">
+                    <div class="h-4 w-20 bg-slate-100 rounded-lg animate-pulse"></div>
+                    <div class="h-3 w-12 bg-slate-100 rounded-lg animate-pulse"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

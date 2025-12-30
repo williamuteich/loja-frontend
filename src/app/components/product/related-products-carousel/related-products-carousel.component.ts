@@ -4,11 +4,12 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Product } from '../../../models';
 import { ProductService } from '../../../services/product.service';
 import { environment } from '../../../../environments/environment';
+import { RelatedProductsSkeletonComponent } from '../../public/skeleton/related-products/related-products-skeleton.component';
 
 @Component({
   selector: 'app-related-products-carousel',
   standalone: true,
-  imports: [CommonModule, NgOptimizedImage, RouterLink],
+  imports: [CommonModule, NgOptimizedImage, RouterLink, RelatedProductsSkeletonComponent],
   templateUrl: './related-products-carousel.component.html'
 })
 export class RelatedProductsCarouselComponent implements OnInit {
