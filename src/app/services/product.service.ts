@@ -91,4 +91,8 @@ export class ProductService {
             })
         );
     }
+
+    getRelatedPublic(id: string): Observable<Product[]> {
+        return this.api.get<Product[]>(`product/public/${id}/related`);
+    }
 }
