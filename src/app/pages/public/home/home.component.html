@@ -4,8 +4,60 @@
 
 <app-offer-carousel></app-offer-carousel>
 
-@for (category of homeCategories(); track category.id) {
+@for (category of homeCategories(); track category.id; let i = $index) {
 <app-category-products-carousel [title]="category.name" [description]="category.description"
-    [products]="getCategoryProducts(category.id)" [categoryPath]="'/produtos?category=' + category.id">
+    [products]="getCategoryProducts(category.id)" [categoryPath]="'/produtos?category=' + category.id"
+    [useAltBackground]="homeCategories().length > 1 && i % 2 === 1">
 </app-category-products-carousel>
 }
+
+<section id="promocoes" class="py-16 bg-white">
+  <div class="container mx-auto px-4">
+    <div class="grid md:grid-cols-2 gap-6">
+      <div
+        class="relative overflow-hidden rounded-3xl border border-slate-200 bg-slate-50/80 p-8 md:p-10">
+        <div class="relative z-10">
+          <p class="text-xs tracking-[0.2em] text-slate-600 mb-2 uppercase">Destaques do bazar</p>
+          <h3 class="font-display text-xl md:text-2xl font-medium text-slate-900 mb-4">Achados especiais para o dia a dia
+          </h3>
+          <button
+            class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium underline-offset-4 hover:underline p-0 h-auto text-slate-900 group cursor-pointer">
+            Ver novidades
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform">
+              <path d="M5 12h14"></path>
+              <path d="m12 5 7 7-7 7"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="absolute bottom-4 right-4 text-6xl opacity-50">
+          🏠
+        </div>
+      </div>
+
+      <div
+        class="relative overflow-hidden rounded-3xl border border-pink-100 bg-pink-50/80 p-8 md:p-10">
+        <div class="relative z-10">
+          <p class="text-xs tracking-[0.2em] text-slate-600 mb-2 uppercase">Novidades</p>
+          <h3 class="font-display text-xl md:text-2xl font-medium text-slate-900 mb-4">Presentes e mimos para todas as
+            ocasiões
+          </h3>
+          <button
+            class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium underline-offset-4 hover:underline p-0 h-auto text-slate-900 group cursor-pointer">
+            Explorar
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform">
+              <path d="M5 12h14"></path>
+              <path d="m12 5 7 7-7 7"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="absolute bottom-4 right-4 text-6xl opacity-50">
+          🎁
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

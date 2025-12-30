@@ -16,6 +16,7 @@ export class CategoryProductsCarouselComponent {
     description = input<string | null>(null);
     products = input.required<Product[]>();
     categoryPath = input<string>('/produtos');
+    useAltBackground = input<boolean>(false);
 
     protected readonly backendUrl = environment.BACKEND_URL;
 

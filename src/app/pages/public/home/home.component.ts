@@ -29,9 +29,21 @@ export class HomeComponent implements OnInit {
     private readonly titleService = inject(Title);
     private readonly metaService = inject(Meta);
 
-    protected readonly homeCategories = computed(() =>
-        this.categoryService.publicCategories().filter(c => c.isHome)
-    );
+    protected readonly homeCategories = computed(() => {
+        const categories = this.categoryService.publicCategories().filter(c => c.isHome);
+        const products = this.productService.publicProducts();
+
+        if (!products || products.length === 0) {
+            return categories;
+        }
+
+        // Mantém apenas categorias que realmente possuem ao menos um produto público associado
+        return categories.filter(category =>
+            products.some(p =>
+                p.isActive && p.categories?.some(cat => cat.category.id === category.id)
+            )
+        );
+    });
 
     constructor() {
         effect(() => {
