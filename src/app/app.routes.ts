@@ -18,6 +18,11 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/public/home/home.component').then(m => m.HomeComponent),
         canActivate: [maintenanceGuard]
       },
+      {
+        path: 'produto/:id',
+        loadComponent: () => import('./pages/public/product/product.component').then(m => m.ProductComponent),
+        canActivate: [maintenanceGuard]
+      },
     ]
   },
   {
