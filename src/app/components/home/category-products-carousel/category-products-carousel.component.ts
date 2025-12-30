@@ -1,4 +1,4 @@
-import { Component, input, ViewChild, ElementRef } from '@angular/core';
+import { Component, input, ViewChild, ElementRef, computed } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Product } from '../../../models';
@@ -18,6 +18,10 @@ export class CategoryProductsCarouselComponent {
     categoryPath = input<string>('/produtos');
 
     protected readonly backendUrl = environment.BACKEND_URL;
+
+    protected readonly activeProducts = computed(() =>
+        this.products().filter(p => p.isActive)
+    );
 
     @ViewChild('scrollContainer') scrollContainer!: ElementRef<HTMLDivElement>;
 

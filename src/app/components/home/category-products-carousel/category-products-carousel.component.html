@@ -1,3 +1,4 @@
+@if (activeProducts().length > 0) {
 <section class="py-16 bg-white overflow-hidden min-h-[500px]">
     <div class="container mx-auto px-4">
         <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
@@ -31,7 +32,7 @@
 
         <div class="relative px-2 md:px-0">
             <div class="carousel-wrapper relative group/container">
-                @if (products().length > 0) {
+                @if (activeProducts().length > 0) {
                 <button (click)="scroll('left')"
                     class="absolute -left-4 md:-left-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white border-2 border-rose-100 flex items-center justify-center text-rose-500 shadow-md hover:bg-rose-500 hover:text-white hover:border-rose-500 transition-all duration-300 opacity-0 group-hover/container:opacity-100 cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -52,8 +53,8 @@
 
                 <div #scrollContainer
                     class="carousel-scroll flex overflow-x-auto gap-4 md:gap-6 pb-8 no-scrollbar scroll-smooth">
-                    @if (products().length > 0) {
-                    @for (product of products(); track product.id) {
+                    @if (activeProducts().length > 0) {
+                    @for (product of activeProducts(); track product.id) {
                     <div class="min-w-[46%] md:min-w-[40%] lg:min-w-[28%] xl:min-w-[22%]">
                         <a [routerLink]="['/produto', product.id]"
                             class="group block bg-white rounded-2xl md:rounded-3xl overflow-hidden border border-slate-200 transition-all duration-500 h-full">
@@ -78,7 +79,13 @@
                                     </svg>
                                 </div>
                                 }
+                                @if (product.discountPrice && product.discountPrice < product.price) { <span
+                                    class="absolute top-3 left-3 md:top-4 md:left-4 bg-linear-to-r from-rose-500 to-pink-600 text-white text-[10px] md:text-xs font-bold px-3 py-1.5 rounded-full shadow-lg z-10 animate-fade-in">
+                                    -{{ calculateDiscountPercentage(product.price, product.discountPrice) }}% OFF
+                                    </span>
+                                    }
 
+                                <!-- Ação futura: favorito
                                 <div
                                     class="absolute top-3 right-3 md:top-4 md:right-4 flex flex-col gap-2 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-500 z-10">
                                     <button
@@ -92,6 +99,8 @@
                                         </svg>
                                     </button>
                                 </div>
+                                -->
+
                             </div>
 
                             <div class="p-4 md:p-6 pb-20 relative">
@@ -146,3 +155,4 @@
         </div>
     </div>
 </section>
+}

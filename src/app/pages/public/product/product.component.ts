@@ -1,7 +1,8 @@
 import { Component, OnInit, computed, effect, inject, signal } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+
 import { Product } from '../../../models';
 import { ProductService } from '../../../services/product.service';
 import { StoreConfigService } from '../../../services/store-config.service';
@@ -12,17 +13,22 @@ import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-product',
+
   standalone: true,
   imports: [CommonModule, NgOptimizedImage, RouterLink, RelatedProductsCarouselComponent, ProductSkeletonComponent],
   templateUrl: './product.component.html'
 })
 export class ProductComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+
   private readonly productService = inject(ProductService);
   private readonly storeConfigService = inject(StoreConfigService);
 
   private readonly selectedProduct = signal<Product | null>(null);
   readonly product = computed(() => this.selectedProduct());
+  readonly notFound = signal(false);
+
   readonly selectedVariant = signal<any>(null);
   readonly quantity = signal(1);
   readonly selectedImageIndex = signal(0);
@@ -33,14 +39,14 @@ export class ProductComponent implements OnInit {
     return Object.entries(p.specs).map(([key, value]) => ({ key, value }));
   });
 
+  readonly variants = computed(() => this.selectedProduct()?.variants ?? []);
+  readonly images = computed(() => this.selectedProduct()?.images ?? []);
+
   selectImage(index: number): void {
     const imgs = this.images();
     if (!imgs || index < 0 || index >= imgs.length) return;
     this.selectedImageIndex.set(index);
   }
-
-  readonly variants = computed(() => this.selectedProduct()?.variants ?? []);
-  readonly images = computed(() => this.selectedProduct()?.images ?? []);
 
   readonly totalQuantity = computed(() => {
     const variants: any[] = this.selectedProduct()?.variants ?? [];
@@ -53,14 +59,33 @@ export class ProductComponent implements OnInit {
     effect(() => {
       const id = this.route.snapshot.paramMap.get('id');
       const products = this.productService.publicProducts();
+      const isLoading = this.productService.isLoading();
 
-      if (!id || !products || products.length === 0) {
+      if (!id) {
+        this.notFound.set(true);
+        return;
+      }
+
+      if (isLoading) {
+        return;
+      }
+
+      // Terminou de carregar e não há nenhum produto público: redireciona
+      if (!products || products.length === 0) {
+        this.notFound.set(true);
         return;
       }
 
       const found = products.find(p => p.id === id) ?? null;
+
+      if (!found) {
+        this.notFound.set(true);
+        return;
+      }
+
+      this.notFound.set(false);
       this.selectedProduct.set(found);
-      
+
       if (found?.variants?.length) {
         this.selectedVariant.set(found.variants[0]);
       }

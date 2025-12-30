@@ -15,7 +15,9 @@ export class OfferCarouselComponent implements OnInit {
     private readonly productService = inject(ProductService);
 
     protected readonly products = computed(() =>
-        this.productService.publicProducts().filter(p => !!p.discountPrice && p.discountPrice > 0)
+        this.productService
+            .publicProducts()
+            .filter(p => p.isActive && !!p.discountPrice && p.discountPrice > 0)
     );
 
     protected readonly backendUrl = environment.BACKEND_URL;
