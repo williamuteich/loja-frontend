@@ -23,6 +23,26 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/public/product/product.component').then(m => m.ProductComponent),
         canActivate: [maintenanceGuard]
       },
+      {
+        path: 'contato',
+        loadComponent: () => import('./pages/public/contato/contato.component').then(m => m.ContatoComponent),
+        canActivate: [maintenanceGuard]
+      },
+      {
+        path: 'privacidade',
+        loadComponent: () => import('./pages/public/privacidade/privacidade.component').then(m => m.PrivacidadeComponent),
+        canActivate: [maintenanceGuard]
+      },
+      {
+        path: 'cookies',
+        loadComponent: () => import('./pages/public/cookies/cookies.component').then(m => m.CookiesComponent),
+        canActivate: [maintenanceGuard]
+      },
+      {
+        path: 'termos',
+        loadComponent: () => import('./pages/public/termos/termos.component').then(m => m.TermosComponent),
+        canActivate: [maintenanceGuard]
+      },
     ]
   },
   {

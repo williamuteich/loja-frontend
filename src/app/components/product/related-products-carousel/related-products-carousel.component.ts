@@ -8,7 +8,6 @@ import { RelatedProductsSkeletonComponent } from '../../public/skeleton/related-
 
 @Component({
   selector: 'app-related-products-carousel',
-  standalone: true,
   imports: [CommonModule, NgOptimizedImage, RouterLink, RelatedProductsSkeletonComponent],
   templateUrl: './related-products-carousel.component.html'
 })

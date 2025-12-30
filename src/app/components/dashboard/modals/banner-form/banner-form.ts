@@ -11,7 +11,6 @@ import { Banner } from '../../../../models';
 
 @Component({
   selector: 'app-banner-form',
-  standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './banner-form.html',
   styleUrl: './banner-form.css',

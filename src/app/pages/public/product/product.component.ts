@@ -13,8 +13,6 @@ import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-product',
-
-  standalone: true,
   imports: [CommonModule, NgOptimizedImage, RouterLink, RelatedProductsCarouselComponent, ProductSkeletonComponent],
   templateUrl: './product.component.html'
 })

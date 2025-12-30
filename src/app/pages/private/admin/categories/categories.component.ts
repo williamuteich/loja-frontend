@@ -13,7 +13,6 @@ import { DeleteConfirmationComponent } from '../../../../components/dashboard/mo
 
 @Component({
   selector: 'app-categories',
-  standalone: true,
   imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, CategoryForm, EmptyStateComponent, SkeletonCategoryComponent, DeleteConfirmationComponent],
   templateUrl: './categories.component.html'
 })

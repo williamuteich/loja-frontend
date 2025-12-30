@@ -7,7 +7,6 @@ import { StoreConfig } from '../../../../models';
 
 @Component({
   selector: 'app-settings',
-  standalone: true,
   imports: [CommonModule, LucideAngularModule, ReactiveFormsModule],
   templateUrl: './settings.component.html'
 })

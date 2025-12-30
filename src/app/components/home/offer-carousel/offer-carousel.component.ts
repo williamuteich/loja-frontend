@@ -6,7 +6,6 @@ import { environment } from '../../../../environments/environment';
 
 @Component({
     selector: 'app-offer-carousel',
-    standalone: true,
     imports: [CommonModule, NgOptimizedImage, RouterLink],
     templateUrl: './offer-carousel.component.html',
     styleUrl: './offer-carousel.component.css'

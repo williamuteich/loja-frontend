@@ -9,7 +9,6 @@ import { DeleteConfirmationComponent } from '../../../../components/dashboard/mo
 
 @Component({
   selector: 'app-socials',
-  standalone: true,
   imports: [CommonModule, LucideAngularModule, FormsModule, GenericModal, DeleteConfirmationComponent],
   templateUrl: './socials.component.html'
 })

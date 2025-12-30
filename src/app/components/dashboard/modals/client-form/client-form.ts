@@ -11,7 +11,6 @@ import { Client } from '../../../../models';
 
 @Component({
     selector: 'app-client-form',
-    standalone: true,
     imports: [CommonModule, ReactiveFormsModule],
     templateUrl: './client-form.html',
 })

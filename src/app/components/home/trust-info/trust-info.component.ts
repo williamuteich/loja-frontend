@@ -3,7 +3,6 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 
 @Component({
     selector: 'app-trust-info',
-    standalone: true,
     imports: [CommonModule],
     templateUrl: './trust-info.component.html',
     styleUrl: './trust-info.component.css',

@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-home-promotions-banner',
-  standalone: true,
   imports: [CommonModule],
   templateUrl: './promotions-banner.component.html'
 })

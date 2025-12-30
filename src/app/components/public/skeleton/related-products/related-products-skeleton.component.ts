@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-skeleton-related-products',
-  standalone: true,
   imports: [CommonModule],
   templateUrl: './related-products-skeleton.component.html'
 })

@@ -4,7 +4,6 @@ import { StoreConfigService } from '../../../services/store-config.service';
 
 @Component({
     selector: 'app-maintenance',
-    standalone: true,
     imports: [CommonModule],
     template: `
     <div class="min-h-screen flex items-center justify-center bg-linear-to-br from-slate-50 via-white to-slate-50 px-4">

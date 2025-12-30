@@ -14,7 +14,6 @@ import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-team',
-  standalone: true,
   imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, TeamMemberForm, DeleteConfirmationComponent, SkeletonTableComponent, EmptyStateComponent, DateFormatPipe],
   templateUrl: 'team.component.html'
 })

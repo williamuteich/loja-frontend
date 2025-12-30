@@ -7,7 +7,6 @@ import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-home-products-grid',
-  standalone: true,
   imports: [CommonModule, RouterLink, NgOptimizedImage],
   templateUrl: './products-grid.component.html'
 })

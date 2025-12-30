@@ -4,7 +4,6 @@ import { LucideAngularModule, AlertCircle } from 'lucide-angular';
 
 @Component({
     selector: 'app-empty-state',
-    standalone: true,
     imports: [CommonModule, LucideAngularModule],
     templateUrl: './empty-state.component.html',
 })

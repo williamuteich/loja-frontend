@@ -7,7 +7,6 @@ import { LucideAngularModule, ChevronLeft, ChevronRight } from 'lucide-angular';
 
 @Component({
     selector: 'app-category-carousel',
-    standalone: true,
     imports: [CommonModule, NgOptimizedImage, RouterModule, LucideAngularModule],
     templateUrl: './category-carousel.component.html',
     styleUrls: ['./category-carousel.component.css']

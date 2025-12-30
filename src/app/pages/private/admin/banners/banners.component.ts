@@ -14,7 +14,6 @@ import { DeleteConfirmationComponent } from '../../../../components/dashboard/mo
 
 @Component({
   selector: 'app-banners',
-  standalone: true,
   imports: [
     CommonModule,
     LucideAngularModule,

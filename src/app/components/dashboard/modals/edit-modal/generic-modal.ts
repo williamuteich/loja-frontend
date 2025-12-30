@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-generic-modal',
-  standalone: true,
   imports: [CommonModule],
   templateUrl: './generic-modal.html',
   styleUrl: './generic-modal.css',

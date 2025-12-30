@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-skeleton-table',
-    standalone: true,
     imports: [CommonModule],
     templateUrl: './skeletonForm.component.html',
     styleUrls: ['./skeletonForm.component.css']

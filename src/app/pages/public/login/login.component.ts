@@ -13,7 +13,6 @@ import { LucideAngularModule, Mail, Lock, Eye, EyeOff, ArrowLeft, ShieldCheck, L
 
 @Component({
   selector: 'app-login',
-  standalone: true,
   imports: [RouterLink, ReactiveFormsModule, LucideAngularModule],
   templateUrl: './login.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

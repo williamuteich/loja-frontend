@@ -6,7 +6,6 @@ import { StoreConfigService } from '../../../services/store-config.service';
 
 @Component({
   selector: 'app-header',
-  standalone: true,
   imports: [CommonModule, RouterLink, RouterLinkActive, LucideAngularModule, NgOptimizedImage],
   templateUrl: './header.html',
   styleUrl: './header.css',

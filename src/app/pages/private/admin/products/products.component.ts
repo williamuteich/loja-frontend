@@ -14,7 +14,6 @@ import { Product } from '../../../../models';
 
 @Component({
   selector: 'app-products',
-  standalone: true,
   imports: [CommonModule, LucideAngularModule, AdminSearchComponent, NgOptimizedImage, SkeletonTableComponent, EmptyStateComponent, DeleteConfirmationComponent, GenericModal],
   templateUrl: './products.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush

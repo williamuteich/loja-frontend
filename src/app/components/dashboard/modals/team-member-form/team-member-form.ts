@@ -11,7 +11,6 @@ import { TeamMember } from '../../../../models';
 
 @Component({
     selector: 'app-team-member-form',
-    standalone: true,
     imports: [CommonModule, ReactiveFormsModule],
     templateUrl: './team-member-form.html',
 })

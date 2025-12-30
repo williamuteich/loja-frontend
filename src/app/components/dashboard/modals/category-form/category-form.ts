@@ -11,7 +11,6 @@ import { Category } from '../../../../models';
 
 @Component({
     selector: 'app-category-form',
-    standalone: true,
     imports: [CommonModule, ReactiveFormsModule],
     templateUrl: './category-form.html',
 })

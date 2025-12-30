@@ -8,7 +8,6 @@ import { Social } from '../../../models';
 
 @Component({
   selector: 'app-footer',
-  standalone: true,
   imports: [CommonModule, RouterLink, LucideAngularModule],
   templateUrl: './footer.html',
 })

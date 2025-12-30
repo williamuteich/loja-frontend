@@ -14,7 +14,6 @@ import { StoreConfigService } from '../../../services/store-config.service';
 
 @Component({
     selector: 'app-home',
-    standalone: true,
     imports: [
     CommonModule,
     BannerComponent,

@@ -11,7 +11,6 @@ import { Brand } from '../../../../models';
 
 @Component({
     selector: 'app-brand-form',
-    standalone: true,
     imports: [CommonModule, ReactiveFormsModule],
     templateUrl: './brand-form.html',
 })

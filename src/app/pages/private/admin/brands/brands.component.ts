@@ -12,7 +12,6 @@ import { EmptyStateComponent } from '../../../../components/dashboard/empty-stat
 
 @Component({
   selector: 'app-brands',
-  standalone: true,
   imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, BrandForm, DeleteConfirmationComponent, SkeletonTableComponent, EmptyStateComponent],
   templateUrl: 'brands.component.html'
 })

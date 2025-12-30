@@ -13,7 +13,6 @@ import { DateFormatPipe } from '../../../../pipes/date-format.pipe';
 
 @Component({
   selector: 'app-clients',
-  standalone: true,
   imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, ClientForm, DeleteConfirmationComponent, SkeletonTableComponent, EmptyStateComponent, DateFormatPipe],
   templateUrl: 'clients.component.html'
 })

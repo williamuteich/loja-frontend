@@ -7,7 +7,6 @@ import { TrustInfoComponent } from '../trust-info/trust-info.component';
 
 @Component({
     selector: 'app-banner',
-    standalone: true,
     imports: [
         CommonModule,
         NgOptimizedImage,

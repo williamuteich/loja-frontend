@@ -3,7 +3,6 @@ import { DatePipe } from '@angular/common';
 
 @Pipe({
     name: 'dateFormat',
-    standalone: true
 })
 export class DateFormatPipe implements PipeTransform {
     private datePipe = new DatePipe('pt-BR');

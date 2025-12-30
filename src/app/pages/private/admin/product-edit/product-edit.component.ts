@@ -11,7 +11,6 @@ import { environment } from '../../../../../environments/environment';
 
 @Component({
     selector: 'app-product-edit',
-    standalone: true,
     imports: [CommonModule, ReactiveFormsModule, LucideAngularModule],
     templateUrl: './product-edit.component.html',
     styleUrl: './product-edit.component.css'
