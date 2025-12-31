@@ -32,13 +32,13 @@
                         </tr>
                     </thead>
                     <tbody class="text-sm">
-                        @for (product of pagedProducts(); track product.id) {
+                        @for (product of products(); track product.id) {
                         <tr class="border-t border-slate-100 hover:bg-slate-50 transition-colors">
                             <td class="px-6 py-4">
                                 <div class="flex items-center gap-3">
                                     @if (product.images[0]) {
                                     <div class="w-12 h-12 relative shrink-0">
-                                        <img [ngSrc]="backendUrl + '/' + product.images[0].url" fill
+                                        <img [ngSrc]="BackendUrl + '/' + product.images[0].url" fill
                                             [alt]="product.title" class="rounded-lg object-cover bg-slate-100">
                                     </div>
                                     } @else {
@@ -96,12 +96,8 @@
                 </table>
             </div>
         </div>
-        <app-pagination
-            [pageIndex]="pageIndex()"
-            [pageSize]="pageSize"
-            [totalItems]="products().length"
-            [disabled]="isLoading()"
-            (pageChange)="onPageChange($event)">
+        <app-pagination [pageIndex]="pageIndex()" [pageSize]="pageSize" [totalItems]="totalItems()"
+            [disabled]="isLoading()" (pageChange)="onPageChange($event)">
         </app-pagination>
         }
     </div>

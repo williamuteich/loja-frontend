@@ -23,16 +23,12 @@ export class ProductsComponent implements OnInit {
   private readonly productService = inject(ProductService);
   private readonly router = inject(Router);
 
-  readonly backendUrl = environment.BACKEND_URL;
+  readonly BackendUrl = environment.BACKEND_URL;
   readonly products = this.productService.products;
   readonly pageSize = 10;
   readonly pageIndex = signal(0);
+  readonly totalItems = this.productService.totalItems;
 
-  readonly pagedProducts = computed(() => {
-    const list = this.products();
-    const start = this.pageIndex() * this.pageSize;
-    return list.slice(start, start + this.pageSize);
-  });
   readonly isLoading = this.productService.isLoading;
   readonly error = this.productService.error;
 
@@ -47,12 +43,17 @@ export class ProductsComponent implements OnInit {
   protected readonly Eye = Eye;
 
   ngOnInit() {
-    this.productService.loadProductsAdmin();
+    this.loadProducts();
+  }
+
+  loadProducts(): void {
+    this.productService.loadProductsAdmin(this.pageIndex() + 1, this.pageSize);
   }
 
   onPageChange(index: number) {
     if (index < 0) return;
     this.pageIndex.set(index);
+    this.loadProducts();
   }
 
   openCreatePage() {

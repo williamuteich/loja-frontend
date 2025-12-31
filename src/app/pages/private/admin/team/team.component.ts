@@ -32,12 +32,17 @@ export class TeamComponent implements OnInit {
 
   readonly pageSize = 10;
   readonly pageIndex = signal(0);
+  readonly totalItems = this.teamMemberService.totalItems;
 
-  protected readonly pagedTeam = computed(() => {
-    const list = this.team();
-    const start = this.pageIndex() * this.pageSize;
-    return list.slice(start, start + this.pageSize);
-  });
+  constructor() {
+    effect(() => {
+      this.loadTeam();
+    });
+  }
+
+  loadTeam(): void {
+    this.teamMemberService.loadTeamMembersAdmin(this.pageIndex() + 1, this.pageSize);
+  }
 
   protected readonly isAdmin = computed(() => this.authService.hasRole(['ADMIN']));
 
@@ -51,15 +56,10 @@ export class TeamComponent implements OnInit {
   isLoading = this.teamMemberService.isLoading;
   error = this.teamMemberService.error;
 
-  constructor() {
-    effect(() => {
-      this.pagedTeam();
-      this.cdr.markForCheck();
-    });
-  }
+
 
   ngOnInit(): void {
-    this.teamMemberService.loadTeamMembersAdmin();
+    this.loadTeam();
   }
 
   openAddModal(): void {
