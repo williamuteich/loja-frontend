@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, ChangeDetectorRef, effect } from '@angular/core';
+import { Component, inject, OnInit, signal, ChangeDetectorRef, effect, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule, Plus, User, SquarePen, Trash2 } from 'lucide-angular';
 import { AdminSearchComponent } from '../../../../components/dashboard/admin-search/admin-search.component';
@@ -9,11 +9,12 @@ import { ClientForm } from '../../../../components/dashboard/modals/client-form/
 import { DeleteConfirmationComponent } from '../../../../components/dashboard/modals/delete-confirmation/delete-confirmation.component';
 import { SkeletonTableComponent } from '../../../../components/dashboard/skeleton/form/skeletonForm.component';
 import { EmptyStateComponent } from '../../../../components/dashboard/empty-state/empty-state.component';
+import { PaginationComponent } from '../../../../components/dashboard/pagination/admin-pagination.component';
 import { DateFormatPipe } from '../../../../pipes/date-format.pipe';
 
 @Component({
   selector: 'app-clients',
-  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, ClientForm, DeleteConfirmationComponent, SkeletonTableComponent, EmptyStateComponent, DateFormatPipe],
+  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, ClientForm, DeleteConfirmationComponent, SkeletonTableComponent, EmptyStateComponent, DateFormatPipe, PaginationComponent],
   templateUrl: 'clients.component.html'
 })
 export class ClientsComponent implements OnInit {
@@ -37,9 +38,18 @@ export class ClientsComponent implements OnInit {
   isLoading = this.clientService.isLoading;
   error = this.clientService.error;
 
+  readonly pageSize = 10;
+  readonly pageIndex = signal(0);
+
+  protected readonly pagedClients = computed(() => {
+    const list = this.clients();
+    const start = this.pageIndex() * this.pageSize;
+    return list.slice(start, start + this.pageSize);
+  });
+
   constructor() {
     effect(() => {
-      this.clients();
+      this.pagedClients();
       this.cdr.markForCheck();
     });
   }
@@ -86,6 +96,11 @@ export class ClientsComponent implements OnInit {
         }
       });
     }
+  }
+
+  onPageChange(index: number): void {
+    if (index < 0) return;
+    this.pageIndex.set(index);
   }
 
   handleSave(clientForm: ClientForm): void {
