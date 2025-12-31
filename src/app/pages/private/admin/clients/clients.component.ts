@@ -40,22 +40,20 @@ export class ClientsComponent implements OnInit {
 
   readonly pageSize = 10;
   readonly pageIndex = signal(0);
-
-  protected readonly pagedClients = computed(() => {
-    const list = this.clients();
-    const start = this.pageIndex() * this.pageSize;
-    return list.slice(start, start + this.pageSize);
-  });
+  readonly totalItems = this.clientService.totalItems;
 
   constructor() {
     effect(() => {
-      this.pagedClients();
-      this.cdr.markForCheck();
+      this.loadClients();
     });
   }
 
+  loadClients(): void {
+    this.clientService.loadClientsAdmin(this.pageIndex() + 1, this.pageSize);
+  }
+
   ngOnInit(): void {
-    this.clientService.loadClientsAdmin();
+    this.loadClients();
   }
 
   openAddModal(): void {
@@ -101,6 +99,7 @@ export class ClientsComponent implements OnInit {
   onPageChange(index: number): void {
     if (index < 0) return;
     this.pageIndex.set(index);
+    // effect will trigger loadClients
   }
 
   handleSave(clientForm: ClientForm): void {

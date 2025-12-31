@@ -11,10 +11,11 @@ import { SkeletonTableComponent } from '../../../../components/dashboard/skeleto
 import { EmptyStateComponent } from '../../../../components/dashboard/empty-state/empty-state.component';
 import { DateFormatPipe } from '../../../../pipes/date-format.pipe';
 import { AuthService } from '../../../../services/auth.service';
+import { PaginationComponent } from '../../../../components/dashboard/pagination/admin-pagination.component';
 
 @Component({
   selector: 'app-team',
-  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, TeamMemberForm, DeleteConfirmationComponent, SkeletonTableComponent, EmptyStateComponent, DateFormatPipe],
+  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, TeamMemberForm, DeleteConfirmationComponent, SkeletonTableComponent, EmptyStateComponent, DateFormatPipe, PaginationComponent],
   templateUrl: 'team.component.html'
 })
 export class TeamComponent implements OnInit {
@@ -28,6 +29,15 @@ export class TeamComponent implements OnInit {
   private readonly cdr = inject(ChangeDetectorRef);
 
   protected readonly team = this.teamMemberService.teamMembers;
+
+  readonly pageSize = 10;
+  readonly pageIndex = signal(0);
+
+  protected readonly pagedTeam = computed(() => {
+    const list = this.team();
+    const start = this.pageIndex() * this.pageSize;
+    return list.slice(start, start + this.pageSize);
+  });
 
   protected readonly isAdmin = computed(() => this.authService.hasRole(['ADMIN']));
 
@@ -43,7 +53,7 @@ export class TeamComponent implements OnInit {
 
   constructor() {
     effect(() => {
-      this.team();
+      this.pagedTeam();
       this.cdr.markForCheck();
     });
   }
@@ -90,6 +100,11 @@ export class TeamComponent implements OnInit {
         }
       });
     }
+  }
+
+  onPageChange(index: number): void {
+    if (index < 0) return;
+    this.pageIndex.set(index);
   }
 
   handleSave(memberForm: TeamMemberForm): void {

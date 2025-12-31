@@ -12,18 +12,35 @@ export class ClientService {
     readonly isLoading = signal(false);
     readonly error = signal<string | null>(null);
 
-    private adminLoaded = false;
+    readonly totalItems = signal(0);
 
-    public loadClientsAdmin() {
-        if (this.adminLoaded) return;
-
+    public loadClientsAdmin(page: number = 1, pageSize: number = 10) {
         this.isLoading.set(true);
         this.error.set(null);
 
-        this.api.get<Client[]>('client/admin').subscribe({
-            next: (clients) => {
-                this._clients.set(clients);
-                this.adminLoaded = true;
+        const skip = (page - 1) * pageSize;
+        const take = pageSize;
+
+        const params = new URLSearchParams({
+            skip: skip.toString(),
+            take: take.toString(),
+        }).toString();
+
+        this.api.get<any>(`client/admin?${params}`).subscribe({
+            next: (response) => {
+                if (Array.isArray(response)) {
+                    this._clients.set(response);
+                    if (response.length >= pageSize) {
+                        this.totalItems.set((page * pageSize) + 1);
+                    } else {
+                        this.totalItems.set(((page - 1) * pageSize) + response.length);
+                    }
+                } else if (response && Array.isArray(response.data)) {
+                    this._clients.set(response.data);
+                    const total = response.meta?.total || response.count || response.total || 0;
+                    this.totalItems.set(total);
+                }
+
                 this.isLoading.set(false);
             },
             error: (err) => {

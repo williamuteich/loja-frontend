@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-pagination',
   imports: [CommonModule],
-   templateUrl: './admin-pagination.component.html'
+  templateUrl: './admin-pagination.component.html'
 })
 export class PaginationComponent {
   @Input() pageIndex = 0;

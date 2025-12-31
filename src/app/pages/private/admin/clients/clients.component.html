@@ -29,7 +29,7 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
-                    @for (client of pagedClients(); track client.id) {
+                    @for (client of clients(); track client.id) {
                     <tr class="group hover:bg-slate-50/50 transition-colors">
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-3">
@@ -68,12 +68,8 @@
                 </tbody>
             </table>
         </div>
-        <app-pagination
-            [pageIndex]="pageIndex()"
-            [pageSize]="pageSize"
-            [totalItems]="clients().length"
-            [disabled]="isLoading()"
-            (pageChange)="onPageChange($event)">
+        <app-pagination [pageIndex]="pageIndex()" [pageSize]="pageSize" [totalItems]="totalItems()"
+            [disabled]="isLoading()" (pageChange)="onPageChange($event)">
         </app-pagination>
         }
     </div>
