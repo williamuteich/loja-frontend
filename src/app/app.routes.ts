@@ -48,6 +48,11 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/public/categorias/categorias.component').then(m => m.CategoriasComponent),
         canActivate: [maintenanceGuard]
       },
+      {
+        path: 'produtos',
+        loadComponent: () => import('./pages/public/products/products.component').then(m => m.ProductsComponent),
+        canActivate: [maintenanceGuard]
+      },
     ]
 
   },

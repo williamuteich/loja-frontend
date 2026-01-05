@@ -62,22 +62,75 @@ export class ProductService {
         return this.api.get<Product[]>(`product/public?${params}`);
     }
 
-    loadProductsPublic(): void {
-        if (this.publicLoaded) return;
-
+    loadProductsPublic(page: number = 1, pageSize: number = 12, categoryName?: string | null, searchTerm?: string): void {
         this.isLoading.set(true);
         this.error.set(null);
 
-        this.api.get<Product[]>('product/public')
+        const skip = (page - 1) * pageSize;
+        const take = pageSize + 1;
+
+        const queryParams = new URLSearchParams({
+            skip: skip.toString(),
+            take: take.toString()
+        });
+
+        if (categoryName) {
+            queryParams.append('category', categoryName);
+        }
+
+        if (searchTerm) {
+            queryParams.append('search', searchTerm);
+        }
+
+        this.api.get<any>(`product/public?${queryParams.toString()}`)
             .subscribe({
-                next: (products) => {
-                    this._publicProducts.set(products);
-                    this.publicLoaded = true;
+                next: (response) => {
+                    let items: Product[] = [];
+                    let hasNextPage = false;
+                    let total = 0;
+
+                    if (Array.isArray(response)) {
+                        if (response.length > pageSize) {
+                            hasNextPage = true;
+                            items = response.slice(0, pageSize);
+                        } else {
+                            items = response;
+                        }
+                    } else if (response && Array.isArray(response.data)) {
+                        if (response.meta?.total !== undefined) {
+                            total = response.meta.total;
+                            items = response.data;
+                            this._publicProducts.set(items);
+                            this.totalItems.set(total);
+                            this.isLoading.set(false);
+                            return;
+                        }
+
+                        if (response.data.length > pageSize) {
+                            hasNextPage = true;
+                            items = response.data.slice(0, pageSize);
+                        } else {
+                            items = response.data;
+                        }
+                    }
+
+                    this._publicProducts.set(items);
+
+                    if (hasNextPage) {
+                        this.totalItems.set((page * pageSize) + 1);
+                    } else {
+                        if (items.length > 0) {
+                            this.totalItems.set(((page - 1) * pageSize) + items.length);
+                        } else {
+                            this.totalItems.set((page - 1) * pageSize);
+                        }
+                    }
+
                     this.isLoading.set(false);
                 },
                 error: (err) => {
                     console.error('Erro ao carregar produtos públicos', err);
-                    this.error.set('Não foi possível carregar os produtos da loja.');
+                    this.error.set('Não foi possível carregar os produtos.');
                     this.isLoading.set(false);
                 }
             });

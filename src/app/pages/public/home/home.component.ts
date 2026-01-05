@@ -1,7 +1,6 @@
 import { Component, inject, computed, OnInit, effect, signal } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { Title, Meta } from '@angular/platform-browser';
-import { RouterLink } from '@angular/router';
 import { BannerComponent } from '../../../components/home/banner/banner.component';
 import { CategoryCarouselComponent } from '../../../components/home/category-carousel/category-carousel.component';
 import { OfferCarouselComponent } from '../../../components/home/offer-carousel/offer-carousel.component';
@@ -15,14 +14,14 @@ import { StoreConfigService } from '../../../services/store-config.service';
 @Component({
     selector: 'app-home',
     imports: [
-    CommonModule,
-    BannerComponent,
-    CategoryCarouselComponent,
-    OfferCarouselComponent,
-    CategoryProductsCarouselComponent,
-    ProductsGridComponent,
-    PromotionsBannerComponent
-],
+        CommonModule,
+        BannerComponent,
+        CategoryCarouselComponent,
+        OfferCarouselComponent,
+        CategoryProductsCarouselComponent,
+        ProductsGridComponent,
+        PromotionsBannerComponent
+    ],
     templateUrl: './home.component.html',
     styles: ``
 })
@@ -34,18 +33,7 @@ export class HomeComponent implements OnInit {
     private readonly metaService = inject(Meta);
 
     protected readonly homeCategories = computed(() => {
-        const categories = this.categoryService.publicCategories().filter(c => c.isHome);
-        const products = this.productService.publicProducts();
-
-        if (!products || products.length === 0) {
-            return categories;
-        }
-
-        return categories.filter(category =>
-            products.some(p =>
-                p.isActive && p.categories?.some(cat => cat.category.id === category.id)
-            )
-        );
+        return this.categoryService.publicCategories().filter(c => c.isHome);
     });
 
     constructor() {
@@ -68,12 +56,12 @@ export class HomeComponent implements OnInit {
     ngOnInit(): void {
         this.storeConfigService.loadConfigPublic();
         this.categoryService.loadCategoriesPublic();
-        this.productService.loadProductsPublic();
+        this.productService.loadProductsPublic(1, 50);
     }
 
     getCategoryProducts(categoryId: string) {
         return this.productService.publicProducts().filter(p =>
-            p.categories.some(cat => cat.category.id === categoryId)
+            p.isActive && p.categories.some(cat => cat.category.id === categoryId)
         );
     }
 }
