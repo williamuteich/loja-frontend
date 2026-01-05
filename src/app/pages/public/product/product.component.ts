@@ -130,18 +130,6 @@ export class ProductComponent implements OnInit {
     }
   }
 
-  addToCart(): void {
-    console.log('Added to cart:', {
-      product: this.product(),
-      variant: this.selectedVariant(),
-      quantity: this.quantity()
-    });
-  }
-
-  toggleFavorite(): void {
-    console.log('Toggled favorite for:', this.product());
-  }
-
   contactViaWhatsApp(): void {
     const product = this.product();
     const variant = this.selectedVariant();

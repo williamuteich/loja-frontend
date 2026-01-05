@@ -23,7 +23,7 @@
                 class="carousel-scroll flex overflow-x-auto gap-2 md:gap-3 pb-6 scroll-smooth no-scrollbar cursor-grab active:cursor-grabbing">
                 @if (categories().length > 0) {
                 @for (category of categories(); track category.id; let i = $index) {
-                <a [routerLink]="['/produtos']" [queryParams]="{ categoria: category.id }"
+                <a [routerLink]="['/produtos']" [queryParams]="{ categoria: category.name }"
                     class="group/card relative flex-none w-20 md:w-28 lg:w-36">
                     <div
                         class="relative aspect-square rounded-2xl overflow-hidden shadow-sm group-hover/card:shadow-lg transition-all duration-500 border border-slate-100 bg-white">

@@ -49,7 +49,7 @@ export class ProductsComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.categoryService.loadCategoriesPublic();
+        this.categoryService.loadCategoriesPublic(1, 100);
 
         this.route.queryParams.subscribe(params => {
             if (params['categoria']) {

@@ -10,7 +10,7 @@ import { PaginationComponent } from '../../../../components/dashboard/pagination
 
 @Component({
   selector: 'app-socials',
-  imports: [CommonModule, LucideAngularModule, FormsModule, GenericModal, DeleteConfirmationComponent, PaginationComponent],
+  imports: [CommonModule, LucideAngularModule, FormsModule, GenericModal, DeleteConfirmationComponent],
   templateUrl: './socials.component.html'
 })
 export class SocialsComponent implements OnInit {
@@ -28,8 +28,7 @@ export class SocialsComponent implements OnInit {
   protected readonly socials = this.socialService.socials;
   protected readonly isLoading = this.socialService.isLoading;
   protected readonly error = this.socialService.error;
-  readonly pageSize = 10;
-  readonly pageIndex = signal(0);
+
   readonly totalItems = this.socialService.totalItems;
 
   localSocials = signal<Social[]>([]);
@@ -60,14 +59,10 @@ export class SocialsComponent implements OnInit {
   }
 
   loadSocials(): void {
-    this.socialService.loadSocialsAdmin(this.pageIndex() + 1, this.pageSize);
+    this.socialService.loadSocialsAdmin();
   }
 
-  onPageChange(index: number): void {
-    if (index < 0) return;
-    this.pageIndex.set(index);
-    this.loadSocials();
-  }
+
 
   getMeta(platform: string) {
     return this.platformMeta[platform.toLowerCase()] || { icon: Instagram, color: 'from-slate-400 to-slate-500', label: platform };
