@@ -79,6 +79,10 @@ export class TeamMemberForm {
 
     getFormValue() {
         const { name, lastName, email, role, password } = this.form.value;
-        return { name, lastName, email, role, password };
+        const payload: any = { name, lastName, email, role };
+        if (password && password.trim().length > 0) {
+            payload.password = password;
+        }
+        return payload;
     }
 }

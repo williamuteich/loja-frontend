@@ -14,31 +14,18 @@ export class TeamMemberService {
 
     readonly totalItems = signal(0);
 
-    public loadTeamMembersAdmin(page: number = 1, pageSize: number = 10) {
+    public loadTeamMembersAdmin() {
         this.isLoading.set(true);
         this.error.set(null);
 
-        const skip = (page - 1) * pageSize;
-        const take = pageSize;
-
-        const params = new URLSearchParams({
-            skip: skip.toString(),
-            take: take.toString(),
-        }).toString();
-
-        this.api.get<any>(`team-members/admin?${params}`).subscribe({
+        this.api.get<any>('team-members/admin').subscribe({
             next: (response) => {
                 if (Array.isArray(response)) {
                     this._teamMembers.set(response);
-                    if (response.length >= pageSize) {
-                        this.totalItems.set((page * pageSize) + 1);
-                    } else {
-                        this.totalItems.set(((page - 1) * pageSize) + response.length);
-                    }
+                    this.totalItems.set(response.length);
                 } else if (response && Array.isArray(response.data)) {
                     this._teamMembers.set(response.data);
-                    const total = response.meta?.total || response.count || response.total || 0;
-                    this.totalItems.set(total);
+                    this.totalItems.set(response.data.length);
                 }
                 this.isLoading.set(false);
             },

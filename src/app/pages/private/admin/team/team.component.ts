@@ -15,7 +15,7 @@ import { PaginationComponent } from '../../../../components/dashboard/pagination
 
 @Component({
   selector: 'app-team',
-  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, TeamMemberForm, DeleteConfirmationComponent, SkeletonTableComponent, EmptyStateComponent, DateFormatPipe, PaginationComponent],
+  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, TeamMemberForm, DeleteConfirmationComponent, SkeletonTableComponent, EmptyStateComponent, DateFormatPipe],
   templateUrl: 'team.component.html'
 })
 export class TeamComponent implements OnInit {
@@ -30,8 +30,7 @@ export class TeamComponent implements OnInit {
 
   protected readonly team = this.teamMemberService.teamMembers;
 
-  readonly pageSize = 10;
-  readonly pageIndex = signal(0);
+
   readonly totalItems = this.teamMemberService.totalItems;
 
   constructor() {
@@ -41,7 +40,7 @@ export class TeamComponent implements OnInit {
   }
 
   loadTeam(): void {
-    this.teamMemberService.loadTeamMembersAdmin(this.pageIndex() + 1, this.pageSize);
+    this.teamMemberService.loadTeamMembersAdmin();
   }
 
   protected readonly isAdmin = computed(() => this.authService.hasRole(['ADMIN']));
@@ -102,10 +101,7 @@ export class TeamComponent implements OnInit {
     }
   }
 
-  onPageChange(index: number): void {
-    if (index < 0) return;
-    this.pageIndex.set(index);
-  }
+
 
   handleSave(memberForm: TeamMemberForm): void {
     if (!memberForm.isValid()) {
