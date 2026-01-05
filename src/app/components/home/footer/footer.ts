@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { LucideAngularModule, Instagram, Facebook } from 'lucide-angular';
+import { LucideAngularModule, Instagram, Facebook, Twitter, Youtube, Linkedin, MessageCircle, Music } from 'lucide-angular';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { StoreConfigService } from '../../../services/store-config.service';
 import { Social } from '../../../models';
@@ -18,6 +18,11 @@ export class Footer implements OnInit {
 
   protected readonly Instagram = Instagram;
   protected readonly Facebook = Facebook;
+  protected readonly Twitter = Twitter;
+  protected readonly Youtube = Youtube;
+  protected readonly Linkedin = Linkedin;
+  protected readonly MessageCircle = MessageCircle;
+  protected readonly Music = Music;
 
   protected readonly activeSocials = computed(() =>
     this.config()?.socialMedias?.filter((s: Social) => s.isActive) || []

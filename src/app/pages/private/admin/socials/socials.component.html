@@ -6,6 +6,11 @@
                     <h2 class="text-lg font-semibold text-white">Links das Redes Sociais</h2>
                     <p class="text-sm text-white mt-1">Configure os links que aparecerão no rodapé da loja</p>
                 </div>
+                <button (click)="openAddModal()"
+                    class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-slate-900 shadow-soft hover:shadow-hover h-9 px-4 py-2 bg-white hover:bg-slate-50 cursor-pointer">
+                    <lucide-icon [img]="Plus" class="w-4 h-4"></lucide-icon>
+                    Adicionar
+                </button>
             </div>
 
             <div class="p-6 space-y-6">
@@ -59,13 +64,11 @@
                 }
             </div>
 
-            <div class="p-6 bg-slate-50 border-t border-slate-200 flex justify-between items-center">
-
-
+            <div class="p-6 bg-slate-50 border-t border-slate-200 flex justify-end items-center">
                 <button (click)="saveAll()"
                     class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-white shadow-soft hover:shadow-hover h-10 px-5 py-2 bg-slate-900 hover:bg-slate-800 cursor-pointer">
                     <lucide-icon [img]="Save" class="w-4 h-4"></lucide-icon>
-                    Salvar Tudo
+                    Salvar Redes Sociais
                 </button>
             </div>
         </div>
@@ -80,4 +83,31 @@
     </app-delete-confirmation>
 </app-generic-modal>
 }
+}
+
+@if (isAddModalVisible()) {
+<app-generic-modal title="Adicionar Rede Social" (close)="isAddModalVisible.set(false)" (save)="handleCreate()"
+    [isLoading]="isSaving()" [disabled]="!newSocial().platform || !newSocial().url">
+    <div class="space-y-4">
+        <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Plataforma</label>
+            <select
+                class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                [ngModel]="newSocial().platform"
+                (ngModelChange)="newSocial.set({platform: $event, url: newSocial().url})">
+                <option value="" disabled selected>Selecione uma plataforma</option>
+                @for (platform of availablePlatforms(); track platform) {
+                <option [value]="platform">{{ getMeta(platform).label }}</option>
+                }
+            </select>
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">URL do Perfil</label>
+            <input type="url"
+                class="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                placeholder="https://..." [ngModel]="newSocial().url"
+                (ngModelChange)="newSocial.set({platform: newSocial().platform, url: $event})">
+        </div>
+    </div>
+</app-generic-modal>
 }

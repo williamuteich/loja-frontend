@@ -31,6 +31,17 @@
               <lucide-icon [img]="Instagram" class="w-4 h-4"></lucide-icon>
               } @else if (social.platform.toLowerCase().includes('facebook')) {
               <lucide-icon [img]="Facebook" class="w-4 h-4"></lucide-icon>
+              } @else if (social.platform.toLowerCase().includes('twitter') ||
+              social.platform.toLowerCase().includes('x')) {
+              <lucide-icon [img]="Twitter" class="w-4 h-4"></lucide-icon>
+              } @else if (social.platform.toLowerCase().includes('youtube')) {
+              <lucide-icon [img]="Youtube" class="w-4 h-4"></lucide-icon>
+              } @else if (social.platform.toLowerCase().includes('linkedin')) {
+              <lucide-icon [img]="Linkedin" class="w-4 h-4"></lucide-icon>
+              } @else if (social.platform.toLowerCase().includes('tiktok')) {
+              <lucide-icon [img]="Music" class="w-4 h-4"></lucide-icon>
+              } @else if (social.platform.toLowerCase().includes('whatsapp')) {
+              <lucide-icon [img]="MessageCircle" class="w-4 h-4"></lucide-icon>
               } @else {
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
@@ -89,7 +100,8 @@
       </div>
     </div>
 
-    <div class="border-t border-pink-100 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between gap-2 md:gap-0">
+    <div
+      class="border-t border-pink-100 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between gap-2 md:gap-0">
       <div class="flex flex-col items-center md:items-start gap-1">
         <p class="text-xs text-slate-500">
           2025 {{ config()?.storeName }}. Todos os direitos reservados.
@@ -97,11 +109,8 @@
       </div>
 
       <div class="flex flex-col items-center md:items-end">
-        <a
-          target="_blank"
-          href="https://twservicos.com.br/"
-          class="text-[10px] text-slate-400 hover:text-pink-700 font-medium tracking-wider"
-        >
+        <a target="_blank" href="https://twservicos.com.br/"
+          class="text-[10px] text-slate-400 hover:text-pink-700 font-medium tracking-wider">
           Plataforma desenvolvida por TW Serviços Digitais
         </a>
       </div>

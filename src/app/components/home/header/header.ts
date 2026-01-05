@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, inject, signal, HostListener, effect, PLATFORM_ID, computed, OnDestroy } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { LucideAngularModule, Search, ShoppingBag, User, Menu, Instagram, Facebook, X, Home, Package, Layers, Phone } from 'lucide-angular';
+import { LucideAngularModule, Search, ShoppingBag, User, Menu, Instagram, Facebook, X, Home, Package, Layers, Phone, Twitter, Youtube, Linkedin, MessageCircle, Music } from 'lucide-angular';
 import { NgOptimizedImage, isPlatformBrowser, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subject } from 'rxjs';
@@ -40,6 +40,11 @@ export class Header implements OnDestroy {
   protected readonly Phone = Phone;
   protected readonly Instagram = Instagram;
   protected readonly Facebook = Facebook;
+  protected readonly Twitter = Twitter;
+  protected readonly Youtube = Youtube;
+  protected readonly Linkedin = Linkedin;
+  protected readonly MessageCircle = MessageCircle;
+  protected readonly Music = Music;
 
   protected isScrolled = signal(false);
   protected isMenuOpen = signal(false);

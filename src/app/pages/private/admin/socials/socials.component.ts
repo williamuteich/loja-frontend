@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule, Instagram, Facebook, Twitter, Youtube, Linkedin, Save, Trash2, Plus, MessageCircle } from 'lucide-angular';
 import { SocialService } from '../../../../services/social.service';
@@ -66,6 +66,52 @@ export class SocialsComponent implements OnInit {
 
   getMeta(platform: string) {
     return this.platformMeta[platform.toLowerCase()] || { icon: Instagram, color: 'from-slate-400 to-slate-500', label: platform };
+  }
+
+  readonly availablePlatforms = computed(() => {
+    const used = this.localSocials().map(s => s.platform.toLowerCase());
+    return Object.keys(this.platformMeta).filter(p => !used.includes(p));
+  });
+
+  isAddModalVisible = signal(false);
+  newSocial = signal({ platform: '', url: '' });
+
+  openAddModal(): void {
+    this.newSocial.set({ platform: '', url: '' });
+    this.isAddModalVisible.set(true);
+  }
+
+  handleCreate(): void {
+    const { platform, url } = this.newSocial();
+    if (!platform || !url) return;
+
+    this.isSaving.set(true);
+
+    const platformMap: Record<string, string> = {
+      'instagram': 'Instagram',
+      'facebook': 'Facebook',
+      'twitter': 'Twitter',
+      'youtube': 'YouTube',
+      'linkedin': 'LinkedIn',
+      'tiktok': 'TikTok',
+      'whatsapp': 'WhatsApp'
+    };
+
+    const formattedPlatform = platformMap[platform.toLowerCase()] || platform;
+
+    this.socialService.create({ platform: formattedPlatform, url, isActive: true }).subscribe({
+      next: (social) => {
+        this.localSocials.update(current => [...current, social]);
+        this.isAddModalVisible.set(false);
+        this.isSaving.set(false);
+        alert('Rede social adicionada com sucesso!');
+      },
+      error: (err) => {
+        console.error('Erro ao criar rede social:', err);
+        this.isSaving.set(false);
+        alert('Não foi possível criar. Verifique se já não existe.');
+      }
+    });
   }
 
   toggleSocial(social: Social): void {
