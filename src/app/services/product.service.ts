@@ -85,6 +85,7 @@ export class ProductService {
         this.api.get<any>(`product/public?${queryParams.toString()}`)
             .subscribe({
                 next: (response) => {
+                    console.log('API Response (products):', response);
                     let items: Product[] = [];
                     let hasNextPage = false;
                     let total = 0;

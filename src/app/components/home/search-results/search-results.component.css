@@ -1,0 +1,9 @@
+:host {
+    display: block;
+    min-height: calc(100vh - 7rem);
+    background: linear-gradient(to bottom, #fdf2f8 0%, #ffffff 100%);
+}
+
+.shadow-soft {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05), 0 4px 16px rgba(0, 0, 0, 0.03);
+}
