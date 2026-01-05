@@ -11,6 +11,7 @@ import { BannerForm } from '../../../../components/dashboard/modals/banner-form/
 import { SkeletonBannerComponent } from '../../../../components/dashboard/skeleton/banner/skeletonBanner.component';
 import { EmptyStateComponent } from '../../../../components/dashboard/empty-state/empty-state.component';
 import { DeleteConfirmationComponent } from '../../../../components/dashboard/modals/delete-confirmation/delete-confirmation.component';
+import { PaginationComponent } from '../../../../components/dashboard/pagination/admin-pagination.component';
 
 @Component({
   selector: 'app-banners',
@@ -23,7 +24,8 @@ import { DeleteConfirmationComponent } from '../../../../components/dashboard/mo
     BannerForm,
     SkeletonBannerComponent,
     EmptyStateComponent,
-    DeleteConfirmationComponent
+    DeleteConfirmationComponent,
+    PaginationComponent
   ],
   templateUrl: './banners.component.html',
 })
@@ -31,6 +33,10 @@ export class BannersComponent implements OnInit {
   private readonly bannerService = inject(BannerService);
   protected readonly banners = this.bannerService.banners;
   readonly backendUrl = environment.BACKEND_URL;
+
+  readonly pageSize = 10;
+  readonly pageIndex = signal(0);
+  readonly totalItems = this.bannerService.totalItems;
 
   readonly Plus = Plus;
   readonly SquarePen = SquarePen;
@@ -47,7 +53,17 @@ export class BannersComponent implements OnInit {
   error = this.bannerService.error;
 
   ngOnInit(): void {
-    this.bannerService.loadBannersAdmin();
+    this.loadBanners();
+  }
+
+  loadBanners(): void {
+    this.bannerService.loadBannersAdmin(this.pageIndex() + 1, this.pageSize);
+  }
+
+  onPageChange(index: number): void {
+    if (index < 0) return;
+    this.pageIndex.set(index);
+    this.loadBanners();
   }
 
   openAddModal(): void {

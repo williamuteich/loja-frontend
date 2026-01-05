@@ -6,10 +6,11 @@ import { Social } from '../../../../models';
 import { FormsModule } from '@angular/forms';
 import { GenericModal } from '../../../../components/dashboard/modals/edit-modal/generic-modal';
 import { DeleteConfirmationComponent } from '../../../../components/dashboard/modals/delete-confirmation/delete-confirmation.component';
+import { PaginationComponent } from '../../../../components/dashboard/pagination/admin-pagination.component';
 
 @Component({
   selector: 'app-socials',
-  imports: [CommonModule, LucideAngularModule, FormsModule, GenericModal, DeleteConfirmationComponent],
+  imports: [CommonModule, LucideAngularModule, FormsModule, GenericModal, DeleteConfirmationComponent, PaginationComponent],
   templateUrl: './socials.component.html'
 })
 export class SocialsComponent implements OnInit {
@@ -27,6 +28,9 @@ export class SocialsComponent implements OnInit {
   protected readonly socials = this.socialService.socials;
   protected readonly isLoading = this.socialService.isLoading;
   protected readonly error = this.socialService.error;
+  readonly pageSize = 10;
+  readonly pageIndex = signal(0);
+  readonly totalItems = this.socialService.totalItems;
 
   localSocials = signal<Social[]>([]);
   isDeleteModalVisible = signal(false);
@@ -47,15 +51,22 @@ export class SocialsComponent implements OnInit {
   constructor() {
     effect(() => {
       const remote = this.socials();
-      if (remote.length > 0 && !this.hasInitialized) {
-        this.localSocials.set(remote.map(s => ({ ...s })));
-        this.hasInitialized = true;
-      }
+      this.localSocials.set(remote.map(s => ({ ...s })));
     }, { allowSignalWrites: true });
   }
 
   ngOnInit(): void {
-    this.socialService.loadSocialsAdmin();
+    this.loadSocials();
+  }
+
+  loadSocials(): void {
+    this.socialService.loadSocialsAdmin(this.pageIndex() + 1, this.pageSize);
+  }
+
+  onPageChange(index: number): void {
+    if (index < 0) return;
+    this.pageIndex.set(index);
+    this.loadSocials();
   }
 
   getMeta(platform: string) {

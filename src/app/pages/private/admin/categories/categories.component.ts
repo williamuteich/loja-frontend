@@ -10,10 +10,11 @@ import { CategoryForm } from '../../../../components/dashboard/modals/category-f
 import { EmptyStateComponent } from '../../../../components/dashboard/empty-state/empty-state.component';
 import { SkeletonCategoryComponent } from '../../../../components/dashboard/skeleton/category/skeleton-category.component';
 import { DeleteConfirmationComponent } from '../../../../components/dashboard/modals/delete-confirmation/delete-confirmation.component';
+import { PaginationComponent } from '../../../../components/dashboard/pagination/admin-pagination.component';
 
 @Component({
   selector: 'app-categories',
-  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, CategoryForm, EmptyStateComponent, SkeletonCategoryComponent, DeleteConfirmationComponent],
+  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, CategoryForm, EmptyStateComponent, SkeletonCategoryComponent, DeleteConfirmationComponent, PaginationComponent],
   templateUrl: './categories.component.html'
 })
 export class CategoriesComponent implements OnInit {
@@ -24,6 +25,9 @@ export class CategoriesComponent implements OnInit {
 
   private readonly categoryService = inject(CategoryService);
   protected readonly categories = this.categoryService.categories;
+  readonly pageSize = 10;
+  readonly pageIndex = signal(0);
+  readonly totalItems = this.categoryService.totalItems;
   protected readonly backendUrl = environment.BACKEND_URL;
 
   isModalVisible = signal(false);
@@ -37,8 +41,19 @@ export class CategoriesComponent implements OnInit {
   error = this.categoryService.error;
 
   ngOnInit(): void {
-    this.categoryService.loadCategoriesAdmin();
+    this.loadCategories();
   }
+
+  loadCategories(): void {
+    this.categoryService.loadCategoriesAdmin(this.pageIndex() + 1, this.pageSize);
+  }
+
+  onPageChange(index: number): void {
+    if (index < 0) return;
+    this.pageIndex.set(index);
+    this.loadCategories();
+  }
+
 
   openAddModal(): void {
     this.selectedCategory.set(undefined);

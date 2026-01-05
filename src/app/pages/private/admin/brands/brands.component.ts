@@ -9,10 +9,11 @@ import { BrandForm } from '../../../../components/dashboard/modals/brand-form/br
 import { DeleteConfirmationComponent } from '../../../../components/dashboard/modals/delete-confirmation/delete-confirmation.component';
 import { SkeletonTableComponent } from '../../../../components/dashboard/skeleton/form/skeletonForm.component';
 import { EmptyStateComponent } from '../../../../components/dashboard/empty-state/empty-state.component';
+import { PaginationComponent } from '../../../../components/dashboard/pagination/admin-pagination.component';
 
 @Component({
   selector: 'app-brands',
-  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, BrandForm, DeleteConfirmationComponent, SkeletonTableComponent, EmptyStateComponent],
+  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, BrandForm, DeleteConfirmationComponent, SkeletonTableComponent, EmptyStateComponent, PaginationComponent],
   templateUrl: 'brands.component.html'
 })
 export class BrandsComponent implements OnInit {
@@ -23,6 +24,11 @@ export class BrandsComponent implements OnInit {
 
   private readonly brandService = inject(BrandService);
   protected readonly brands = this.brandService.brands;
+
+  readonly pageSize = 10;
+  readonly pageIndex = signal(0);
+  readonly totalItems = this.brandService.totalItems;
+
 
   isModalVisible = signal(false);
   selectedBrand = signal<Brand | undefined>(undefined);
@@ -35,7 +41,17 @@ export class BrandsComponent implements OnInit {
   error = this.brandService.error;
 
   ngOnInit(): void {
-    this.brandService.loadBrandsAdmin();
+    this.loadBrands();
+  }
+
+  loadBrands(): void {
+    this.brandService.loadBrandsAdmin(this.pageIndex() + 1, this.pageSize);
+  }
+
+  onPageChange(index: number): void {
+    if (index < 0) return;
+    this.pageIndex.set(index);
+    this.loadBrands();
   }
 
   openAddModal(): void {
