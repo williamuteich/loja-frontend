@@ -43,7 +43,13 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/public/termos/termos.component').then(m => m.TermosComponent),
         canActivate: [maintenanceGuard]
       },
+      {
+        path: 'categorias',
+        loadComponent: () => import('./pages/public/categorias/categorias.component').then(m => m.CategoriasComponent),
+        canActivate: [maintenanceGuard]
+      },
     ]
+
   },
   {
     path: 'login',

@@ -1,0 +1,66 @@
+<main class="py-12 md:py-20 bg-linear-to-br from-slate-50 via-white to-pink-50/30 min-h-screen">
+    <div class="container mx-auto px-4">
+        <div class="mb-10 md:mb-16 text-center">
+            <span class="inline-block text-pink-600 text-sm font-medium tracking-wider uppercase mb-2">Explore</span>
+            <h1 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-3">Categorias</h1>
+            <p class="text-slate-600 mt-3 text-base md:text-lg max-w-2xl mx-auto">Navegue por nossas coleções
+                cuidadosamente organizadas</p>
+        </div>
+
+        @if (isLoading()) {
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+            @for (i of [1,2,3,4,5,6,7,8,9,10]; track i) {
+            <div class="aspect-square rounded-2xl bg-slate-100 animate-pulse"></div>
+            }
+        </div>
+        } @else {
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+            @for (category of categories(); track category.id; let i = $index) {
+            <a [routerLink]="['/produtos']" [queryParams]="{categoria: category.id}"
+                class="group relative aspect-square overflow-hidden rounded-2xl shadow-md hover:shadow-2xl transition-all duration-500 animate-fade-in border border-slate-200 hover:border-pink-300 bg-white"
+                [style.animation-delay]="(i * 0.05) + 's'">
+
+                @if (category.imageUrl) {
+                <img [ngSrc]="backendUrl + '/' + category.imageUrl" [alt]="category.name" fill
+                    class="object-cover group-hover:scale-110 transition-transform duration-700" [priority]="i < 5"
+                    [loading]="i < 5 ? undefined : 'lazy'" ngSkipSizeCheck>
+                } @else {
+                <div
+                    class="absolute inset-0 bg-linear-to-br from-slate-100 to-slate-200 flex items-center justify-center">
+                    <span class="text-slate-400 text-xs uppercase font-medium text-center px-2">Sem imagem</span>
+                </div>
+                }
+
+                <div
+                    class="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-transparent flex flex-col items-center justify-end p-4 md:p-6 text-center group-hover:from-pink-900/90 group-hover:via-pink-800/50 transition-all duration-500">
+                    <h3
+                        class="text-white font-bold text-base md:text-xl lg:text-2xl mb-2 line-clamp-2 capitalize drop-shadow-2xl transform group-hover:scale-105 transition-transform duration-500 leading-tight">
+                        {{ category.name }}
+                    </h3>
+                    <p
+                        class="text-white/90 text-xs md:text-sm line-clamp-2 drop-shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        {{ category.description }}
+                    </p>
+                </div>
+
+
+            </a>
+            }
+        </div>
+        }
+
+        @if (!isLoading() && categories().length === 0) {
+        <div class="text-center py-16">
+            <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-slate-100 mb-4">
+                <svg class="w-10 h-10 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4">
+                    </path>
+                </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-slate-900 mb-2">Nenhuma categoria disponível</h3>
+            <p class="text-slate-600">Em breve teremos novas categorias para você explorar!</p>
+        </div>
+        }
+    </div>
+</main>
