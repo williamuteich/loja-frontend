@@ -37,4 +37,8 @@ export class SearchResultsComponent {
         if (imageUrl.startsWith('http')) return imageUrl;
         return `${this.backendUrl}/${imageUrl}`;
     }
+
+    protected clearSearch() {
+        this.searchService.clearSearch();
+    }
 }
