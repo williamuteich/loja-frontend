@@ -62,5 +62,12 @@
             <p class="text-slate-600">Em breve teremos novas categorias para você explorar!</p>
         </div>
         }
+
+        @if (!isLoading() && categories().length > 0) {
+        <app-pagination [pageIndex]="pageIndex()" [pageSize]="pageSize" [totalItems]="totalItems()"
+            [disabled]="isLoading()" (pageChange)="onPageChange($event)">
+        </app-pagination>
+        }
+
     </div>
 </main>

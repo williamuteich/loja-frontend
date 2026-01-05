@@ -57,16 +57,56 @@ export class CategoryService {
         });
     }
 
-    public loadCategoriesPublic(): void {
-        if (this.publicLoaded) return;
-
+    public loadCategoriesPublic(page: number = 1, pageSize: number = 10): void {
         this.isLoading.set(true);
         this.error.set(null);
 
-        this.api.get<Category[]>('category/public').subscribe({
-            next: (categories) => {
-                this._publicCategories.set(categories);
-                this.publicLoaded = true;
+        const skip = (page - 1) * pageSize;
+        const take = pageSize + 1;
+
+        const params = new URLSearchParams({
+            skip: skip.toString(),
+            take: take.toString(),
+        }).toString();
+
+        this.api.get<any>(`category/public?${params}`).subscribe({
+            next: (response) => {
+                let items: Category[] = [];
+                let hasNextPage = false;
+                let total = 0;
+
+                if (Array.isArray(response)) {
+                    if (response.length > pageSize) {
+                        hasNextPage = true;
+                        items = response.slice(0, pageSize);
+                    } else {
+                        items = response;
+                    }
+                } else if (response && Array.isArray(response.data)) {
+                    if (response.meta?.total !== undefined || response.count !== undefined || response.total !== undefined) {
+                        total = response.meta?.total || response.count || response.total || 0;
+                        items = response.data;
+                        this._publicCategories.set(items);
+                        this.totalItems.set(total);
+                        this.isLoading.set(false);
+                        return;
+                    }
+                    if (response.data.length > pageSize) {
+                        hasNextPage = true;
+                        items = response.data.slice(0, pageSize);
+                    } else {
+                        items = response.data;
+                    }
+                }
+
+                this._publicCategories.set(items);
+
+                if (hasNextPage) {
+                    this.totalItems.set((page * pageSize) + 1);
+                } else {
+                    this.totalItems.set(((page - 1) * pageSize) + items.length);
+                }
+
                 this.isLoading.set(false);
             },
             error: (err) => {
