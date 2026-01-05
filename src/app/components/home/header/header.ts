@@ -105,6 +105,18 @@ export class Header implements OnDestroy {
     this.isMenuOpen.update(v => !v);
   }
 
+  protected isMobileSearchOpen = signal(false);
+
+  protected toggleMobileSearch() {
+    this.isMobileSearchOpen.update(v => !v);
+    if (this.isMobileSearchOpen()) {
+      setTimeout(() => {
+        const input = document.getElementById('mobile-search-input');
+        if (input) input.focus();
+      }, 100);
+    }
+  }
+
   protected closeMenu() {
     this.isMenuOpen.set(false);
   }

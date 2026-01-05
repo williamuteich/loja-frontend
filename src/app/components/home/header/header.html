@@ -73,9 +73,11 @@
         </div>
     </div>
 
-    <div class="header-main bg-background/95 backdrop-blur-sm border-b border-slate-100 shadow-sm relative z-40">
-        <div class="container mx-auto px-4">
-            <div class="flex items-center justify-between h-20 gap-6">
+    <div
+        class="header-main bg-background/95 backdrop-blur-sm border-b border-slate-100 shadow-sm relative z-40 overflow-hidden">
+        <div class="container mx-auto px-4 h-20 relative">
+            <div class="flex items-center justify-between h-full gap-6 transition-all duration-300"
+                [class.opacity-0]="isMobileSearchOpen()" [class.pointer-events-none]="isMobileSearchOpen()">
                 <a routerLink="/" class="flex items-center gap-3 shrink-0 group">
                     <div
                         class="w-13 h-13 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
@@ -101,7 +103,7 @@
                 <div class="hidden md:flex flex-1 max-w-2xl px-4">
                     <div class="relative w-full">
                         <lucide-icon [img]="Search"
-                            class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground"></lucide-icon>
+                            class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground"></lucide-icon>
                         <input type="search" [ngModel]="searchInput()" (ngModelChange)="onSearchInput($event)"
                             class="w-full h-12 pl-12 pr-20 rounded-full bg-slate-50 border border-pink-100 focus:border-pink-500 focus:bg-white text-sm transition-all focus:outline-none focus:ring-4 focus:ring-pink-500/10"
                             placeholder="O que você está procurando hoje?">
@@ -126,13 +128,48 @@
                         class="px-4 py-2 text-muted-foreground hover:text-pink-700 hover:bg-pink-50 rounded-full transition-all text-sm font-semibold">Contato</a>
                 </nav>
 
-                <button (click)="toggleMenu()"
-                    class="lg:hidden w-10 h-10 flex items-center justify-center text-slate-600 hover:text-pink-700 hover:bg-pink-50 rounded-xl transition-all">
-                    <lucide-icon [img]="Menu" class="w-6 h-6"></lucide-icon>
-                </button>
+                <div class="flex items-center gap-1 lg:hidden">
+                    <button (click)="toggleMobileSearch()"
+                        class="w-10 h-10 flex items-center justify-center text-slate-600 hover:text-pink-700 hover:bg-pink-50 rounded-xl transition-all">
+                        <lucide-icon [img]="Search" class="w-6 h-6"></lucide-icon>
+                    </button>
+
+                    <button (click)="toggleMenu()"
+                        class="w-10 h-10 flex items-center justify-center text-slate-600 hover:text-pink-700 hover:bg-pink-50 rounded-xl transition-all">
+                        <lucide-icon [img]="Menu" class="w-6 h-6"></lucide-icon>
+                    </button>
+                </div>
+            </div>
+
+            <div class="absolute inset-0 bg-white z-50 flex items-center px-4 transition-all duration-300 ease-in-out lg:hidden"
+                [class.translate-y-full]="!isMobileSearchOpen()" [class.translate-y-0]="isMobileSearchOpen()"
+                [class.opacity-0]="!isMobileSearchOpen()" [class.opacity-100]="isMobileSearchOpen()">
+                <div class="relative w-full flex items-center gap-3">
+                    <lucide-icon [img]="Search" class="w-5 h-5 text-pink-600"></lucide-icon>
+                    <div class="relative flex-1 flex items-center">
+                        <input type="search" [ngModel]="searchInput()" (ngModelChange)="onSearchInput($event)"
+                            id="mobile-search-input"
+                            class="w-full h-12 py-2 bg-transparent text-slate-800 placeholder:text-slate-400 focus:outline-none text-base pr-10"
+                            placeholder="O que você está procurando hoje?">
+
+                        @if (searchInput()) {
+                        <button (click)="clearSearch()"
+                            class="absolute right-0 top-1/2 -translate-y-1/2 bg-slate-100 text-slate-500 rounded-full w-7 h-7 flex items-center justify-center transition-all active:scale-95">
+                            <lucide-icon [img]="XIcon" class="w-3.5 h-3.5"></lucide-icon>
+                        </button>
+                        }
+                    </div>
+
+                    <button (click)="toggleMobileSearch()"
+                        class="w-10 h-10 flex items-center justify-center text-slate-400 hover:text-pink-700 hover:bg-pink-50 rounded-xl transition-all shrink-0">
+                        <lucide-icon [img]="XIcon" class="w-6 h-6"></lucide-icon>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
+
+
 
     <div class="mobile-menu-overlay" [class.open]="isMenuOpen()" (click)="closeMenu()"></div>
 
@@ -179,15 +216,6 @@
                         class="w-10 h-10 bg-white rounded-2xl flex items-center justify-center shadow-sm text-pink-700">
                         <lucide-icon [img]="Home" class="w-5 h-5"></lucide-icon>
                     </div>
-                    <span>Início</span>
-                </a>
-                <a routerLink="/produtos" routerLinkActive="!text-pink-700 !bg-white shadow-md border-pink-100"
-                    (click)="closeMenu()"
-                    class="flex items-center gap-4 px-6 py-4 text-slate-600 hover:text-pink-700 hover:bg-white rounded-3xl transition-all font-bold border border-transparent">
-                    <div
-                        class="w-10 h-10 bg-white rounded-2xl flex items-center justify-center shadow-sm text-pink-700">
-                        <lucide-icon [img]="Package" class="w-5 h-5"></lucide-icon>
-                    </div>
                     <span>Produtos</span>
                 </a>
                 <a routerLink="/categorias" routerLinkActive="!text-pink-700 !bg-white shadow-md border-pink-100"
@@ -209,22 +237,6 @@
                     <span>Contato</span>
                 </a>
             </nav>
-
-            <div class="px-4 py-4 border-t border-slate-200 bg-white/50">
-                <div class="relative w-full">
-                    <lucide-icon [img]="Search"
-                        class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground"></lucide-icon>
-                    <input type="search" [ngModel]="searchInput()" (ngModelChange)="onSearchInput($event)"
-                        class="w-full h-11 pl-11 pr-11 rounded-2xl bg-white border border-pink-100 focus:border-pink-500 text-sm transition-all focus:outline-none focus:ring-4 focus:ring-pink-500/10"
-                        placeholder="Buscar produtos...">
-                    @if (searchInput()) {
-                    <button (click)="clearSearch()"
-                        class="absolute right-2 top-1/2 -translate-y-1/2 bg-slate-200 text-slate-600 hover:bg-slate-300 rounded-full w-7 h-7 flex items-center justify-center transition-all active:scale-95">
-                        <lucide-icon [img]="XIcon" class="w-3.5 h-3.5"></lucide-icon>
-                    </button>
-                    }
-                </div>
-            </div>
 
             @if (activeSocials().length) {
             <div class="p-8 border-t border-slate-200 mt-auto bg-white/80 backdrop-blur-sm">
