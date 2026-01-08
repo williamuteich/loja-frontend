@@ -7,6 +7,7 @@ import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-home-products-grid',
+  standalone: true,
   imports: [CommonModule, RouterLink, NgOptimizedImage],
   templateUrl: './products-grid.component.html'
 })
@@ -18,11 +19,8 @@ export class ProductsGridComponent implements OnInit {
 
   ngOnInit(): void {
     this.productService.getPublicPaged(0, 12).subscribe({
-      next: (items) => this.products.set(items ?? []),
-      error: (err) => {
-        console.error('Erro ao carregar produtos da seção Nossos produtos', err);
-        this.products.set([]);
-      }
+      next: items => this.products.set(items ?? []),
+      error: () => this.products.set([])
     });
   }
 }
