@@ -30,6 +30,7 @@ export class ProductService {
         const params = new URLSearchParams({
             skip: skip.toString(),
             take: take.toString(),
+            timestamp: new Date().getTime().toString()
         }).toString();
 
         this.api.get<any>(`product/admin?${params}`)
@@ -58,7 +59,11 @@ export class ProductService {
     }
 
     getPublicPaged(skip = 0, take = 12): Observable<Product[]> {
-        const params = new URLSearchParams({ skip: String(skip), take: String(take) }).toString();
+        const params = new URLSearchParams({
+            skip: String(skip),
+            take: String(take),
+            timestamp: new Date().getTime().toString()
+        }).toString();
         return this.api.get<Product[]>(`product/public?${params}`);
     }
 
@@ -71,7 +76,8 @@ export class ProductService {
 
         const queryParams = new URLSearchParams({
             skip: skip.toString(),
-            take: take.toString()
+            take: take.toString(),
+            timestamp: new Date().getTime().toString()
         });
 
         if (categoryName) {
