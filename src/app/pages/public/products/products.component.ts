@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal, effect, computed } from '@angular/core';
-import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../../services/product.service';
 import { CategoryService } from '../../../services/category.service';
@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-products',
-    imports: [CommonModule, RouterLink, NgOptimizedImage, PaginationComponent, LucideAngularModule, FormsModule],
+    imports: [CommonModule, RouterLink, PaginationComponent, LucideAngularModule, FormsModule],
     templateUrl: './products.component.html',
     styleUrls: ['./products.component.css']
 })
