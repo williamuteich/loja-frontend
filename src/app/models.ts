@@ -131,3 +131,11 @@ export interface StoreConfig {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface Newsletter {
+  id: string;
+  email: string;
+  whatsapp?: string;
+  createdAt: string;
+  updatedAt: string;
+}

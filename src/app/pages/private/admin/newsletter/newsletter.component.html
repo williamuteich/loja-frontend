@@ -1,94 +1,99 @@
 <div class="p-12 md:p-24">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-            <div class="flex items-center gap-4">
-                <div
-                    class="w-12 h-12 rounded-xl bg-linear-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
-                    <lucide-icon [img]="Users" class="w-6 h-6 text-white"></lucide-icon>
-                </div>
-                <div>
-                    <h3 class="text-2xl font-bold text-slate-900">2.456</h3>
-                    <p class="text-slate-500 text-sm">Total de Inscritos</p>
-                </div>
-            </div>
-        </div>
-        <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-            <div class="flex items-center gap-4">
-                <div
-                    class="w-12 h-12 rounded-xl bg-linear-to-br from-emerald-500 to-green-600 flex items-center justify-center">
-                    <lucide-icon [img]="TrendingUp" class="w-6 h-6 text-white"></lucide-icon>
-                </div>
-                <div>
-                    <h3 class="text-2xl font-bold text-slate-900">128</h3>
-                    <p class="text-slate-500 text-sm">Novos este mês</p>
-                </div>
-            </div>
-        </div>
-        <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-            <div class="flex items-center gap-4">
-                <div
-                    class="w-12 h-12 rounded-xl bg-linear-to-br from-purple-500 to-violet-600 flex items-center justify-center">
-                    <lucide-icon [img]="Mail" class="w-6 h-6 text-white"></lucide-icon>
-                </div>
-                <div>
-                    <h3 class="text-2xl font-bold text-slate-900">42%</h3>
-                    <p class="text-slate-500 text-sm">Taxa de Abertura</p>
-                </div>
-            </div>
-        </div>
-    </div>
+
 
     <div class="flex flex-col sm:flex-row gap-4 mb-6">
-        <app-admin-search class="flex-1" placeholder="Buscar por email..."></app-admin-search>
-        <button
+        <div class="relative flex-1">
+            <input type="search" [ngModel]="searchInput()" (ngModelChange)="onSearchInput($event)"
+                class="w-full h-10 pl-10 pr-10 rounded-lg bg-slate-50 border border-slate-200 focus:border-slate-500 focus:bg-white text-sm transition-all focus:outline-none focus:ring-2 focus:ring-slate-500/10"
+                placeholder="Buscar por email ou whatsapp...">
+            <lucide-icon [img]="Search"
+                class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground"></lucide-icon>
+            @if (searchInput()) {
+            <button (click)="clearSearch()"
+                class="absolute right-2 top-1/2 -translate-y-1/2 bg-slate-200 text-slate-600 hover:bg-slate-300 rounded-full w-6 h-6 flex items-center justify-center text-xs transition-all">
+                <lucide-icon [img]="X" class="w-3.5 h-3.5"></lucide-icon>
+            </button>
+            }
+        </div>
+        <button (click)="exportList()"
             class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border-2 border-primary text-primary bg-transparent hover:bg-primary hover:text-white h-10 px-5 py-2 cursor-pointer">
             <lucide-icon [img]="Download" class="w-4 h-4"></lucide-icon>
             Exportar Lista
         </button>
     </div>
 
-    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-        <table class="w-full">
-            <thead class="bg-gray-900">
-                <tr class="text-left text-sm text-white">
-                    <th class="px-6 py-4 font-medium text-white">Email</th>
-                    <th class="px-6 py-4 font-medium text-white">Data de Inscrição</th>
-                    <th class="px-6 py-4 font-medium text-white">Status</th>
-                    <th class="px-6 py-4 font-medium text-right text-white">Ações</th>
-                </tr>
-            </thead>
-            <tbody class="text-sm">
-                @for (sub of subscribers; track sub.id) {
-                <tr class="border-t border-slate-100 hover:bg-slate-50 transition-colors">
-                    <td class="px-6 py-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                                <lucide-icon [img]="Mail" class="w-4 h-4 text-primary"></lucide-icon>
-                            </div>
-                            <span class="font-medium text-slate-900">{{ sub.email }}</span>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 text-slate-600">{{ sub.date }}</td>
-                    <td class="px-6 py-4">
-                        @if (sub.status === 'active') {
-                        <span
-                            class="px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">Ativo</span>
-                        } @else {
-                        <span
-                            class="px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600">Cancelado</span>
+    <div class="space-y-4">
+        @if (isLoading()) {
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-8 space-y-4">
+            <div class="h-8 bg-slate-100 animate-pulse rounded w-1/4"></div>
+            <div class="space-y-2">
+                <div class="h-12 bg-slate-50 animate-pulse rounded"></div>
+                <div class="h-12 bg-slate-50 animate-pulse rounded"></div>
+                <div class="h-12 bg-slate-50 animate-pulse rounded"></div>
+            </div>
+        </div>
+        } @else if (error()) {
+        <app-empty-state title="Erro ao carregar newsletter"
+            [description]="error() || 'Ocorreu um erro inesperado.'"></app-empty-state>
+        } @else if (newsletters().length === 0) {
+        <app-empty-state title="Nenhum inscrito encontrado"
+            description="Não há inscritos na newsletter que correspondam à sua busca."></app-empty-state>
+        } @else {
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-slate-900">
+                        <tr class="text-left text-sm text-white">
+                            <th class="px-6 py-4 font-medium">Inscrito</th>
+                            <th class="px-6 py-4 font-medium">Data de Inscrição</th>
+                            <th class="px-6 py-4 text-right font-bold pointer-events-none pr-10">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        @for (sub of newsletters(); track sub.id) {
+                        <tr class="border-t border-slate-100 hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4">
+                                <div class="flex flex-col">
+                                    <div class="flex items-center gap-2">
+                                        <lucide-icon [img]="Mail" class="w-3.5 h-3.5 text-slate-400"></lucide-icon>
+                                        <span class="font-medium text-slate-900">{{ sub.email }}</span>
+                                    </div>
+                                    @if (sub.whatsapp) {
+                                    <span class="text-xs text-slate-500 ml-5.5">{{ sub.whatsapp }}</span>
+                                    }
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 text-slate-600">
+                                {{ sub.createdAt | date:'dd/MM/yyyy HH:mm' }}
+                            </td>
+                            <td class="px-6 py-4 pr-10">
+                                <div class="flex items-center justify-end">
+                                    <button (click)="openDeleteModal(sub)"
+                                        class="p-2 text-slate-500 hover:text-rose-500 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
+                                        <lucide-icon [img]="Trash2" class="w-4 h-4"></lucide-icon>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
                         }
-                    </td>
-                    <td class="px-6 py-4">
-                        <div class="flex items-center justify-end">
-                            <button
-                                class="p-2 text-slate-500 hover:text-rose-500 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
-                                <lucide-icon [img]="Trash2" class="w-4 h-4"></lucide-icon>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                }
-            </tbody>
-        </table>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <app-pagination [pageIndex]="pageIndex()" [pageSize]="pageSize" [totalItems]="totalItems()"
+            [disabled]="isLoading()" (pageChange)="onPageChange($event)">
+        </app-pagination>
+        }
     </div>
 </div>
+
+@if (isDeleteModalVisible()) {
+@if(itemToDelete(); as sub) {
+<app-generic-modal title="Remover da Newsletter" (close)="isDeleteModalVisible.set(false)" [showFooter]="false">
+    <app-delete-confirmation [itemName]="sub.email" itemType="este inscrito" (confirm)="confirmDelete()"
+        (cancel)="isDeleteModalVisible.set(false)">
+    </app-delete-confirmation>
+</app-generic-modal>
+}
+}

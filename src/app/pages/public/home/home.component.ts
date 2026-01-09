@@ -7,12 +7,14 @@ import { OfferCarouselComponent } from '../../../components/home/offer-carousel/
 import { CategoryProductsCarouselComponent } from '../../../components/home/category-products-carousel/category-products-carousel.component';
 import { ProductsGridComponent } from '../../../components/home/products-grid/products-grid.component';
 import { PromotionsBannerComponent } from '../../../components/home/promotions-banner/promotions-banner.component';
+import { NewsletterSectionComponent } from '../../../components/home/newsletter/newsletter.component';
 import { CategoryService } from '../../../services/category.service';
 import { ProductService } from '../../../services/product.service';
 import { StoreConfigService } from '../../../services/store-config.service';
 
 @Component({
     selector: 'app-home',
+    standalone: true,
     imports: [
         CommonModule,
         BannerComponent,
@@ -20,7 +22,8 @@ import { StoreConfigService } from '../../../services/store-config.service';
         OfferCarouselComponent,
         CategoryProductsCarouselComponent,
         ProductsGridComponent,
-        PromotionsBannerComponent
+        PromotionsBannerComponent,
+        NewsletterSectionComponent,
     ],
     templateUrl: './home.component.html',
     styles: ``

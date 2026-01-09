@@ -1,0 +1,56 @@
+<section class="py-20 bg-linear-to-br from-pink-700 via-pink-600 to-rose-700 relative overflow-hidden">
+    <div class="absolute top-0 left-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2">
+    </div>
+    <div class="absolute bottom-0 right-0 w-80 h-80 bg-white/5 rounded-full blur-3xl translate-x-1/4 translate-y-1/4">
+    </div>
+    <div class="container mx-auto relative z-10 px-4">
+        <div class="max-w-2xl mx-auto text-center">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-2xl mb-6">
+                <lucide-icon [img]="MailIcon" class="w-8 h-8 text-white"></lucide-icon>
+            </div>
+            <h2 class="font-display text-3xl md:text-4xl font-semibold text-white mb-4">Receba Novidades Exclusivas</h2>
+            <p class="text-white/80 text-lg mb-8 max-w-md mx-auto">Cadastre-se e ganhe 10% de desconto na sua primeira
+                compra, além de ofertas especiais.</p>
+
+            @if (isSubscribed()) {
+            <div
+                class="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 animate-in fade-in zoom-in duration-300 max-w-md mx-auto mb-6">
+                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
+                    <lucide-icon [img]="CheckIcon" class="w-8 h-8 text-rose-500"></lucide-icon>
+                </div>
+                <h3 class="text-white text-xl font-semibold mb-2">Inscrição Realizada!</h3>
+                <p class="text-white/80">Obrigado por se inscrever. Em breve você receberá nossas novidades em seu
+                    e-mail.</p>
+                <button (click)="isSubscribed.set(false)"
+                    class="mt-6 text-white text-sm underline hover:text-white/80 transition-colors cursor-pointer">Fazer
+                    outra inscrição</button>
+            </div>
+            } @else {
+            <form (submit)="onSubmit(); $event.preventDefault()" class="max-w-md mx-auto mb-6 space-y-3">
+                <div class="grid grid-cols-1 gap-3">
+                    <input type="email" [ngModel]="email()" (ngModelChange)="email.set($event)" name="email"
+                        class="flex w-full px-4 h-12 bg-white/95 border-0 text-foreground placeholder:text-muted-foreground rounded-xl focus:ring-2 focus:ring-white/20 outline-none text-sm"
+                        placeholder="Seu melhor e-mail" required>
+
+                    <input type="text" [ngModel]="whatsapp()" (ngModelChange)="whatsapp.set($event)" name="whatsapp"
+                        class="flex w-full px-4 h-12 bg-white/95 border-0 text-foreground placeholder:text-muted-foreground rounded-xl focus:ring-2 focus:ring-white/20 outline-none text-sm"
+                        placeholder="Seu WhatsApp (opcional)">
+                </div>
+
+                <button
+                    class="inline-flex items-center justify-center gap-2 w-full font-medium transition-all duration-300 disabled:opacity-50 shadow-soft hover:shadow-hover text-base h-12 bg-slate-950 hover:bg-slate-900 text-white px-6 rounded-xl group cursor-pointer"
+                    type="submit" [disabled]="isSubmitting()">
+                    @if (isSubmitting()) {
+                    <div class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    <span>Enviando...</span>
+                    } @else {
+                    <span>Inscrever-se</span>
+                    <lucide-icon [img]="ArrowRightIcon"
+                        class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"></lucide-icon>
+                    }
+                </button>
+            </form>
+            }
+        </div>
+    </div>
+</section>
