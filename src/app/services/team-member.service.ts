@@ -14,11 +14,17 @@ export class TeamMemberService {
 
     readonly totalItems = signal(0);
 
-    public loadTeamMembersAdmin() {
+    public loadTeamMembersAdmin(search?: string) {
         this.isLoading.set(true);
         this.error.set(null);
 
-        this.api.get<any>('team-members/admin').subscribe({
+        let url = 'team-members/admin';
+        if (search) {
+            const params = new URLSearchParams({ search }).toString();
+            url = `${url}?${params}`;
+        }
+
+        this.api.get<any>(url).subscribe({
             next: (response) => {
                 if (Array.isArray(response)) {
                     this._teamMembers.set(response);

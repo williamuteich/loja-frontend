@@ -1,7 +1,9 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LucideAngularModule, Plus, FolderTree, SquarePen, Trash2 } from 'lucide-angular';
-import { AdminSearchComponent } from '../../../../components/dashboard/admin-search/admin-search.component';
+import { LucideAngularModule, Plus, FolderTree, SquarePen, Trash2, Search, X } from 'lucide-angular';
+import { FormsModule } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { CategoryService } from '../../../../services/category.service';
 import { environment } from '../../../../../environments/environment';
 import { GenericModal } from '../../../../components/dashboard/modals/edit-modal/generic-modal';
@@ -14,14 +16,16 @@ import { PaginationComponent } from '../../../../components/dashboard/pagination
 
 @Component({
   selector: 'app-categories',
-  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, CategoryForm, EmptyStateComponent, SkeletonCategoryComponent, DeleteConfirmationComponent, PaginationComponent],
+  imports: [CommonModule, FormsModule, LucideAngularModule, GenericModal, CategoryForm, EmptyStateComponent, SkeletonCategoryComponent, DeleteConfirmationComponent, PaginationComponent],
   templateUrl: './categories.component.html'
 })
-export class CategoriesComponent implements OnInit {
+export class CategoriesComponent implements OnInit, OnDestroy {
   readonly Plus = Plus;
   readonly FolderTree = FolderTree;
   readonly SquarePen = SquarePen;
   readonly Trash2 = Trash2;
+  readonly Search = Search;
+  readonly X = X;
 
   private readonly categoryService = inject(CategoryService);
   protected readonly categories = this.categoryService.categories;
@@ -40,12 +44,47 @@ export class CategoriesComponent implements OnInit {
   isLoading = this.categoryService.isLoading;
   error = this.categoryService.error;
 
+  searchInput = signal('');
+  private searchSubject = new Subject<string>();
+  private destroy$ = new Subject<void>();
+
+  constructor() {
+    this.setupSearchDebounce();
+  }
+
   ngOnInit(): void {
     this.loadCategories();
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private setupSearchDebounce(): void {
+    this.searchSubject.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      takeUntil(this.destroy$)
+    ).subscribe(term => {
+      this.pageIndex.set(0);
+      this.loadCategories();
+    });
+  }
+
+  protected onSearchInput(value: string): void {
+    this.searchInput.set(value);
+    this.searchSubject.next(value);
+  }
+
+  protected clearSearch(): void {
+    this.searchInput.set('');
+    this.searchSubject.next('');
+  }
+
   loadCategories(): void {
-    this.categoryService.loadCategoriesAdmin(this.pageIndex() + 1, this.pageSize);
+    const searchTerm = this.searchInput().trim() || undefined;
+    this.categoryService.loadCategoriesAdmin(this.pageIndex() + 1, this.pageSize, searchTerm);
   }
 
   onPageChange(index: number): void {
@@ -84,7 +123,7 @@ export class CategoriesComponent implements OnInit {
           this.isDeleteModalVisible.set(false);
           this.categoryToDelete.set(undefined);
           this.isSaving.set(false);
-          this.categoryService.loadCategoriesAdmin();
+          this.loadCategories();
           alert('Conteúdo deletado com sucesso!');
         },
         error: (err) => {

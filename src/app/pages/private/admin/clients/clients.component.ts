@@ -1,7 +1,10 @@
-import { Component, inject, OnInit, signal, ChangeDetectorRef, effect, computed } from '@angular/core';
+import { Component, inject, OnInit, signal, ChangeDetectorRef, effect, computed, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule, Plus, User, SquarePen, Trash2 } from 'lucide-angular';
-import { AdminSearchComponent } from '../../../../components/dashboard/admin-search/admin-search.component';
+import { FormsModule } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+
 import { ClientService } from '../../../../services/client.service';
 import { GenericModal } from '../../../../components/dashboard/modals/edit-modal/generic-modal';
 import { Client } from '../../../../models';
@@ -14,10 +17,10 @@ import { DateFormatPipe } from '../../../../pipes/date-format.pipe';
 
 @Component({
   selector: 'app-clients',
-  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, ClientForm, DeleteConfirmationComponent, SkeletonTableComponent, EmptyStateComponent, DateFormatPipe, PaginationComponent],
+  imports: [CommonModule, FormsModule, LucideAngularModule, GenericModal, ClientForm, DeleteConfirmationComponent, SkeletonTableComponent, EmptyStateComponent, DateFormatPipe, PaginationComponent],
   templateUrl: 'clients.component.html'
 })
-export class ClientsComponent implements OnInit {
+export class ClientsComponent implements OnInit, OnDestroy {
   readonly Plus = Plus;
   readonly User = User;
   readonly SquarePen = SquarePen;
@@ -42,18 +45,47 @@ export class ClientsComponent implements OnInit {
   readonly pageIndex = signal(0);
   readonly totalItems = this.clientService.totalItems;
 
+  protected searchInput = signal<string>('');
+  private searchSubject = new Subject<string>();
+  private destroy$ = new Subject<void>();
+
   constructor() {
-    effect(() => {
+    this.setupSearchDebounce();
+  }
+
+  private setupSearchDebounce(): void {
+    this.searchSubject.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      takeUntil(this.destroy$)
+    ).subscribe(term => {
+      this.pageIndex.set(0);
       this.loadClients();
     });
   }
 
   loadClients(): void {
-    this.clientService.loadClientsAdmin(this.pageIndex() + 1, this.pageSize);
+    const searchTerm = this.searchInput().trim() || undefined;
+    this.clientService.loadClientsAdmin(this.pageIndex() + 1, this.pageSize, searchTerm);
   }
 
   ngOnInit(): void {
     this.loadClients();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  protected onSearchInput(value: string): void {
+    this.searchInput.set(value);
+    this.searchSubject.next(value);
+  }
+
+  protected clearSearch(): void {
+    this.searchInput.set('');
+    this.searchSubject.next('');
   }
 
   openAddModal(): void {
@@ -85,7 +117,7 @@ export class ClientsComponent implements OnInit {
           this.isDeleteModalVisible.set(false);
           this.clientToDelete.set(undefined);
           this.isSaving.set(false);
-          this.clientService.loadClientsAdmin();
+          this.loadClients();
           alert('Conteúdo deletado com sucesso!');
         },
         error: (err) => {
@@ -99,6 +131,7 @@ export class ClientsComponent implements OnInit {
   onPageChange(index: number): void {
     if (index < 0) return;
     this.pageIndex.set(index);
+    this.loadClients();
   }
 
   handleSave(clientForm: ClientForm): void {

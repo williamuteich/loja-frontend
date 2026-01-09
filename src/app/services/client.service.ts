@@ -14,7 +14,7 @@ export class ClientService {
 
     readonly totalItems = signal(0);
 
-    public loadClientsAdmin(page: number = 1, pageSize: number = 10) {
+    public loadClientsAdmin(page: number = 1, pageSize: number = 10, search?: string) {
         this.isLoading.set(true);
         this.error.set(null);
 
@@ -24,9 +24,13 @@ export class ClientService {
         const params = new URLSearchParams({
             skip: skip.toString(),
             take: take.toString(),
-        }).toString();
+        });
 
-        this.api.get<any>(`client/admin?${params}`).subscribe({
+        if (search) {
+            params.append('search', search);
+        }
+
+        this.api.get<any>(`client/admin?${params.toString()}`).subscribe({
             next: (response) => {
                 if (Array.isArray(response)) {
                     this._clients.set(response);

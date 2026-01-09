@@ -1,7 +1,10 @@
-import { Component, inject, OnInit, signal, computed, ChangeDetectorRef, effect } from '@angular/core';
+import { Component, inject, OnInit, signal, computed, ChangeDetectorRef, effect, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule, Plus, UserCog, SquarePen, Trash2 } from 'lucide-angular';
-import { AdminSearchComponent } from '../../../../components/dashboard/admin-search/admin-search.component';
+import { FormsModule } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+
 import { TeamMemberService } from '../../../../services/team-member.service';
 import { GenericModal } from '../../../../components/dashboard/modals/edit-modal/generic-modal';
 import { TeamMember } from '../../../../models';
@@ -15,10 +18,10 @@ import { PaginationComponent } from '../../../../components/dashboard/pagination
 
 @Component({
   selector: 'app-team',
-  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, TeamMemberForm, DeleteConfirmationComponent, SkeletonTableComponent, EmptyStateComponent, DateFormatPipe],
+  imports: [CommonModule, FormsModule, LucideAngularModule, GenericModal, TeamMemberForm, DeleteConfirmationComponent, SkeletonTableComponent, EmptyStateComponent, DateFormatPipe],
   templateUrl: 'team.component.html'
 })
-export class TeamComponent implements OnInit {
+export class TeamComponent implements OnInit, OnDestroy {
   readonly Plus = Plus;
   readonly UserCog = UserCog;
   readonly SquarePen = SquarePen;
@@ -33,14 +36,27 @@ export class TeamComponent implements OnInit {
 
   readonly totalItems = this.teamMemberService.totalItems;
 
+  protected searchInput = signal<string>('');
+  private searchSubject = new Subject<string>();
+  private destroy$ = new Subject<void>();
+
   constructor() {
-    effect(() => {
+    this.setupSearchDebounce();
+  }
+
+  private setupSearchDebounce(): void {
+    this.searchSubject.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      takeUntil(this.destroy$)
+    ).subscribe(term => {
       this.loadTeam();
     });
   }
 
   loadTeam(): void {
-    this.teamMemberService.loadTeamMembersAdmin();
+    const searchTerm = this.searchInput().trim() || undefined;
+    this.teamMemberService.loadTeamMembersAdmin(searchTerm);
   }
 
   protected readonly isAdmin = computed(() => this.authService.hasRole(['ADMIN']));
@@ -59,6 +75,21 @@ export class TeamComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTeam();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  protected onSearchInput(value: string): void {
+    this.searchInput.set(value);
+    this.searchSubject.next(value);
+  }
+
+  protected clearSearch(): void {
+    this.searchInput.set('');
+    this.searchSubject.next('');
   }
 
   openAddModal(): void {
@@ -90,7 +121,7 @@ export class TeamComponent implements OnInit {
           this.isDeleteModalVisible.set(false);
           this.memberToDelete.set(undefined);
           this.isSaving.set(false);
-          this.teamMemberService.loadTeamMembersAdmin();
+          this.loadTeam();
           alert('Conteúdo deletado com sucesso!');
         },
         error: (err) => {

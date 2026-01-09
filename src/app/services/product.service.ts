@@ -20,7 +20,7 @@ export class ProductService {
 
     readonly totalItems = signal(0);
 
-    loadProductsAdmin(page: number = 1, pageSize: number = 10): void {
+    loadProductsAdmin(page: number = 1, pageSize: number = 10, search?: string): void {
         this.isLoading.set(true);
         this.error.set(null);
 
@@ -30,9 +30,15 @@ export class ProductService {
         const params = new URLSearchParams({
             skip: skip.toString(),
             take: take.toString()
-        }).toString();
+        });
 
-        this.api.get<any>(`product/admin?${params}`)
+        if (search) {
+            params.append('search', search);
+        }
+
+        const queryString = params.toString();
+
+        this.api.get<any>(`product/admin?${queryString}`)
             .subscribe({
                 next: (response) => {
                     if (Array.isArray(response)) {

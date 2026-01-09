@@ -1,7 +1,10 @@
-import { Component, inject, ChangeDetectionStrategy, OnInit, signal, computed } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, OnInit, signal, computed, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule, Plus, SquarePen, Trash2, Filter, Eye } from 'lucide-angular';
-import { AdminSearchComponent } from '../../../../components/dashboard/admin-search/admin-search.component';
+import { FormsModule } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+
 import { ProductService } from '../../../../services/product.service';
 import { environment } from '../../../../../environments/environment';
 import { NgOptimizedImage } from '@angular/common';
@@ -15,11 +18,11 @@ import { Product } from '../../../../models';
 
 @Component({
   selector: 'app-products',
-  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, NgOptimizedImage, SkeletonTableComponent, EmptyStateComponent, DeleteConfirmationComponent, GenericModal, PaginationComponent],
+  imports: [CommonModule, FormsModule, LucideAngularModule, NgOptimizedImage, SkeletonTableComponent, EmptyStateComponent, DeleteConfirmationComponent, GenericModal, PaginationComponent],
   templateUrl: './products.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProductsComponent implements OnInit {
+export class ProductsComponent implements OnInit, OnDestroy {
   private readonly productService = inject(ProductService);
   private readonly router = inject(Router);
 
@@ -36,6 +39,10 @@ export class ProductsComponent implements OnInit {
   productToDelete = signal<Product | null>(null);
   isSaving = signal(false);
 
+  protected searchInput = signal<string>('');
+  private searchSubject = new Subject<string>();
+  private destroy$ = new Subject<void>();
+
   protected readonly Plus = Plus;
   protected readonly SquarePen = SquarePen;
   protected readonly Trash2 = Trash2;
@@ -44,10 +51,28 @@ export class ProductsComponent implements OnInit {
 
   ngOnInit() {
     this.loadProducts();
+    this.setupSearchDebounce();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private setupSearchDebounce(): void {
+    this.searchSubject.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      takeUntil(this.destroy$)
+    ).subscribe(term => {
+      this.pageIndex.set(0);
+      this.loadProducts();
+    });
   }
 
   loadProducts(): void {
-    this.productService.loadProductsAdmin(this.pageIndex() + 1, this.pageSize);
+    const searchTerm = this.searchInput().trim() || undefined;
+    this.productService.loadProductsAdmin(this.pageIndex() + 1, this.pageSize, searchTerm);
   }
 
   onPageChange(index: number) {
@@ -62,6 +87,16 @@ export class ProductsComponent implements OnInit {
 
   openEditPage(productId: string) {
     this.router.navigate(['/dashboard/products/edit', productId]);
+  }
+
+  protected onSearchInput(value: string): void {
+    this.searchInput.set(value);
+    this.searchSubject.next(value);
+  }
+
+  protected clearSearch(): void {
+    this.searchInput.set('');
+    this.searchSubject.next('');
   }
 
   openDeleteModal(product: Product) {

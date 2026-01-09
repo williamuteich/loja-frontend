@@ -1,7 +1,9 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LucideAngularModule, Plus, Package, SquarePen, Trash2 } from 'lucide-angular';
-import { AdminSearchComponent } from '../../../../components/dashboard/admin-search/admin-search.component';
+import { LucideAngularModule, Plus, Package, SquarePen, Trash2, Search, X } from 'lucide-angular';
+import { FormsModule } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { BrandService } from '../../../../services/brand.service';
 import { GenericModal } from '../../../../components/dashboard/modals/edit-modal/generic-modal';
 import { Brand } from '../../../../models';
@@ -13,14 +15,16 @@ import { PaginationComponent } from '../../../../components/dashboard/pagination
 
 @Component({
   selector: 'app-brands',
-  imports: [CommonModule, LucideAngularModule, AdminSearchComponent, GenericModal, BrandForm, DeleteConfirmationComponent, SkeletonTableComponent, EmptyStateComponent, PaginationComponent],
+  imports: [CommonModule, FormsModule, LucideAngularModule, GenericModal, BrandForm, DeleteConfirmationComponent, SkeletonTableComponent, EmptyStateComponent, PaginationComponent],
   templateUrl: 'brands.component.html'
 })
-export class BrandsComponent implements OnInit {
+export class BrandsComponent implements OnInit, OnDestroy {
   readonly Plus = Plus;
   readonly Package = Package;
   readonly SquarePen = SquarePen;
   readonly Trash2 = Trash2;
+  readonly Search = Search;
+  readonly X = X;
 
   private readonly brandService = inject(BrandService);
   protected readonly brands = this.brandService.brands;
@@ -40,12 +44,47 @@ export class BrandsComponent implements OnInit {
   isLoading = this.brandService.isLoading;
   error = this.brandService.error;
 
+  searchInput = signal('');
+  private searchSubject = new Subject<string>();
+  private destroy$ = new Subject<void>();
+
+  constructor() {
+    this.setupSearchDebounce();
+  }
+
   ngOnInit(): void {
     this.loadBrands();
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private setupSearchDebounce(): void {
+    this.searchSubject.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      takeUntil(this.destroy$)
+    ).subscribe(term => {
+      this.pageIndex.set(0);
+      this.loadBrands();
+    });
+  }
+
+  protected onSearchInput(value: string): void {
+    this.searchInput.set(value);
+    this.searchSubject.next(value);
+  }
+
+  protected clearSearch(): void {
+    this.searchInput.set('');
+    this.searchSubject.next('');
+  }
+
   loadBrands(): void {
-    this.brandService.loadBrandsAdmin(this.pageIndex() + 1, this.pageSize);
+    const searchTerm = this.searchInput().trim() || undefined;
+    this.brandService.loadBrandsAdmin(this.pageIndex() + 1, this.pageSize, searchTerm);
   }
 
   onPageChange(index: number): void {
@@ -83,7 +122,7 @@ export class BrandsComponent implements OnInit {
           this.isDeleteModalVisible.set(false);
           this.brandToDelete.set(undefined);
           this.isSaving.set(false);
-          this.brandService.loadBrandsAdmin();
+          this.loadBrands();
           alert('Conteúdo deletado com sucesso!');
         },
         error: (err) => {

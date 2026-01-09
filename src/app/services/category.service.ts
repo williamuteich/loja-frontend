@@ -21,7 +21,7 @@ export class CategoryService {
     readonly totalItems = signal(0);
     private publicLoaded = false;
 
-    public loadCategoriesAdmin(page: number = 1, pageSize: number = 10): void {
+    public loadCategoriesAdmin(page: number = 1, pageSize: number = 10, search?: string): void {
         this.isLoading.set(true);
         this.error.set(null);
 
@@ -31,9 +31,15 @@ export class CategoryService {
         const params = new URLSearchParams({
             skip: skip.toString(),
             take: take.toString(),
-        }).toString();
+        });
 
-        this.api.get<any>(`category/admin?${params}`).subscribe({
+        if (search) {
+            params.append('search', search);
+        }
+
+        const queryString = params.toString();
+
+        this.api.get<any>(`category/admin?${queryString}`).subscribe({
             next: (response) => {
                 if (Array.isArray(response)) {
                     this._categories.set(response);
