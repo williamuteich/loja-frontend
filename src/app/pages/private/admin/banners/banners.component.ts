@@ -1,11 +1,12 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, signal } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { LucideAngularModule, Plus, SquarePen, Trash2 } from 'lucide-angular';
+import { LucideAngularModule, Plus, SquarePen, Trash2, Search, X } from 'lucide-angular';
+import { FormsModule } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { BannerService } from '../../../../services/banner.service';
 import { Banner } from '../../../../models';
 import { environment } from '../../../../../environments/environment';
-import { signal } from '@angular/core';
-import { AdminSearchComponent } from '../../../../components/dashboard/admin-search/admin-search.component';
 import { GenericModal } from '../../../../components/dashboard/modals/edit-modal/generic-modal';
 import { BannerForm } from '../../../../components/dashboard/modals/banner-form/banner-form';
 import { SkeletonBannerComponent } from '../../../../components/dashboard/skeleton/banner/skeletonBanner.component';
@@ -18,18 +19,18 @@ import { PaginationComponent } from '../../../../components/dashboard/pagination
   imports: [
     CommonModule,
     LucideAngularModule,
-    AdminSearchComponent,
     NgOptimizedImage,
     GenericModal,
     BannerForm,
     SkeletonBannerComponent,
     EmptyStateComponent,
     DeleteConfirmationComponent,
-    PaginationComponent
+    PaginationComponent,
+    FormsModule
   ],
   templateUrl: './banners.component.html',
 })
-export class BannersComponent implements OnInit {
+export class BannersComponent implements OnInit, OnDestroy {
   private readonly bannerService = inject(BannerService);
   protected readonly banners = this.bannerService.banners;
   readonly backendUrl = environment.BACKEND_URL;
@@ -41,6 +42,12 @@ export class BannersComponent implements OnInit {
   readonly Plus = Plus;
   readonly SquarePen = SquarePen;
   readonly Trash2 = Trash2;
+  readonly Search = Search;
+  readonly X = X;
+
+  readonly searchInput = signal('');
+  private readonly searchSubject = new Subject<string>();
+  private readonly destroy$ = new Subject<void>();
 
   isModalVisible = signal(false);
   selectedBanner = signal<Banner | undefined>(undefined);
@@ -53,11 +60,40 @@ export class BannersComponent implements OnInit {
   error = this.bannerService.error;
 
   ngOnInit(): void {
+    this.setupSearchDebounce();
+    this.loadBanners();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private setupSearchDebounce(): void {
+    this.searchSubject.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      takeUntil(this.destroy$)
+    ).subscribe(term => {
+      this.searchInput.set(term);
+      this.pageIndex.set(0);
+      this.loadBanners();
+    });
+  }
+
+  onSearchInput(value: string): void {
+    this.searchSubject.next(value);
+  }
+
+  clearSearch(): void {
+    this.searchInput.set('');
+    this.searchSubject.next('');
+    this.pageIndex.set(0);
     this.loadBanners();
   }
 
   loadBanners(): void {
-    this.bannerService.loadBannersAdmin(this.pageIndex() + 1, this.pageSize);
+    this.bannerService.loadBannersAdmin(this.pageIndex() + 1, this.pageSize, this.searchInput());
   }
 
   onPageChange(index: number): void {
@@ -95,7 +131,7 @@ export class BannersComponent implements OnInit {
           this.isDeleteModalVisible.set(false);
           this.bannerToDelete.set(undefined);
           this.isSaving.set(false);
-          this.bannerService.loadBannersAdmin();
+          this.loadBanners();
           alert('Conteúdo deletado com sucesso!');
         },
         error: (err) => {

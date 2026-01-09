@@ -4,6 +4,9 @@ import { LucideAngularModule, Eye, MessageCircle, Package, FolderTree, TrendingU
 import { CategoryService } from '../../../../services/category.service';
 import { BrandService } from '../../../../services/brand.service';
 import { ProductService } from '../../../../services/product.service';
+import { ClientService } from '../../../../services/client.service';
+import { TeamMemberService } from '../../../../services/team-member.service';
+import { User, Mail } from 'lucide-angular';
 
 @Component({
   selector: 'app-home',
@@ -19,14 +22,20 @@ export class HomeComponent implements OnInit {
   readonly FolderTree = FolderTree;
   readonly TrendingUp = TrendingUp;
   readonly Award = Award;
+  readonly User = User;
+  readonly Mail = Mail;
 
   private readonly categoryService = inject(CategoryService);
   private readonly brandService = inject(BrandService);
   private readonly productService = inject(ProductService);
+  private readonly clientService = inject(ClientService);
+  private readonly teamMemberService = inject(TeamMemberService);
 
   protected readonly categories = this.categoryService.categories;
   protected readonly brands = this.brandService.brands;
   protected readonly products = this.productService.products;
+  protected readonly clients = this.clientService.clients;
+  protected readonly teamMembers = this.teamMemberService.teamMembers;
 
   protected get activeProductsCount(): number {
     return this.products().filter(p => p.isActive).length;
@@ -44,6 +53,8 @@ export class HomeComponent implements OnInit {
     this.categoryService.loadCategoriesAdmin();
     this.brandService.loadBrandsAdmin();
     this.productService.loadProductsAdmin();
+    this.clientService.loadClientsAdmin(1, 10);
+    this.teamMemberService.loadTeamMembersAdmin();
   }
 }
 
