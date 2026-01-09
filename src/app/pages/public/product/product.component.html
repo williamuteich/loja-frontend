@@ -17,7 +17,7 @@
       <div class="space-y-4">
         <div class="relative aspect-square rounded-2xl overflow-hidden bg-gray-100 border border-gray-200">
           @if (images().length > 0) {
-          <img [ngSrc]="backendUrl + '/' + images()[selectedImageIndex()].url" [alt]="product.title || ''" fill priority
+          <img [ngSrc]="resolveUrl(images()[selectedImageIndex()].url)" [alt]="product.title || ''" fill priority
             class="object-cover" />
           } @else {
           <div class="w-full h-full flex items-center justify-center bg-gray-100 text-gray-400">
@@ -45,7 +45,7 @@
               'border-pink-700 shadow-pink-700/30': i === selectedImageIndex(),
               'border-gray-200 hover:border-pink-700/50': i !== selectedImageIndex()
             }">
-            <img [src]="backendUrl + '/' + image.url" alt="Miniatura do produto" class="w-full h-full object-cover" />
+            <img [src]="resolveUrl(image.url)" alt="Miniatura do produto" class="w-full h-full object-cover" />
           </button>
           }
         </div>

@@ -160,4 +160,15 @@ export class ProductComponent implements OnInit {
 
     window.open(waUrl, '_blank');
   }
+
+  resolveUrl(url: string): string {
+    if (!url) return '';
+    if (url.startsWith('http')) return url;
+
+    const backend = this.backendUrl.replace(/\/$/, '');
+    const cleanUrl = url.replace(/^\//, '');
+    const finalUrl = `${backend}/${cleanUrl}`;
+
+    return finalUrl;
+  }
 }

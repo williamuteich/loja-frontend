@@ -99,7 +99,6 @@ export class ClientsComponent implements OnInit {
   onPageChange(index: number): void {
     if (index < 0) return;
     this.pageIndex.set(index);
-    // effect will trigger loadClients
   }
 
   handleSave(clientForm: ClientForm): void {

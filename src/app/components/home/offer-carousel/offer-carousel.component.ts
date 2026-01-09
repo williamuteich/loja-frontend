@@ -43,4 +43,12 @@ export class OfferCarouselComponent implements OnInit {
     calculateDiscountPercentage(price: number, discountPrice: number): number {
         return Math.round(((price - discountPrice) / price) * 100);
     }
+
+    protected resolveUrl(url: string): string {
+        if (!url) return '';
+        if (url.startsWith('http')) return url;
+        const backend = this.backendUrl.replace(/\/$/, '');
+        const cleanUrl = url.replace(/^\//, '');
+        return `${backend}/${cleanUrl}`;
+    }
 }

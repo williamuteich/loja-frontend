@@ -23,4 +23,12 @@ export class ProductsGridComponent implements OnInit {
       error: () => this.products.set([])
     });
   }
+
+  protected resolveUrl(url: string): string {
+    if (!url) return '';
+    if (url.startsWith('http')) return url;
+    const backend = this.backendUrl.replace(/\/$/, '');
+    const cleanUrl = url.replace(/^\//, '');
+    return `${backend}/${cleanUrl}`;
+  }
 }
