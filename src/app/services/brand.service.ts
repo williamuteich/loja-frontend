@@ -63,6 +63,23 @@ export class BrandService {
         });
     }
 
+    public loadAllBrandsAdmin(): void {
+        this.isLoading.set(true);
+        this.error.set(null);
+
+        this.api.get<Brand[]>('brand/admin/all').subscribe({
+            next: (brands) => {
+                this._brands.set(brands);
+                this.isLoading.set(false);
+            },
+            error: (err) => {
+                console.error('Erro ao carregar todas as marcas admin', err);
+                this.error.set('Não foi possível carregar todas as marcas.');
+                this.isLoading.set(false);
+            }
+        });
+    }
+
     public loadBrandsPublic(): void {
         if (this.publicLoaded) return;
 

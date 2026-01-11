@@ -42,8 +42,8 @@ export class ProductEditComponent {
     form: FormGroup;
 
     constructor() {
-        this.brandService.loadBrandsAdmin();
-        this.categoryService.loadCategoriesAdmin();
+        this.brandService.loadAllBrandsAdmin();
+        this.categoryService.loadAllCategoriesAdmin();
         this.productService.loadProductsAdmin();
 
         this.form = this.fb.group({

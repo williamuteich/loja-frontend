@@ -63,6 +63,23 @@ export class CategoryService {
         });
     }
 
+    public loadAllCategoriesAdmin(): void {
+        this.isLoading.set(true);
+        this.error.set(null);
+
+        this.api.get<Category[]>('category/admin/all').subscribe({
+            next: (categories) => {
+                this._categories.set(categories);
+                this.isLoading.set(false);
+            },
+            error: (err) => {
+                console.error('Erro ao carregar todas as categorias admin', err);
+                this.error.set('Não foi possível carregar todas as categorias.');
+                this.isLoading.set(false);
+            }
+        });
+    }
+
     public loadCategoriesPublic(page: number = 1, pageSize: number = 10): void {
         this.isLoading.set(true);
         this.error.set(null);
