@@ -38,6 +38,7 @@ export class ProductEditComponent {
     selectedFiles: File[] = [];
     keptImageUrls = signal<string[]>([]);
     imageVersion = signal<number>(Date.now());
+    selectedFilePreviews = signal<{ url: string, file: File }[]>([]);
 
     form: FormGroup;
 
@@ -149,8 +150,37 @@ export class ProductEditComponent {
     onFileSelected(event: Event) {
         const input = event.target as HTMLInputElement;
         if (input.files) {
-            this.selectedFiles = Array.from(input.files);
+            const files = Array.from(input.files);
+            this.selectedFiles = [...this.selectedFiles, ...files];
+
+            const newPreviews = files.map(file => ({
+                url: URL.createObjectURL(file),
+                file: file
+            }));
+
+            this.selectedFilePreviews.update(previews => [...previews, ...newPreviews]);
         }
+        // Limpar o input para permitir selecionar os mesmos arquivos novamente se necessário
+        input.value = '';
+    }
+
+    removeSelectedFile(index: number) {
+        this.selectedFilePreviews.update(previews => {
+            const previewToRemove = previews[index];
+            if (previewToRemove) {
+                URL.revokeObjectURL(previewToRemove.url);
+            }
+            const newPreviews = previews.filter((_, i) => i !== index);
+            this.selectedFiles = newPreviews.map(p => p.file);
+            return newPreviews;
+        });
+    }
+
+    ngOnDestroy() {
+        // Limpar URLs de objeto para evitar vazamento de memória
+        this.selectedFilePreviews().forEach(preview => {
+            URL.revokeObjectURL(preview.url);
+        });
     }
 
     cancel() {

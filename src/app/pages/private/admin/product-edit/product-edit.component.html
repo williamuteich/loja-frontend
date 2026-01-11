@@ -242,17 +242,26 @@
                 <section class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 space-y-6">
                     <div class="flex items-center justify-between">
                         <h3 class="text-lg font-bold text-slate-900">Mídias</h3>
-                        <span class="text-xs font-bold text-slate-400">{{ keptImageUrls().length + selectedFiles.length
-                            }} total</span>
+                        <span class="text-xs font-bold text-slate-400">
+                            {{ keptImageUrls().length + selectedFilePreviews().length }} total
+                        </span>
                     </div>
 
-                    @if (keptImageUrls().length > 0) {
-                    <div class="grid grid-cols-2 gap-3">
+                    <div class="grid grid-cols-2 gap-4">
+                        <!-- Imagens Existentes -->
                         @for (url of keptImageUrls(); track $index) {
                         <div
                             class="relative aspect-square rounded-2xl overflow-hidden group border border-slate-100 shadow-sm leading-none bg-slate-50">
                             <img [src]="backendUrl + '/' + url + '?v=' + imageVersion()"
                                 class="w-full h-full object-cover" alt="Imagem do produto">
+
+                            @if ($index === 0) {
+                            <div
+                                class="absolute top-2 left-2 px-2 py-1 bg-primary text-white text-[9px] font-black uppercase tracking-widest rounded-lg shadow-lg z-10">
+                                Principal
+                            </div>
+                            }
+
                             <div
                                 class="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
                                 <button type="button" (click)="removeExistingImage(url)"
@@ -262,41 +271,44 @@
                             </div>
                         </div>
                         }
-                    </div>
-                    }
 
-                    <div class="relative group">
-                        <input type="file" multiple (change)="onFileSelected($event)"
-                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" accept="image/*">
+                        <!-- Novas Imagens (Previews) -->
+                        @for (preview of selectedFilePreviews(); track $index) {
                         <div
-                            class="py-10 border-2 border-dashed border-slate-200 rounded-3xl flex flex-col items-center justify-center bg-slate-50 transition-all group-hover:border-slate-900 group-hover:bg-slate-100 leading-tight">
-                            <div
-                                class="w-12 h-12 rounded-2xl bg-white shadow-soft flex items-center justify-center text-slate-400 mb-3 group-hover:text-slate-900 transition-colors">
-                                <lucide-icon [img]="Plus" class="w-6 h-6"></lucide-icon>
-                            </div>
-                            <p class="text-sm font-bold text-slate-700">Adicionar Mídias</p>
-                            <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold mt-1">Multiplos
-                                arquivos</p>
-                        </div>
-                    </div>
+                            class="relative aspect-square rounded-2xl overflow-hidden group border-2 border-dashed border-primary/30 shadow-sm leading-none bg-primary/5">
+                            <img [src]="preview.url" class="w-full h-full object-cover" alt="Nova imagem">
 
-                    @if (selectedFiles.length > 0) {
-                    <div class="space-y-2">
-                        @for (file of selectedFiles; track $index) {
-                        <div class="flex items-center gap-3 p-3 bg-primary/5 rounded-2xl border border-primary/10">
+                            @if (keptImageUrls().length === 0 && $index === 0) {
                             <div
-                                class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
-                                <lucide-icon [img]="Plus" class="w-4 h-4"></lucide-icon>
+                                class="absolute top-2 left-2 px-2 py-1 bg-primary text-white text-[9px] font-black uppercase tracking-widest rounded-lg shadow-lg z-10">
+                                Principal
                             </div>
-                            <div class="flex-1 overflow-hidden">
-                                <p class="text-xs font-bold text-slate-700 truncate">{{ file.name }}</p>
-                                <p class="text-[10px] font-bold text-primary uppercase">{{ (file.size / 1024).toFixed(0)
-                                    }} KB</p>
+                            }
+
+                            <div
+                                class="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+                                <button type="button" (click)="removeSelectedFile($index)"
+                                    class="p-2.5 bg-rose-500 text-white cursor-pointer rounded-xl shadow-lg hover:scale-110 active:scale-95 transition-all">
+                                    <lucide-icon [img]="Trash2" class="w-4 h-4"></lucide-icon>
+                                </button>
                             </div>
                         </div>
                         }
+
+                        <!-- Botão de Adicionar -->
+                        <div class="relative group aspect-square">
+                            <input type="file" multiple (change)="onFileSelected($event)"
+                                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" accept="image/*">
+                            <div
+                                class="w-full h-full border-2 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center bg-slate-50 transition-all group-hover:border-slate-900 group-hover:bg-slate-100 leading-tight">
+                                <div
+                                    class="w-10 h-10 rounded-xl bg-white shadow-soft flex items-center justify-center text-slate-400 mb-2 group-hover:text-slate-900 transition-colors">
+                                    <lucide-icon [img]="Plus" class="w-5 h-5"></lucide-icon>
+                                </div>
+                                <p class="text-[10px] font-bold text-slate-700">Adicionar</p>
+                            </div>
+                        </div>
                     </div>
-                    }
                 </section>
 
                 <section class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 space-y-6">
